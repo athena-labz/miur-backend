@@ -2,7 +2,7 @@ import uuid
 
 from . import db
 
-from model import association_table
+from model.judge_project_association import association_table
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 

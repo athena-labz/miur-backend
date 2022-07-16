@@ -22,11 +22,11 @@ def create():
     project.funding_currency = data["funding_currency"]
     project.funding_expected = data["funding_expected"]
 
-    project.proposer = User()
-    project.proposer.user_address = data["project_proposer"]
+    proposer = User()
+    proposer.user_address = data["project_proposer"]
 
     try:
-        project.proposer.user_public_key_hash = cardano_tools.address_to_pubkeyhash(
+        proposer.user_public_key_hash = cardano_tools.address_to_pubkeyhash(
             data["project_proposer"])
     except TypeError as e:
         logging.info(f"Error handled while trying to convert address to public key hash!")
@@ -36,24 +36,31 @@ def create():
         }, 200
     except Exception as e:
         raise e
+    
+    project.proposer = proposer
 
-    project.deliverables = []
-    for data_deliverable in data["deliverables"]:
+    deliverables = []
+    for i, data_deliverable in enumerate(data["deliverables"]):
         deliverable = Deliverable()
 
+        deliverable.deliverable_index = i
         deliverable.declaration = data_deliverable["declaration"]
         deliverable.duration = data_deliverable["duration"]
         deliverable.percentage_requested = data_deliverable["percentage_requested"]
 
-        project.deliverables.append(deliverable)
+        deliverables.append(deliverable)
 
-    project.judges = []
+    project.deliverables = deliverables
+
+    judges = []
     for address in data["judges"]:
         judge = Judge()
 
         judge.judge_address = address
 
-        project.judges.append(judge)
+        judges.append(judge)
+    
+    project.judges = judges
 
     db.session.add(project)
     db.session.commit()

@@ -1,0 +1,2 @@
+def fail():
+    pass

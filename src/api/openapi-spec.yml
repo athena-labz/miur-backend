@@ -1,0 +1,468 @@
+openapi: 3.0.0
+
+servers:
+  - url: http://localhost:5000/
+    description: Mock server - run by connexion command line
+  - url: http://localhost:8080/
+    description: Local test server (docker compose)
+  - url: http://localhost:8081/
+    description: Local test server - running directly
+
+info:
+  description: Crowdfunding API
+  version: "1.0.0"
+  title: Crowdfunding API
+  contact:
+    email: santos.mateus@protonmail.com
+
+paths:
+  /health:
+    get:
+      summary: provides a health check for the application
+      operationId: api.health.get
+      description: |
+        Gets the health of the application
+      responses:
+        "200":
+          description: Successful health check - status will be 'ok' if health is good
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+        "500":
+          description: Unsuccessful health check
+
+  /projects:
+    get:
+      summary: Returns a list of all projects
+      operationId: api.projects.get_all
+      description: Returns short information about all projects paginated
+      parameters:
+        - in: query
+          name: count
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 100
+          description: The number of results displayed on one page.
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: The page number for listing the results.
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: "desc"
+            enum:
+              - "asc"
+              - "desc"
+          description: The ordering of the items.
+      responses:
+        "200":
+          description: Able to get all projects successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectsResult"
+
+  /projects/create:
+    post:
+      summary: Creates a project
+      operationId: api.projects.create
+      description: |
+        Creates a project with the specified parameters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectLong"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to create the project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AthenaResult"
+
+  /projects/{project_id}:
+    get:
+      summary: Get details of a specific project
+      operationId: api.projects.get_project
+      description: Returns detailed information about a specific project
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+      responses:
+        "200":
+          description: Able to get the project successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectLong"
+        
+        "404":
+          description: Project ID not found
+
+  /projects/{project_id}/fund:
+    post:
+      summary: Funds a project
+      operationId: api.projects.fund
+      description: |
+        Funds a project with the specified parameters
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+        - in: query
+          name: user
+          description: the user who is sending the funds
+          required: true
+          schema:
+            $ref: "#/components/schemas/User"
+        - in: query
+          name: amount
+          description: the amount that is being funded
+          required: true
+          schema:
+            type: integer
+            example: 5_000_000
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to fund the project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AthenaResult"
+
+  /projects/{project_id}/start:
+    post:
+      summary: Starts a project
+      operationId: api.projects.start
+      description: |
+        Starts a project with the specified parameters
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+        - in: query
+          name: user
+          description: the user who is starting the project
+          required: true
+          schema:
+            $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to start the project
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AthenaResult"
+
+        "404":
+          description: Project ID not found
+
+  /projects/{project_id}/give-up:
+    post:
+      summary: Gives up on a project
+      operationId: api.projects.give_up
+      description: |
+        Project proposer decides to give up and give users their funds back with an additional compensation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to give up
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AthenaResult"
+
+        "404":
+          description: Project ID not found
+
+  /projects/{project_id}/{deliverable_id}/complete:
+    post:
+      summary: Mark deliverable as completed
+      operationId: api.projects.deliverables.complete
+      description: |
+        Mark deliverable as completed (only effetuated after mediator analysis)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+        - in: path
+          name: deliverable_id
+          description: deliverable id (guid)
+          required: true
+          schema:
+            type: string
+            example: "52962991-2af7-4526-b541-fb79bed33a1b"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to mark deliverable as completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AthenaResult"
+
+        "404":
+          description: Project ID or Deliverable ID not found
+
+  /projects/{project_id}/{deliverable_id}/confirm:
+    post:
+      summary: Decide that deliverable was indeed completed
+      operationId: api.projects.deliverables.confirm
+      description: |
+        Mediator decides in favour of project proposer, confirming deliverable as completed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+        - in: path
+          name: deliverable_id
+          description: deliverable id (guid)
+          required: true
+          schema:
+            type: string
+            example: "52962991-2af7-4526-b541-fb79bed33a1b"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to confirm deliverable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AthenaResult"
+
+        "404":
+          description: Project ID or Deliverable ID not found
+
+  /projects/{project_id}/{deliverable_id}/fail:
+    post:
+      summary: Decide that deliverable was not actually completed successfully
+      operationId: api.projects.deliverables.fail
+      description: |
+        Mediator decides against project proposer, saying deliverable wasn't completed accordingnly
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+        - in: path
+          name: deliverable_id
+          description: deliverable id (guid)
+          required: true
+          schema:
+            type: string
+            example: "52962991-2af7-4526-b541-fb79bed33a1b"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to fail deliverable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AthenaResult"
+
+        "404":
+          description: Project ID or Deliverable ID not found
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Something really bad happened!"
+
+    User:
+      type: string
+      example: addr_test123
+
+    Deliverable:
+      type: object
+      required:
+        - declaration
+        - duration
+        - percentage_requested
+      properties:
+        declaration:
+          type: string
+          description: What the crowdfunding proposer is promising
+          example: Website will have at least three pages
+        duration:
+          type: integer
+          description: Duration in days for how much time this deliverable will take
+          example: 5 # 5 days
+        percentage_requested:
+          type: integer
+          description: Percentage of the total funding which will be released if this deliverable is completed
+          example: 20 # 20%
+        
+    ProjectShort:
+      type: object
+      required:
+        - name
+        - short_description
+        - funding_currency
+        - funding_achieved
+        - funding_expected
+        - project_proposer
+      properties:
+        name:
+          type: string
+          example: "Who Done It 200+ Pages Book"
+        short_description:
+          type: string
+          example: "I will write a story about a murder that happened in a spaceship! The ending will be incredible!"
+        funding_currency:
+          type: string
+          example: lovelace
+        funding_achieved:
+          type: integer
+          example: 50_000_000
+        funding_expected:
+          type: integer
+          example: 200_000_000
+        project_proposer:
+          $ref: "#/components/schemas/User"
+
+    ProjectLong:
+      type: object
+      required:
+        - name
+        - short_description
+        - long_description
+        - funding_currency
+        - funding_expected
+        - project_proposer
+        - deliverables
+        - judges
+      properties:
+        name:
+          type: string
+          example: "Who Done It 200+ Pages Book"
+        short_description:
+          type: string
+          example: "I will write a story about a murder that happened in a spaceship! The ending will be incredible!"
+        long_description:
+          type: string
+          example: "Reaaaaaaaaly long description..."
+        funding_currency:
+          type: string
+          example: lovelace
+        funding_achieved: # Not required when creating a project
+          type: integer
+          example: 50_000_000
+        funding_expected:
+          type: integer
+          example: 200_000_000
+        project_proposer:
+          $ref: "#/components/schemas/User"
+        deliverables:
+          type: array
+          items:
+            $ref: "#/components/schemas/Deliverable"
+        judges:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+
+    ProjectsResult:
+      type: object
+      required:
+        - projects
+        - count
+      properties:
+        projects:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectShort"
+        count:
+          type: integer
+          example: 5
+
+    AthenaResult:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+          example: User is not the creator of the project!
+        transaction_cbor:
+          type: string
+          example: 84a5008182...590e80a0f5f6

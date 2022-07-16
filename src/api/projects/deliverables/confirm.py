@@ -1,0 +1,2 @@
+def confirm():
+    pass

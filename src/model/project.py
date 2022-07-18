@@ -2,7 +2,6 @@ import uuid
 
 from . import db
 
-from model.judge_project_association import association_table
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey
 
@@ -32,8 +31,8 @@ class Project(db.Model):
     funding_expected = db.Column(db.Integer, nullable=False)
 
     deliverables = relationship("Deliverable", back_populates="project")
-    judges = relationship(
-        "Judge", secondary=association_table, back_populates="projects")
+    # judges = relationship(
+    #     "Judge", secondary=association_table, back_populates="projects")
 
     project_funding = relationship("Fund", back_populates="project")
 

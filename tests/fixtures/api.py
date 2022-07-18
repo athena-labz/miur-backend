@@ -14,7 +14,7 @@ def api():
         __name__, specification_dir='../../src/api/', options=options)
 
     app.add_api('openapi-spec.yml', validate_responses=True)
-    
+
     app = app.app
 
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"

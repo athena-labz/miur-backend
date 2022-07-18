@@ -5,6 +5,8 @@ from . import db
 from sqlalchemy.orm import relationship
 from sqlalchemy import func
 
+from model.project_mediator_association import association_table
+
 
 def str_uuid():
     return str(uuid.uuid4())
@@ -21,7 +23,8 @@ class User(db.Model):
     user_public_key_hash = db.Column(db.String(), nullable=False)
 
     created_projects = relationship("Project", back_populates="proposer")
-    user_funding = relationship("Fund", back_populates="funder")
+    mediated_projects = relationship(
+        "Project", secondary=association_table, back_populates="mediators")
 
     creation_date = db.Column(db.DateTime(
         timezone=False), server_default=func.now(), nullable=False)

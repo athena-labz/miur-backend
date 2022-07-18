@@ -3,11 +3,9 @@ import uuid
 from . import db
 
 from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, func
 
-
-def str_uuid():
-    return str(uuid.uuid4())
+from model.project_subject_association import association_table
 
 
 class Project(db.Model):
@@ -15,26 +13,25 @@ class Project(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     project_identifier = db.Column(
-        db.String(64), default=str_uuid, nullable=False)
+        db.String(64), default=lambda: str(uuid.uuid4()), nullable=False)
 
-    proposer_id = db.Column(db.Integer, ForeignKey(
-        "user.id"), nullable=False)
+    proposer_id = db.Column(db.Integer, ForeignKey("user.id"), nullable=False)
     proposer = relationship("User", back_populates="created_projects")
-    
+
+    subjects = relationship(
+        "Subject", secondary=association_table, back_populates="projects")
+
     name = db.Column(db.String(), nullable=False)
 
     short_description = db.Column(db.String(), nullable=False)
     long_description = db.Column(db.String(), nullable=False)
 
-    funding_currency = db.Column(db.String(64), nullable=False)
-    funding_achieved = db.Column(db.Integer, default=0, nullable=False)
-    funding_expected = db.Column(db.Integer, nullable=False)
+    reward_requested = db.Column(db.Integer, nullable=False)
+    days_to_complete = db.Column(db.Integer, nullable=False)
+    collateral = db.Column(db.Integer, nullable=False)
 
     deliverables = relationship("Deliverable", back_populates="project")
-    # judges = relationship(
-    #     "Judge", secondary=association_table, back_populates="projects")
+    mediators = relationship("User", back_populates="mediated_projects")
 
-    project_funding = relationship("Fund", back_populates="project")
-
-    project_state = relationship(
-        "ProjectState", back_populates="project", uselist=False)
+    creation_date = db.Column(db.DateTime(
+        timezone=False), server_default=func.now(), nullable=False)

@@ -81,3 +81,26 @@ def create_project():
     db.session.commit()
 
     return {"success": True}, 200
+
+
+def get_project(project_id):
+    project = Project.query.filter(Project.project_identifier == project_id).first()
+
+    if project is None:
+        return {"success": False}, 404
+    
+    return {
+        "success": True,
+        "project": {
+            "name": project.name,
+            "creator_address": project.creator.address,
+            "short_description": project.short_description,
+            "long_description": project.long_description,
+            "subjects": [subject.subject_name for subject in project.subjects],
+            "reward_requested": project.reward_requested,
+            "days_to_complete": project.days_to_complete,
+            "collateral": project.collateral,
+            "deliverables": [deliverable.deliverable for deliverable in project.deliverables],
+            "mediators": [mediator.address for mediator in project.mediators],
+        }
+    }, 200

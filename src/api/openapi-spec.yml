@@ -107,6 +107,36 @@ paths:
                     type: string
                     example: "Something real bad happened"
 
+  /projects/{project_id}:
+    get:
+      summary: Get details of a specific project
+      operationId: api.projects.get_project
+      description: Returns detailed information about a specific project
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+      responses:
+        "200":
+          description: Able to get the project successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: True
+                  projects:
+                    $ref: "#/components/schemas/ProjectLong"
+
+        "404":
+          description: Project ID not found
+
 components:
   schemas:
     HealthStatus:
@@ -204,3 +234,8 @@ components:
           items:
             type: string
             example: "I am gonna do a very good job, trust me :wink"
+        mediators:
+          type: array
+          items:
+            type: string
+            example: "The good people that are going to assess this project when the time comes"

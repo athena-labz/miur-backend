@@ -19,10 +19,10 @@ class User(db.Model):
     user_identifier = db.Column(
         db.String(64), default=str_uuid, nullable=False)
 
-    user_address = db.Column(db.String(), nullable=False)
-    user_public_key_hash = db.Column(db.String(), nullable=False)
+    address = db.Column(db.String(), nullable=False)
+    public_key_hash = db.Column(db.String(), nullable=False)
 
-    created_projects = relationship("Project", back_populates="proposer")
+    created_projects = relationship("Project", back_populates="creator")
     mediated_projects = relationship(
         "Project", secondary=association_table, back_populates="mediators")
 

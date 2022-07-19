@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey, func
 
 from model.project_subject_association import association_table
+from model.project_mediator_association import association_table as mediator_association_table
 
 
 class Project(db.Model):
@@ -15,8 +16,8 @@ class Project(db.Model):
     project_identifier = db.Column(
         db.String(64), default=lambda: str(uuid.uuid4()), nullable=False)
 
-    proposer_id = db.Column(db.Integer, ForeignKey("user.id"), nullable=False)
-    proposer = relationship("User", back_populates="created_projects")
+    creator_id = db.Column(db.Integer, ForeignKey("user.id"), nullable=False)
+    creator = relationship("User", back_populates="created_projects")
 
     subjects = relationship(
         "Subject", secondary=association_table, back_populates="projects")
@@ -31,7 +32,8 @@ class Project(db.Model):
     collateral = db.Column(db.Integer, nullable=False)
 
     deliverables = relationship("Deliverable", back_populates="project")
-    mediators = relationship("User", back_populates="mediated_projects")
+    mediators = relationship(
+        "User", secondary=mediator_association_table, back_populates="mediated_projects")
 
     creation_date = db.Column(db.DateTime(
         timezone=False), server_default=func.now(), nullable=False)

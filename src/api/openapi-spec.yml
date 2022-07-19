@@ -30,6 +30,55 @@ paths:
         "500":
           description: Unsuccessful health check
 
+  /projects:
+    get:
+      summary: Returns a list of all projects
+      operationId: api.projects.get_projects
+      description: Returns short information about all projects paginated
+      parameters:
+        - in: query
+          name: count
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 100
+          description: The number of results displayed on one page.
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: The page number for listing the results.
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: "desc"
+            enum:
+              - "asc"
+              - "desc"
+          description: The ordering of the items.
+      responses:
+        "200":
+          description: Able to get all projects successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - projects
+                  - count
+                properties:
+                  projects:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProjectShort"
+                  count:
+                    type: integer
+                    example: 5
+
 components:
   schemas:
     HealthStatus:
@@ -43,3 +92,38 @@ components:
         message:
           type: string
           example: "Something really bad happened!"
+
+    ProjectShort:
+      type: object
+      required:
+        - name
+        - creator_address
+        - short_description
+        - subjects
+        - reward_requested
+        - days_to_complete
+        - collateral
+      properties:
+        name:
+          type: string
+          example: "Who Done It 200+ Pages Book"
+        creator_address:
+          type: string
+          example: "stake_test123...abc"
+        short_description:
+          type: string
+          example: "I will write a story about a murder that happened in a spaceship! The ending will be incredible!"
+        subjects:
+          type: array
+          items:
+            type: string
+            example: Math
+        reward_requested:
+          type: integer
+          example: 100
+        days_to_complete:
+          type: integer
+          example: 31
+        collateral:
+          type: integer
+          example: 200

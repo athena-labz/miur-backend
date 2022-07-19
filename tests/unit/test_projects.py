@@ -88,3 +88,48 @@ def test_get_projects(api):
             "collateral": 130,
         }]
     }
+
+
+def test_create_project(api):
+    client, app = api
+
+    sys.path.append("src")
+
+    from model import db, Project, User, Subject, Deliverable
+
+    response = client.post("/projects/create", json={
+        "name": "Project",
+        "creator_address": "addr_test123",
+        "short_description": "lorem ipsum...",
+        "long_description": "lorem ipsum dolor sit amet...",
+        "subjects": ["Math", "Tourism"],
+        "reward_requested": 50,
+        "days_to_complete": 15,
+        "collateral": 130,
+        "deliverables": ["I'm gonna do real good", "Trust me bro"]
+    })
+
+    assert response.status_code == 200
+    assert response.json == {"success": True}
+
+    projects = Project.query.all()
+    assert len(projects) == 1
+
+    # Make sure project created is equal to the sample provided
+    project: Project = projects[0]
+    assert project.name == "Project"
+
+    assert project.creator.address == "addr_test123"
+
+    assert project.short_description == "lorem ipsum..."
+    assert project.long_description == "lorem ipsum dolor sit amet..."
+
+    assert set([subject.subject_name for subject in project.subjects]) == {
+        "Math", "Tourism"}
+
+    assert project.reward_requested == 50
+    assert project.days_to_complete == 15
+    assert project.collateral == 130
+
+    assert set([deliverable.deliverable for deliverable in project.deliverables]) == {
+        "I'm gonna do real good", "Trust me bro"}

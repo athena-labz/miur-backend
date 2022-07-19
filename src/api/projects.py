@@ -1,6 +1,6 @@
 from flask import request
 
-from model import Project
+from model import Project, User, Subject, Deliverable, db
 
 
 def get_projects():
@@ -35,5 +35,48 @@ def get_projects():
         } for project in projects.items]
     }, 200
 
+
 def create_project():
-    pass
+    data = request.json
+
+    project = Project()
+
+    project.name = data["name"]
+
+    creator = User()
+    creator.address = data["creator_address"]
+    creator.public_key_hash = "blahblahblah"
+
+    project.creator = creator
+
+    project.short_description = data["short_description"]
+    project.long_description = data["long_description"]
+
+    project.reward_requested = data["reward_requested"]
+    project.days_to_complete = data["days_to_complete"]
+    project.collateral = data["collateral"]
+
+    subjects = []
+    for data_subject in data["subjects"]:
+        subject = Subject()
+        subject.subject_name = data_subject
+
+        subjects.append(subject)
+
+    project.subjects = subjects
+
+    deliverables = []
+    for data_deliverable in data["deliverables"]:
+        deliverable = Deliverable()
+        deliverable.deliverable = data_deliverable
+
+        deliverables.append(deliverable)
+
+    project.deliverables = deliverables
+
+    # TODO: Add mediators
+
+    db.session.add(project)
+    db.session.commit()
+
+    return {"success": True}, 200

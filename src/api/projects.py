@@ -34,3 +34,6 @@ def get_projects():
             "collateral": project.collateral,
         } for project in projects.items]
     }, 200
+
+def create_project():
+    pass

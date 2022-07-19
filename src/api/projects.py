@@ -25,6 +25,7 @@ def get_projects():
     return {
         "count": projects.query.count(),
         "projects": [{
+            "project_id": project.project_identifier,
             "name": project.name,
             "creator_address": project.creator.address,
             "short_description": project.short_description,

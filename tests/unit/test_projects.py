@@ -79,6 +79,7 @@ def test_get_projects(api):
     assert response.json == {
         "count": 1,
         "projects": [{
+            "project_id": project_1.project_identifier,
             "name": "Project",
             "creator_address": "addr_test123",
             "short_description": "lorem ipsum...",

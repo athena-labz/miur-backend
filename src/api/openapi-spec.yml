@@ -124,6 +124,7 @@ components:
     ProjectShort:
       type: object
       required:
+        - project_id
         - name
         - creator_address
         - short_description
@@ -132,6 +133,9 @@ components:
         - days_to_complete
         - collateral
       properties:
+        project_id:
+          type: string
+          example: "473ca642-d238-4b93-b7e4-424a76128727"
         name:
           type: string
           example: "Who Done It 200+ Pages Book"

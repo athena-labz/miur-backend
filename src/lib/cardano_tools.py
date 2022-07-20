@@ -14,7 +14,7 @@ def signature_message(signature, address):
     if validation["verified"] is False:
         return None
 
-    if str(validation["signing_address"]) != address:
+    if validation["signing_address"].payment_part != Address.from_primitive(address).payment_part:
         return None
 
     return validation["message"]

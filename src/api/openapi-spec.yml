@@ -156,10 +156,24 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - nickname
               properties:
                 nickname:
                   type: string
                   example: Babatomano
+                signature:
+                  type: string
+                  example: 84584d...db070c
+                  description: A signature from an arbitrary message the server sent to the user following CIP08
+                key:
+                  type: string
+                  example: a40101...7dc780
+                  description: The key used to sign that message
+                signature_plus_key:
+                  type: string
+                  example: 84584d...db070c
+                  description: Another possible format that already includes signature and key in one string
       responses:
         "200":
           description: |

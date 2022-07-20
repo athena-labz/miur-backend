@@ -58,11 +58,23 @@ def register(address: str):
                 "message": f"User with nickname {data['nickname']} already exists"
             }, 400
 
-    if not validate_signature(data["signature"], address):
+    if "signature_plus_key" in data:
+        if not validate_signature(data["signature_plus_key"], address):
+            return {
+                "success": False,
+                "message": "Invalid signature"
+            }, 400
+    elif "signature" in data and "key" in data:
+        if not validate_signature({"signature": data["signature"], "key": data["key"]}, address):
+            return {
+                "success": False,
+                "message": "Invalid signature"
+            }, 400
+    else:
         return {
             "success": False,
-            "message": "Invalid signature"
-        }, 400
+            "message": "Signature not provided"
+        }
 
     user = User()
     user.address = address

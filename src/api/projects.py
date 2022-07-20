@@ -44,9 +44,13 @@ def create_project():
 
     project.name = data["name"]
 
-    creator = User()
-    creator.address = data["creator_address"]
-    creator.public_key_hash = "blahblahblah"
+    creator = User.query.filter(User.address == data["creator_address"]).first()
+
+    if creator is None:
+        return {
+            "success": False,
+            "message": f"User {data['creator_address']} is not registered"
+        }, 400
 
     project.creator = creator
 

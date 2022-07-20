@@ -137,6 +137,46 @@ paths:
         "404":
           description: Project ID not found
 
+  # /register/{address}:
+  #   post:
+  #     summary: Registers a user to the platform
+  #     operationId: api.user.register
+  #     description: |
+  #       Creates a project with the specified parameters
+  #     parameters:
+  #       - in: path
+  #         name: address
+  #         description: the address of the user who is trying to register
+  #         required: true
+  #         schema:
+  #           type: string
+  #           example: "addr_test123"
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             type: object
+  #             properties:
+  #               nickname:
+  #                 type: string
+  #                 example: Babatomano
+  #     responses:
+  #       "200":
+  #         description: |
+  #           Whether everything went okay while trying to create the project
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               properties:
+  #                 success:
+  #                   type: boolean
+  #                   example: True
+  #                 message:
+  #                   type: string
+  #                   example: "Something real bad happened"
+
 components:
   schemas:
     HealthStatus:

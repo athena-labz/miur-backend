@@ -13,10 +13,12 @@ def test_get_projects(api):
     from model import db, Project, User, Subject, Deliverable
 
     user_1 = User()
+    user_1.nickname = "fastandfury"
     user_1.address = "addr_test123"
     user_1.public_key_hash = "pubkey123"
 
     user_2 = User()
+    user_2.nickname = "arsene"
     user_2.address = "addr_test456"
     user_2.public_key_hash = "pubkey456"
 
@@ -98,6 +100,35 @@ def test_create_project(api):
 
     from model import db, Project, User, Subject, Deliverable
 
+    # Creator does not exist
+    response = client.post("/projects/create", json={
+        "name": "Project",
+        "creator_address": "addr_test123",
+        "short_description": "lorem ipsum...",
+        "long_description": "lorem ipsum dolor sit amet...",
+        "subjects": ["Math", "Tourism"],
+        "reward_requested": 50,
+        "days_to_complete": 15,
+        "collateral": 130,
+        "deliverables": ["I'm gonna do real good", "Trust me bro"]
+    })
+
+    assert response.status_code == 400
+
+    assert "success" in response.json
+    assert response.json["success"] is False
+
+    # Creator does exist
+    user = User()
+    user.nickname = "fastandfury"
+    user.address = "addr_test123"
+    user.public_key_hash = "pubkey123"
+
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+        db.session.refresh(user)
+
     response = client.post("/projects/create", json={
         "name": "Project",
         "creator_address": "addr_test123",
@@ -144,10 +175,12 @@ def test_get_projects(api):
     from model import db, Project, User, Subject, Deliverable
 
     user_1 = User()
+    user_1.nickname = "fastandfury"
     user_1.address = "addr_test123"
     user_1.public_key_hash = "pubkey123"
 
     user_2 = User()
+    user_2.nickname = "arsene"
     user_2.address = "addr_test456"
     user_2.public_key_hash = "pubkey456"
 

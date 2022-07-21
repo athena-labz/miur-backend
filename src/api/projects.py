@@ -41,7 +41,17 @@ def get_projects():
 def create_project():
     data = request.json
 
-    # if auth_tools.user_can_signin(data["signature"])
+    if not "signature" in data:
+        return {
+            "success": False,
+            "message": f"Request body missing signature"
+        }, 400
+
+    if auth_tools.user_can_signin(data["signature"], data["creator_address"]) is False:
+        return {
+            "success": False,
+            "message": f"Invalid signature"
+        }, 400
 
     project = Project()
 

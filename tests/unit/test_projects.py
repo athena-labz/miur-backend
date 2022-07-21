@@ -122,7 +122,7 @@ def test_create_project(api, monkeypatch):
         "days_to_complete": 15,
         "collateral": 130,
         "deliverables": ["I'm gonna do real good", "Trust me bro"],
-        "signature_plus_key": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
+        "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
     })
 
     assert response.status_code == 400
@@ -142,23 +142,23 @@ def test_create_project(api, monkeypatch):
         db.session.refresh(user)
 
     # Signature is not valid
-    # response = client.post("/projects/create", json={
-    #     "name": "Project",
-    #     "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
-    #     "short_description": "lorem ipsum...",
-    #     "long_description": "lorem ipsum dolor sit amet...",
-    #     "subjects": ["Math", "Tourism"],
-    #     "reward_requested": 50,
-    #     "days_to_complete": 15,
-    #     "collateral": 130,
-    #     "deliverables": ["I'm gonna do real good", "Trust me bro"],
-    #     "signature_plus_key": "84584da301276761646472657373581d6045979b6a06fc37fffdb901304d5c970b08217b4e17b749be604b6c9704582067eef9883bd41729d2b2e26cc095e2ada32ddeee4529352e7a8d41810ed2800fa166686173686564f45818417468656e61204d495552207c203136343039393532303058408963af15e0fa9c22ccf8320712f7787d732eab1aa6976b4caa5400bcb6ba5b4e9eb0d9a46278bf3a78a36d6bbcfb7a6b6403f9128e3c00a5c955e0d33443ba00"
-    # })
+    response = client.post("/projects/create", json={
+        "name": "Project",
+        "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
+        "short_description": "lorem ipsum...",
+        "long_description": "lorem ipsum dolor sit amet...",
+        "subjects": ["Math", "Tourism"],
+        "reward_requested": 50,
+        "days_to_complete": 15,
+        "collateral": 130,
+        "deliverables": ["I'm gonna do real good", "Trust me bro"],
+        "signature": "84584da301276761646472657373581d6045979b6a06fc37fffdb901304d5c970b08217b4e17b749be604b6c9704582067eef9883bd41729d2b2e26cc095e2ada32ddeee4529352e7a8d41810ed2800fa166686173686564f45818417468656e61204d495552207c203136343039393532303058408963af15e0fa9c22ccf8320712f7787d732eab1aa6976b4caa5400bcb6ba5b4e9eb0d9a46278bf3a78a36d6bbcfb7a6b6403f9128e3c00a5c955e0d33443ba00"
+    })
 
-    # assert response.status_code == 400
+    assert response.status_code == 400
 
-    # assert "success" in response.json
-    # assert response.json["success"] is False
+    assert "success" in response.json
+    assert response.json["success"] is False
 
     # Creator does exist
     response = client.post("/projects/create", json={
@@ -171,7 +171,7 @@ def test_create_project(api, monkeypatch):
         "days_to_complete": 15,
         "collateral": 130,
         "deliverables": ["I'm gonna do real good", "Trust me bro"],
-        "signature_plus_key": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
+        "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
     })
 
     assert response.status_code == 200

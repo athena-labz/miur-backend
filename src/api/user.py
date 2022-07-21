@@ -3,41 +3,11 @@ from __future__ import annotations
 from flask import request
 from sqlalchemy import or_
 
-from lib import cardano_tools
+from lib import cardano_tools, auth_tools
 from model import User, db
 
 import datetime
 import logging
-
-
-def validate_signature(signature, address):
-    validation = cardano_tools.signature_message(signature, address)
-
-    if validation is None:
-        print(
-            "Validation failed - Either address is incorrect or signature is invalid")
-        return False
-
-    if not validation.startswith("Athena MIUR | ") and len(validation) < 14:
-        print(
-            "Signature is formatted incorrectly - does not start with \"Athena MIUR | \" or does not have a continuation")
-        return False
-
-    try:
-        timestamp = int(validation[14:])
-    except ValueError:
-        print("Invalid timestamp given - cannot convert to integer")
-        return False
-
-    current_date_unix = int(
-        (datetime.datetime.utcnow() - datetime.datetime(1970, 1, 1)).total_seconds())
-
-    print(abs(current_date_unix - timestamp))
-    if abs(current_date_unix - timestamp) > 60:
-        print("Invalid timestamp given - timestamp outside of the 60 seconds range")
-        return False
-
-    return True
 
 
 def register(address: str):
@@ -58,23 +28,11 @@ def register(address: str):
                 "message": f"User with nickname {data['nickname']} already exists"
             }, 400
 
-    if "signature_plus_key" in data:
-        if not validate_signature(data["signature_plus_key"], address):
-            return {
-                "success": False,
-                "message": "Invalid signature"
-            }, 400
-    elif "signature" in data and "key" in data:
-        if not validate_signature({"signature": data["signature"], "key": data["key"]}, address):
-            return {
-                "success": False,
-                "message": "Invalid signature"
-            }, 400
-    else:
+    if not auth_tools.validate_signature(data["signature"], address):
         return {
             "success": False,
-            "message": "Signature not provided"
-        }
+            "message": "Invalid signature"
+        }, 400
 
     user = User()
     user.address = address

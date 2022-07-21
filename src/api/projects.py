@@ -1,6 +1,7 @@
 from flask import request
 
 from model import Project, User, Subject, Deliverable, db
+from lib import auth_tools
 
 
 def get_projects():
@@ -39,6 +40,8 @@ def get_projects():
 
 def create_project():
     data = request.json
+
+    # if auth_tools.user_can_signin(data["signature"])
 
     project = Project()
 

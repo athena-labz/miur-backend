@@ -195,6 +195,25 @@ components:
           type: string
           example: "Something really bad happened!"
 
+    Signature:
+      oneOf:
+        - type: object
+          required:
+            - signature
+            - key
+          properties:
+            signature:
+              type: string
+              example: 84584d...db070c
+              description: A signature from an arbitrary message the server sent to the user following CIP08
+            key:
+              type: string
+              example: a40101...7dc780
+              description: The key used to sign that message
+        - type: string
+          example: 84584d...db070c
+          description: Another possible format that already includes signature and key in one string
+
     ProjectShort:
       type: object
       required:
@@ -233,26 +252,6 @@ components:
         collateral:
           type: integer
           example: 200
-
-    Signature:
-      oneOf:
-        - type: object
-          required:
-            - signature
-            - key
-          properties:
-            signature:
-              type: string
-              example: 84584d...db070c
-              description: A signature from an arbitrary message the server sent to the user following CIP08
-            key:
-              type: string
-              example: a40101...7dc780
-              description: The key used to sign that message
-        - type: string
-          example: 84584d...db070c
-          description: Another possible format that already includes signature and key in one string
-                
 
     ProjectLong:
       type: object

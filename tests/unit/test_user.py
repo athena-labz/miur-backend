@@ -6,7 +6,7 @@ import datetime
 from fixtures import api
 
 
-def test_get_projects(api, monkeypatch):
+def test_register(api, monkeypatch):
     client, app = api
 
     sys.path.append("src")
@@ -111,3 +111,43 @@ def test_get_projects(api, monkeypatch):
 
     assert "success" in response.json
     assert response.json["success"] is False
+
+
+
+def test_get_user(api, monkeypatch):
+    client, app = api
+
+    sys.path.append("src")
+
+    class NewDate(datetime.datetime):
+        @classmethod
+        def utcnow(cls):
+            return cls(2022, 1, 1, 0, 0, 0)
+
+    monkeypatch.setattr(
+        "api.user.datetime.datetime",
+        NewDate,
+    )
+
+    from model import db, User
+
+    user = User()
+    user.nickname = "Nick"
+    user.address = "addr_test123"
+    user.public_key_hash = "abc123"
+
+    with app.app_context():
+        db.session.add(user)
+        db.session.commit()
+
+    response = client.get("/user/addr_test123")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "nickname": "Nick",
+        "public_key_hash": "abc123"
+    }
+
+    response = client.get("/user/addr_test456")
+
+    assert response.status_code == 404

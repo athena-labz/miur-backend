@@ -47,3 +47,19 @@ def register(address: str):
     db.session.commit()
 
     return {"success": True}, 200
+
+
+def get_info(address: str):
+    user: User | None = User.query.filter(User.address == address).first()
+
+    if user is None:
+        return {
+            "success": False,
+            "message": f"Could not find address {address}",
+            "code": "address-not-found"
+        }, 404
+    
+    return {
+        "nickname": user.nickname,
+        "public_key_hash": user.public_key_hash
+    }

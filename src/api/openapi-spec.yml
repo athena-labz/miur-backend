@@ -181,6 +181,45 @@ paths:
                     type: string
                     example: "Something real bad happened"
 
+  /user/{address}:
+    get:
+      summary: Info about user
+      operationId: api.user.get_info
+      description: Get's information about user with this address
+      parameters:
+        - in: path
+          name: address
+          description: the address of the user who we are trying to get information from
+          required: true
+          schema:
+            type: string
+            example: "addr_test123"
+      responses:
+        "200":
+          description: Whether everything went okay while trying to register user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nickname:
+                    type: string
+                    example: Babatomano
+                  public_key_hash:
+                    type: string
+                    example: abc123
+        "404":
+          description: If we couldn't find a user with this address
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Sorry bro, couldn't find your address"
+                  
+
 components:
   schemas:
     HealthStatus:

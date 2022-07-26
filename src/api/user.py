@@ -20,18 +20,21 @@ def register(address: str):
         if existing_user.address == address:
             return {
                 "success": False,
-                "message": f"User with address {address} already exists"
+                "message": f"User with address {address} already exists",
+                "code": "address-exists"
             }, 400
         else:
             return {
                 "success": False,
-                "message": f"User with nickname {data['nickname']} already exists"
+                "message": f"User with nickname {data['nickname']} already exists",
+                "code": "nickname-exists"
             }, 400
 
     if not auth_tools.validate_signature(data["signature"], address):
         return {
             "success": False,
-            "message": "Invalid signature"
+            "message": "Invalid signature",
+            "code": "invalid-signature"
         }, 400
 
     user = User()

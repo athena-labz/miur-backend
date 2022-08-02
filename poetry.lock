@@ -57,7 +57,7 @@ toml = "*"
 
 [[package]]
 name = "blockfrost-python"
-version = "0.4.4"
+version = "0.5.1"
 description = "The official Python SDK for Blockfrost API v0.1.37"
 category = "main"
 optional = false
@@ -211,6 +211,14 @@ pep8test = ["black", "flake8", "flake8-import-order", "pep8-naming"]
 sdist = ["setuptools_rust (>=0.11.4)"]
 ssh = ["bcrypt (>=3.1.5)"]
 test = ["pytest (>=6.2.0)", "pytest-benchmark", "pytest-cov", "pytest-subtests", "pytest-xdist", "pretend", "iso8601", "pytz", "hypothesis (>=1.11.4,!=3.79.2)"]
+
+[[package]]
+name = "decorator"
+version = "5.1.1"
+description = "Decorators for Humans"
+category = "dev"
+optional = false
+python-versions = ">=3.5"
 
 [[package]]
 name = "ecdsa"
@@ -435,6 +443,14 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "pprintpp"
+version = "0.4.0"
+description = "A drop-in replacement for pprint that's actually pretty"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "py"
 version = "1.11.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
@@ -448,15 +464,23 @@ version = "0.5.1"
 description = "A Cardano library in Python"
 category = "main"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = "^3.7"
+develop = false
 
 [package.dependencies]
-blockfrost-python = "0.4.4"
-cbor2 = ">=5.4.2,<6.0.0"
-cose = ">=0.9.dev8,<0.10"
-PyNaCl = ">=1.4.0,<2.0.0"
-typeguard = ">=2.13.3,<3.0.0"
-websocket-client = ">=1.2.3,<2.0.0"
+blockfrost-python = "0.5.1"
+cbor2 = "^5.4.2"
+cose = "^0.9.dev8"
+pprintpp = "^0.4.0"
+PyNaCl = "^1.4.0"
+typeguard = "^2.13.3"
+websocket-client = "^1.2.3"
+
+[package.source]
+type = "git"
+url = "https://github.com/mateusap1/pycardano.git"
+reference = "main"
+resolved_reference = "914ec80f0cd1fb08a4038ec7c531caccc11b979d"
 
 [[package]]
 name = "pycodestyle"
@@ -573,6 +597,18 @@ urllib3 = ">=1.21.1,<1.27"
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
+name = "retry"
+version = "0.9.2"
+description = "Easy to use retry decorator."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+decorator = ">=3.4.2"
+py = ">=1.4.26,<2.0.0"
 
 [[package]]
 name = "six"
@@ -693,7 +729,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "261c91a55caeaed131d76ec63a246ca2195c471eda7d94f7aa53b185ae5e5434"
+content-hash = "4375a4e08ff7917577e03255283bfdd95ccd3602b384cd8c50fffc0b83408c36"
 
 [metadata.files]
 alembic = [
@@ -716,8 +752,8 @@ autopep8 = [
     {file = "autopep8-1.6.0.tar.gz", hash = "sha256:44f0932855039d2c15c4510d6df665e4730f2b8582704fa48f9c55bd3e17d979"},
 ]
 blockfrost-python = [
-    {file = "blockfrost-python-0.4.4.tar.gz", hash = "sha256:256612146ec8627ff341719da937b90c2288aeb2e51d47fb4c70b35169d981ac"},
-    {file = "blockfrost_python-0.4.4-py3-none-any.whl", hash = "sha256:45ee6bb2daff2e589e3038db93462acdd10998063da477401a7002873cd62155"},
+    {file = "blockfrost-python-0.5.1.tar.gz", hash = "sha256:23dfc62c5634b932baba6309080439e9d209b81cd22c8b021016d64f122ada10"},
+    {file = "blockfrost_python-0.5.1-py3-none-any.whl", hash = "sha256:1602e1b047bfc4fb21023ca59837cee447803e86798742984c4e9450579f1b4b"},
 ]
 cbor2 = [
     {file = "cbor2-5.4.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:8a643b19ace1584043bbf4e2d0b4fae8bebd6b6ffab14ea6478d3ff07f58e854"},
@@ -870,6 +906,10 @@ cryptography = [
     {file = "cryptography-37.0.4-pp39-pypy39_pp73-manylinux_2_24_x86_64.whl", hash = "sha256:91ce48d35f4e3d3f1d83e29ef4a9267246e6a3be51864a5b7d2247d5086fa99a"},
     {file = "cryptography-37.0.4-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:4c590ec31550a724ef893c50f9a97a0c14e9c851c85621c5650d699a7b88f7ab"},
     {file = "cryptography-37.0.4.tar.gz", hash = "sha256:63f9c17c0e2474ccbebc9302ce2f07b55b3b3fcb211ded18a42d5764f5c10a82"},
+]
+decorator = [
+    {file = "decorator-5.1.1-py3-none-any.whl", hash = "sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186"},
+    {file = "decorator-5.1.1.tar.gz", hash = "sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330"},
 ]
 ecdsa = [
     {file = "ecdsa-0.18.0-py2.py3-none-any.whl", hash = "sha256:80600258e7ed2f16b9aa1d7c295bd70194109ad5a30fdee0eaeefef1d4c559dd"},
@@ -1038,14 +1078,15 @@ pluggy = [
     {file = "pluggy-1.0.0-py2.py3-none-any.whl", hash = "sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3"},
     {file = "pluggy-1.0.0.tar.gz", hash = "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159"},
 ]
+pprintpp = [
+    {file = "pprintpp-0.4.0-py2.py3-none-any.whl", hash = "sha256:b6b4dcdd0c0c0d75e4d7b2f21a9e933e5b2ce62b26e1a54537f9651ae5a5c01d"},
+    {file = "pprintpp-0.4.0.tar.gz", hash = "sha256:ea826108e2c7f49dc6d66c752973c3fc9749142a798d6b254e1e301cfdbc6403"},
+]
 py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
     {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
 ]
-pycardano = [
-    {file = "pycardano-0.5.1-py3-none-any.whl", hash = "sha256:ad8e22576e0539e8a99fd98698f2f0b091b615ecf9f170e59a46f184ac9d2285"},
-    {file = "pycardano-0.5.1.tar.gz", hash = "sha256:edbc35d0596d7c694f50b0d41926d96e7236c4c1dbddb22d58cb4f33b89e11ab"},
-]
+pycardano = []
 pycodestyle = [
     {file = "pycodestyle-2.8.0-py2.py3-none-any.whl", hash = "sha256:720f8b39dde8b293825e7ff02c475f3077124006db4f440dcbc9a20b76548a20"},
     {file = "pycodestyle-2.8.0.tar.gz", hash = "sha256:eddd5847ef438ea1c7870ca7eb78a9d47ce0cdb4851a5523949f2601d0cbbe7f"},
@@ -1143,6 +1184,10 @@ pyyaml = [
 requests = [
     {file = "requests-2.28.1-py3-none-any.whl", hash = "sha256:8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349"},
     {file = "requests-2.28.1.tar.gz", hash = "sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"},
+]
+retry = [
+    {file = "retry-0.9.2-py2.py3-none-any.whl", hash = "sha256:ccddf89761fa2c726ab29391837d4327f819ea14d244c232a1d24c67a2f98606"},
+    {file = "retry-0.9.2.tar.gz", hash = "sha256:f8bfa8b99b69c4506d6f5bd3b0aabf77f98cdb17f3c9fc3f5ca820033336fba4"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},

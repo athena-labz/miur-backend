@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_migrate import Migrate
-from model import db
+from model import Deliverable, Project, Subject, User, db
 
 load_dotenv()
 

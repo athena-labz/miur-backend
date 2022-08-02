@@ -1,5 +1,18 @@
 version: "3.9"  # optional since v1.27.0
 services:
+  db:
+    build:
+      context: ./docker
+      dockerfile: pg.Dockerfile
+    image: pg
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
+    secrets:
+      - postgres-passwd
+    ports:
+      - 3001:5432
   api:
     build:
       context: .
@@ -9,3 +22,10 @@ services:
     ports:
       - 8080:80
     hostname: 'api'
+
+
+volumes:
+  db-data:
+secrets:
+  postgres-passwd:
+    file: ./secrets/postgres-passwd

@@ -130,11 +130,11 @@ class ScriptTester:
             TransactionOutput(self._script_address, amount, datum_hash=datum_hash(datum)),
         )
 
-    def transaction_builder(self, skey_path: str, utxo: UTxO) -> Transaction:
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
         """Builds a transaction given a script UTxO
         Args:
-            skey_path (str): The path to the payment secret key of the user who is paying the fees and value
             utxo (UTxO): The UTxO of the script we are consuming in this transaction
+            datum (Datum): The datum of the transaction we are building
         Returns:
             Transaction: The transaction we built for consuming the given script
         Raises:
@@ -142,10 +142,11 @@ class ScriptTester:
         """
         raise NotImplementedError()
 
-    def validate_transaction(self, utxo: UTxO) -> bool:
+    def validate_transaction(self, utxo: UTxO, datum: Datum) -> bool:
         """Tries to evaluate the transaction and returns whether it would succeed or not
         Args:
             utxo (UTxO): The UTxO of the script we are consuming in this transaction
+            datum (Datum): The datum of the transaction we are building
         Returns:
             bool: Whether the given transaction would succeed or not
         Raises:
@@ -153,7 +154,8 @@ class ScriptTester:
         """
 
         try:
-            self.transaction_builder(utxo)
+            self.transaction_builder(utxo, datum)
             return True
-        except TransactionFailedException:
+        except TransactionFailedException as e:
+            print(e)
             return False

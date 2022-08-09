@@ -51,16 +51,16 @@ def get_env_val(key):
     return val
 
 
-script_tester = ScriptTesterExample(
-    get_env_val("BLOCKFROST_ID"),
-    Network.TESTNET,
-    "keys/alice/payment.skey",
-    "alwaysvalidatev2.plutus",
-    "addr_test1qzht33q5d3kwf040n0da76pxxkp8wfvjkz88tmf26250pt3mfhguut5gxeuksmf4t8fzjuaevv9xp8485vlusmjndp0qlvplmj"
-)
+# script_tester = ScriptTesterExample(
+#     get_env_val("BLOCKFROST_ID"),
+#     Network.TESTNET,
+#     "keys/alice/payment.skey",
+#     "alwaysvalidatev2.plutus",
+#     "addr_test1qzht33q5d3kwf040n0da76pxxkp8wfvjkz88tmf26250pt3mfhguut5gxeuksmf4t8fzjuaevv9xp8485vlusmjndp0qlvplmj"
+# )
 
 
-def test_always_validate():
-    utxo = script_tester.submit_script(5_149_265, PlutusData())
-    print("Beep")
-    assert script_tester.validate_transaction(utxo) is True
+# def test_always_validate():
+#     utxo = script_tester.submit_script(5_149_265, PlutusData())
+#     print("Beep")
+#     assert script_tester.validate_transaction(utxo) is True

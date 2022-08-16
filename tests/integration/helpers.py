@@ -1,6 +1,7 @@
 from typeguard import typechecked
 from typing import Union
 from pycardano import *
+from blockfrost import ApiError
 from retry import retry
 
 import cbor2
@@ -75,7 +76,13 @@ class ScriptTester:
         amount: Union[int, Value],
         datum: Datum,
     ) -> Union[UTxO, None]:
-        utxos = self._chain_context.utxos(str(self._script_address))
+        try:
+            utxos = self._chain_context.utxos(str(self._script_address))
+        except ApiError as err:
+            if err.status_code == 404:
+                return None
+            else:
+                raise err
 
         return next(
             filter(

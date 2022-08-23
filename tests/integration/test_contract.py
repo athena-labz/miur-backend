@@ -48,10 +48,20 @@ class ContractDatum(PlutusData):
     deadline: int
 
 
-class ScriptTesterEscrowWithTargetToken(ScriptTester):
+@dataclass
+class ExecuteTarget(PlutusData):
+    CONSTR_ID = 0
+
+
+@dataclass
+class ExecuteFallback(PlutusData):
+    CONSTR_ID = 1
+
+
+class ScriptTesterTarget(ScriptTester):
 
     def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
-        redeemer = Redeemer(RedeemerTag.SPEND, PlutusData())
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteTarget())
 
         # Current slot - Don't know how to calculate the actual current slot
         # Maybe get the posix time of the last block and use that difference
@@ -67,45 +77,35 @@ class ScriptTesterEscrowWithTargetToken(ScriptTester):
 
         builder.add_script_input(
             utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(bob_address)
 
-        utxos = self._chain_context.utxos(str(alice_address))
+        alice_utxos = self._chain_context.utxos(str(alice_address))
 
-        utxo = None
-        for utxo_ in utxos:
-            if utxo_.output.amount.multi_asset:
-                if ScriptHash.from_primitive(target_policy) in utxo_.output.amount.multi_asset:
-                    utxo = utxo_
+        alice_utxo = None
+        for utxo in alice_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(target_policy) in utxo.output.amount.multi_asset:
+                    alice_utxo = utxo
 
-        if utxo is None:
+        if alice_utxo is None:
             raise Exception(
                 f"Could not find UTxO with token in address {str(alice_address)}")
 
-        builder.add_input(utxo)
+        builder.reference_inputs = [alice_utxo.input]
 
-        take_output = TransactionOutput(alice_address,
-                                        Value.from_primitive(
-                                            [
-                                                3_000_000,
-                                                {
-                                                    target_policy: {
-                                                        b"GREENS": 1
-                                                    }
-                                                },
-                                            ]
-                                        )
-                                        )
+        take_output = TransactionOutput(alice_address, 5_149_265)
 
         builder.add_output(take_output)
 
-        non_nft_utxo = self._find_collateral(alice_address)
+        non_nft_utxo = self._find_collateral(bob_address)
 
         if non_nft_utxo is None:
-            self._create_collateral(alice_address, alice_skey)
-            non_nft_utxo = self._find_collateral(alice_address)
+            self._create_collateral(bob_address, bob_skey)
+            non_nft_utxo = self._find_collateral(bob_address)
 
         builder.collaterals.append(non_nft_utxo)
 
-        signed_tx = builder.build_and_sign([alice_skey], alice_address)
+        signed_tx = builder.build_and_sign([bob_skey], bob_address)
 
         return signed_tx
 
@@ -189,7 +189,8 @@ class ScriptTesterFallbackUser(ScriptTester):
 
         builder.reference_inputs = [bob_utxo, charlie_utxo]
 
-        charlie_payment_key_hash = PaymentVerificationKey.from_signing_key(charlie_skey).hash()
+        charlie_payment_key_hash = PaymentVerificationKey.from_signing_key(
+            charlie_skey).hash()
         builder.required_signers = [charlie_payment_key_hash]
 
         take_output = TransactionOutput(bob_address, 5_149_265)
@@ -217,37 +218,37 @@ def get_env_val(key):
     return val
 
 
-script_tester_target_user = ScriptTesterEscrowWithTargetToken(
-    get_env_val("BLOCKFROST_ID"),
-    Network.TESTNET,
-    "deadline2.plutus",
-    "keys/alice/payment.skey",
-    str(alice_address),
-)
+# script_tester_target_user = ScriptTesterEscrowWithTargetToken(
+#     get_env_val("BLOCKFROST_ID"),
+#     Network.TESTNET,
+#     "deadline2.plutus",
+#     "keys/alice/payment.skey",
+#     str(alice_address),
+# )
 
-script_tester_random_user = ScriptTesterEscrowWithoutTargetToken(
-    get_env_val("BLOCKFROST_ID"),
-    Network.TESTNET,
-    "deadline2.plutus",
-    "keys/alice/payment.skey",
-    str(alice_address),
-)
+# script_tester_random_user = ScriptTesterEscrowWithoutTargetToken(
+#     get_env_val("BLOCKFROST_ID"),
+#     Network.TESTNET,
+#     "deadline2.plutus",
+#     "keys/alice/payment.skey",
+#     str(alice_address),
+# )
 
-script_tester_fallback_user_no_mediator = ScriptTesterFallbackUser(
-    get_env_val("BLOCKFROST_ID"),
-    Network.TESTNET,
-    "deadline2.plutus",
-    "keys/alice/payment.skey",
-    str(alice_address),
-)
+# script_tester_fallback_user_no_mediator = ScriptTesterFallbackUser(
+#     get_env_val("BLOCKFROST_ID"),
+#     Network.TESTNET,
+#     "deadline2.plutus",
+#     "keys/alice/payment.skey",
+#     str(alice_address),
+# )
 
-script_tester_fallback_user_with_mediator = ScriptTesterFallbackUser(
-    get_env_val("BLOCKFROST_ID"),
-    Network.TESTNET,
-    "deadline2.plutus",
-    "keys/charlie/payment.skey",
-    str(alice_address),
-)
+# script_tester_fallback_user_with_mediator = ScriptTesterFallbackUser(
+#     get_env_val("BLOCKFROST_ID"),
+#     Network.TESTNET,
+#     "deadline2.plutus",
+#     "keys/charlie/payment.skey",
+#     str(alice_address),
+# )
 
 
 def test_contract():
@@ -257,28 +258,8 @@ def test_contract():
 
     datum = ContractDatum(mediators_policy, target_policy,
                           fallback_policy, past)
-
-    utxo = script_tester_target_user.submit_script(5_149_265, datum)
-    assert script_tester_target_user.validate_transaction(utxo, datum) is True
-
-    datum = ContractDatum(mediators_policy, target_policy,
-                          fallback_policy, future)
-    utxo = script_tester_target_user.submit_script(5_149_265, datum)
-
-    assert script_tester_target_user.validate_transaction(utxo, datum) is False
-
-    # Test receivers
-    datum = ContractDatum(mediators_policy, target_policy,
-                          fallback_policy, past)
-
-    utxo = script_tester_random_user.submit_script(5_149_265, datum)
-    assert script_tester_random_user.validate_transaction(utxo, datum) is False
-
-    # ==================
-    datum = ContractDatum(mediators_policy, target_policy,
-                          fallback_policy, past)
-
-    script_tester = ScriptTesterFallbackUser(
+    
+    script_tester = ScriptTesterTarget(
         get_env_val("BLOCKFROST_ID"),
         Network.TESTNET,
         "deadline2.plutus",
@@ -289,10 +270,30 @@ def test_contract():
     utxo = script_tester.submit_script(5_149_265, datum)
     assert script_tester.validate_transaction(utxo, datum) is True
 
-    # # Test before deadline with medaitor send to fallback - SUCCED
-    # datum = ContractDatum(mediators, target, fallback, past)
+    # datum = ContractDatum(mediators_policy, target_policy,
+    #                       fallback_policy, future)
+    # utxo = script_tester_target_user.submit_script(5_149_265, datum)
 
-    # utxo = script_tester_fallback_user_with_mediator.submit_script(5_149_265, datum)
-    # assert script_tester_fallback_user_with_mediator.validate_transaction(utxo, datum) is True
+    # assert script_tester_target_user.validate_transaction(utxo, datum) is False
 
-    # # Test after deadline with mediator send to fallback - FAIL
+    # # Test receivers
+    # datum = ContractDatum(mediators_policy, target_policy,
+    #                       fallback_policy, past)
+
+    # utxo = script_tester_random_user.submit_script(5_149_265, datum)
+    # assert script_tester_random_user.validate_transaction(utxo, datum) is False
+
+    # # ==================
+    # datum = ContractDatum(mediators_policy, target_policy,
+    #                       fallback_policy, past)
+
+    # script_tester = ScriptTesterFallbackUser(
+    #     get_env_val("BLOCKFROST_ID"),
+    #     Network.TESTNET,
+    #     "deadline2.plutus",
+    #     "keys/alice/payment.skey",
+    #     str(alice_address),
+    # )
+
+    # utxo = script_tester.submit_script(5_149_265, datum)
+    # assert script_tester.validate_transaction(utxo, datum) is True

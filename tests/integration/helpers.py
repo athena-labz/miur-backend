@@ -18,8 +18,8 @@ class ScriptTester:
         self,
         blockfrost_id: str,
         network: Network,
-        skey_path: str,
         script_path: str,
+        skey_path: str,
         sender_address: str,
     ):
         self._blockfrost_id = blockfrost_id

@@ -3,6 +3,7 @@ from typing import Union
 from pycardano import *
 from blockfrost import ApiError
 from retry import retry
+from dataclasses import dataclass
 
 import cbor2
 
@@ -26,7 +27,13 @@ class ScriptTester:
         self._network = network
 
         self._chain_context = BlockFrostChainContext(
-            project_id=self._blockfrost_id, network=self._network
+            project_id=self._blockfrost_id,
+            network=self._network,
+            base_url=(
+                "https://cardano-mainnet.blockfrost.io/api"
+                if network == Network.MAINNET
+                else "https://cardano-preview.blockfrost.io/api"
+            )
         )
 
         self._skey = PaymentSigningKey.load(skey_path)
@@ -44,7 +51,8 @@ class ScriptTester:
     @retry(delay=20)
     def _wait_for_tx(self, tx_id: str):
         self._chain_context.api.transaction(tx_id)
-        print(f"Transaction {tx_id} has been successfully included in the blockchain.")
+        print(
+            f"Transaction {tx_id} has been successfully included in the blockchain.")
 
     def _find_collateral(self, target_address: Address) -> Union[UTxO, None]:
         for utxo in self._chain_context.utxos(str(target_address)):
@@ -58,9 +66,11 @@ class ScriptTester:
         collateral_builder = TransactionBuilder(self._chain_context)
 
         collateral_builder.add_input_address(target_address)
-        collateral_builder.add_output(TransactionOutput(target_address, 5_000_000))
+        collateral_builder.add_output(
+            TransactionOutput(target_address, 5_000_000))
 
-        self._submit_tx(collateral_builder.build_and_sign([skey], target_address))
+        self._submit_tx(collateral_builder.build_and_sign(
+            [skey], target_address))
 
     def _submit_tx(self, tx: Transaction):
         print("############### Transaction created ###############")
@@ -113,7 +123,8 @@ class ScriptTester:
         builder = TransactionBuilder(self._chain_context)
         builder.add_input_address(self._sender_address)
         builder.add_output(
-            TransactionOutput(self._script_address, amount, datum_hash=datum_hash(datum)),
+            TransactionOutput(self._script_address, amount,
+                              datum_hash=datum_hash(datum)),
             datum=datum,
             add_datum_to_witness=True,
         )
@@ -134,7 +145,8 @@ class ScriptTester:
 
         return UTxO(
             TransactionInput(signed_tx.id, script_output_index),
-            TransactionOutput(self._script_address, amount, datum_hash=datum_hash(datum)),
+            TransactionOutput(self._script_address, amount,
+                              datum_hash=datum_hash(datum)),
         )
 
     def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
@@ -166,3 +178,188 @@ class ScriptTester:
         except TransactionFailedException as e:
             print(e)
             return False
+
+
+alice_address = Address.from_primitive(
+    "addr_test1qzht33q5d3kwf040n0da76pxxkp8wfvjkz88tmf26250pt3mfhguut5gxeuksmf4t8fzjuaevv9xp8485vlusmjndp0qlvplmj")
+alice_skey = PaymentSigningKey.from_cbor(
+    "58209871491fb8f0aab5de3bcec39643280e7c4360454b8a617270846ea7d83daf59")
+
+bob_address = Address.from_primitive(
+    "addr_test1qrjqwhlhl9p8em4axfnmxpwlv4tdegjw5frfl4u8ndwkyy2fvevclv869cf7maj0d8yct07ke2qpns0s7fgpkuyfuahsk3m5ra")
+bob_skey = PaymentSigningKey.from_cbor(
+    "58209144210de6e95e819c84951fcb810f1dd444164fce1b4bdcfaa8329222b45aa3")
+
+charlie_address = Address.from_primitive(
+    "addr_test1qzaj2caww5n3jhmz9gf7fxs4lgnacelt9vtuj0urgl4asdwp0l9pnsm087npfekmnyejqdsjdklcptumurclutxwv7jql9t2nu")
+charlie_skey = PaymentSigningKey.from_cbor(
+    "5820fbd1a67fb3765fe13321a4b5a3a5f3582dc345cc6f162eb1c296627141f34186")
+
+random_address = Address.from_primitive(
+    "addr_test1vq6ugyhv0lwenm0crs4emfq85q9mcltwtawnkgerm6w72tcmpn79y")
+
+
+mediator_policy = bytes.fromhex(
+    "55166d7398d10d879b2b253fbb5b4010e39fec67dc62ca348335e377")  # Charlie
+
+target_policy = bytes.fromhex(
+    "06743756d03e59bf245416f7220034f5336aaa33153e5b67b75c402f")  # Alice
+
+fallback_policy = bytes.fromhex(
+    "80c73937cf44cb818b932a8073925d711320086eaa5c6ab6dde0e941")  # Bob - REDS
+
+random_policy = bytes.fromhex(
+    "65783e84e04af28ecb157abc4d18bb12728d2326c5afd69302077de9")
+
+
+@dataclass
+class ContractDatum(PlutusData):
+    CONSTR_ID = 0
+    mediators: bytes
+    target: bytes
+    fallback: bytes
+    deadline: int
+
+
+@dataclass
+class ExecuteTarget(PlutusData):
+    CONSTR_ID = 0
+
+
+@dataclass
+class ExecuteFallback(PlutusData):
+    CONSTR_ID = 1
+
+
+class ScriptTesterTarget(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteTarget())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(bob_address)
+
+        alice_utxos = self._chain_context.utxos(str(alice_address))
+
+        alice_utxo = None
+        for utxo in alice_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(target_policy) in utxo.output.amount.multi_asset:
+                    alice_utxo = utxo
+
+        if alice_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(alice_address)}")
+
+        builder.reference_inputs.add(alice_utxo.input)
+
+        take_output = TransactionOutput(alice_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([bob_skey], bob_address)
+
+        return signed_tx
+
+
+class ScriptTesterTargetNoToken(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteTarget())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(bob_address)
+
+        alice_utxos = self._chain_context.utxos(str(alice_address))
+
+        alice_utxo = None
+        for utxo in alice_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(target_policy) in utxo.output.amount.multi_asset:
+                    alice_utxo = utxo
+
+        if alice_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(alice_address)}")
+
+        take_output = TransactionOutput(alice_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([bob_skey], bob_address)
+
+        return signed_tx
+
+
+class ScriptTesterTargetWrongToken(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteTarget())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(bob_address)
+
+        alice_utxos = self._chain_context.utxos(str(alice_address))
+
+        random_policy = "65783e84e04af28ecb157abc4d18bb12728d2326c5afd69302077de9"
+
+        alice_utxo = None
+        for utxo in alice_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(random_policy) in utxo.output.amount.multi_asset and ScriptHash.from_primitive(target_policy) not in utxo.output.amount.multi_asset:
+                    alice_utxo = utxo
+
+        print(alice_utxo)
+
+        if alice_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(alice_address)}")
+
+        builder.reference_inputs.add(alice_utxo.input)
+
+        take_output = TransactionOutput(alice_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([bob_skey], bob_address)
+
+        return signed_tx

@@ -472,16 +472,23 @@ version = "0.6.0"
 description = "A Cardano library in Python"
 category = "main"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = "^3.7"
+develop = false
 
 [package.dependencies]
 blockfrost-python = "0.5.1"
-cbor2 = ">=5.4.2,<6.0.0"
-cose = ">=0.9.dev8,<0.10"
-pprintpp = ">=0.4.0,<0.5.0"
-PyNaCl = ">=1.4.0,<2.0.0"
-typeguard = ">=2.13.3,<3.0.0"
-websocket-client = ">=1.2.3,<2.0.0"
+cbor2 = "^5.4.2"
+cose = "^0.9.dev8"
+pprintpp = "^0.4.0"
+PyNaCl = "^1.4.0"
+typeguard = "^2.13.3"
+websocket-client = "^1.2.3"
+
+[package.source]
+type = "git"
+url = "https://github.com/mateusap1/pycardano.git"
+reference = "main"
+resolved_reference = "a1a66cb5290fb20eef84f1c49f4b84f0123da20f"
 
 [[package]]
 name = "pycodestyle"
@@ -730,7 +737,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "9ceee77a8516e6935f56bb456528bbd716289c2910c20ead5dda0a4eb064181b"
+content-hash = "9915caab1dc50fd91915982e14d6475bb9caad35ed8e6b036d3943d948d9a74c"
 
 [metadata.files]
 alembic = [
@@ -1100,10 +1107,7 @@ py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
     {file = "py-1.11.0.tar.gz", hash = "sha256:51c75c4126074b472f746a24399ad32f6053d1b34b68d2fa41e558e6f4a98719"},
 ]
-pycardano = [
-    {file = "pycardano-0.6.0-py3-none-any.whl", hash = "sha256:79f211e4bc53f26305e705f1f4f86cbff56d367d9c04a21078634f325380c4a6"},
-    {file = "pycardano-0.6.0.tar.gz", hash = "sha256:645326830d5ff381a655d5a49569862a7dfe68d655e98291869b06356610a5c3"},
-]
+pycardano = []
 pycodestyle = [
     {file = "pycodestyle-2.8.0-py2.py3-none-any.whl", hash = "sha256:720f8b39dde8b293825e7ff02c475f3077124006db4f440dcbc9a20b76548a20"},
     {file = "pycodestyle-2.8.0.tar.gz", hash = "sha256:eddd5847ef438ea1c7870ca7eb78a9d47ce0cdb4851a5523949f2601d0cbbe7f"},

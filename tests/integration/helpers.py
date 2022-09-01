@@ -451,3 +451,333 @@ class ScriptTesterTargetWrongOutputAddress(ScriptTester):
         signed_tx = builder.build_and_sign([bob_skey], bob_address)
 
         return signed_tx
+
+
+class ScriptTesterFallback(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteFallback())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(charlie_address)
+
+        builder.required_signers = [PaymentVerificationKey.from_signing_key(charlie_skey).hash()]
+
+        bob_utxos = self._chain_context.utxos(str(bob_address))
+
+        bob_utxo = None
+        for utxo in bob_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(fallback_policy) in utxo.output.amount.multi_asset:
+                    bob_utxo = utxo
+
+        if bob_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(bob_address)}")
+
+        builder.reference_inputs.add(bob_utxo.input)
+
+        charlie_utxos = self._chain_context.utxos(str(charlie_address))
+
+        charlie_utxo = None
+        for utxo in charlie_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(mediator_policy) in utxo.output.amount.multi_asset:
+                    charlie_utxo = utxo
+
+        if charlie_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(charlie_address)}")
+
+        builder.reference_inputs.add(charlie_utxo.input)
+
+        take_output = TransactionOutput(bob_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([charlie_skey], charlie_address)
+
+        return signed_tx
+
+
+class ScriptTesterFallbackNoFallbackToken(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteFallback())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(charlie_address)
+
+        builder.required_signers = [PaymentVerificationKey.from_signing_key(charlie_skey).hash()]
+
+        charlie_utxos = self._chain_context.utxos(str(charlie_address))
+
+        charlie_utxo = None
+        for utxo in charlie_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(mediator_policy) in utxo.output.amount.multi_asset:
+                    charlie_utxo = utxo
+
+        if charlie_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(charlie_address)}")
+
+        builder.reference_inputs.add(charlie_utxo.input)
+
+        take_output = TransactionOutput(bob_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([charlie_skey], charlie_address)
+
+        return signed_tx
+
+
+class ScriptTesterFallbackWrongOutputValue(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteFallback())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(charlie_address)
+
+        builder.required_signers = [PaymentVerificationKey.from_signing_key(charlie_skey).hash()]
+
+        bob_utxos = self._chain_context.utxos(str(bob_address))
+
+        bob_utxo = None
+        for utxo in bob_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(fallback_policy) in utxo.output.amount.multi_asset:
+                    bob_utxo = utxo
+
+        if bob_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(bob_address)}")
+
+        builder.reference_inputs.add(bob_utxo.input)
+
+        charlie_utxos = self._chain_context.utxos(str(charlie_address))
+
+        charlie_utxo = None
+        for utxo in charlie_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(mediator_policy) in utxo.output.amount.multi_asset:
+                    charlie_utxo = utxo
+
+        if charlie_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(charlie_address)}")
+
+        builder.reference_inputs.add(charlie_utxo.input)
+
+        take_output = TransactionOutput(bob_address, 2_000_000)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([charlie_skey], charlie_address)
+
+        return signed_tx
+
+
+class ScriptTesterFallbackWrongOutputAddress(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteFallback())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(charlie_address)
+
+        builder.required_signers = [PaymentVerificationKey.from_signing_key(charlie_skey).hash()]
+
+        bob_utxos = self._chain_context.utxos(str(bob_address))
+
+        bob_utxo = None
+        for utxo in bob_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(fallback_policy) in utxo.output.amount.multi_asset:
+                    bob_utxo = utxo
+
+        if bob_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(bob_address)}")
+
+        builder.reference_inputs.add(bob_utxo.input)
+
+        charlie_utxos = self._chain_context.utxos(str(charlie_address))
+
+        charlie_utxo = None
+        for utxo in charlie_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(mediator_policy) in utxo.output.amount.multi_asset:
+                    charlie_utxo = utxo
+
+        if charlie_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(charlie_address)}")
+
+        builder.reference_inputs.add(charlie_utxo.input)
+
+        take_output = TransactionOutput(alice_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([charlie_skey], charlie_address)
+
+        return signed_tx
+
+
+class ScriptTesterFallbackNoMediatorToken(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteFallback())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(charlie_address)
+
+        builder.required_signers = [PaymentVerificationKey.from_signing_key(charlie_skey).hash()]
+
+        bob_utxos = self._chain_context.utxos(str(bob_address))
+
+        bob_utxo = None
+        for utxo in bob_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(fallback_policy) in utxo.output.amount.multi_asset:
+                    bob_utxo = utxo
+
+        if bob_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(bob_address)}")
+
+        builder.reference_inputs.add(bob_utxo.input)
+
+        take_output = TransactionOutput(bob_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([charlie_skey], charlie_address)
+
+        return signed_tx
+
+
+class ScriptTesterFallbackNoMediatorSignature(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteFallback())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(charlie_address)
+
+        bob_utxos = self._chain_context.utxos(str(bob_address))
+
+        bob_utxo = None
+        for utxo in bob_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(fallback_policy) in utxo.output.amount.multi_asset:
+                    bob_utxo = utxo
+
+        if bob_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(bob_address)}")
+
+        builder.reference_inputs.add(bob_utxo.input)
+
+        charlie_utxos = self._chain_context.utxos(str(charlie_address))
+
+        charlie_utxo = None
+        for utxo in charlie_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(mediator_policy) in utxo.output.amount.multi_asset:
+                    charlie_utxo = utxo
+
+        if charlie_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(charlie_address)}")
+
+        builder.reference_inputs.add(charlie_utxo.input)
+
+        take_output = TransactionOutput(bob_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([charlie_skey], charlie_address)
+
+        return signed_tx

@@ -63,9 +63,6 @@ def test_contract():
     future = 1691711382000
     past = 1628639382000
 
-    # ATTENTION: We are validating the future datum not the past one
-    # TODO: Fix this
-
     datum = ContractDatum(mediator_policy, target_policy,
                           fallback_policy, past)
 
@@ -142,3 +139,78 @@ def test_contract():
 
     utxo = script_tester.submit_script(5_149_265, future_datum)
     assert script_tester.validate_transaction(utxo, future_datum) is False
+
+
+    datum = future_datum
+
+    # Fallback scenario
+    script_tester = helpers.ScriptTesterFallback(
+        get_env_val("BLOCKFROST_ID"),
+        Network.TESTNET,
+        "script/script.plutus",
+        "keys/alice/payment.skey",
+        str(alice_address),
+    )
+
+    utxo = script_tester.submit_script(5_149_265, datum)
+    assert script_tester.validate_transaction(utxo, datum) is True
+
+    # Without fallback token
+    script_tester = helpers.ScriptTesterFallbackNoFallbackToken(
+        get_env_val("BLOCKFROST_ID"),
+        Network.TESTNET,
+        "script/script.plutus",
+        "keys/alice/payment.skey",
+        str(alice_address),
+    )
+
+    utxo = script_tester.submit_script(5_149_265, datum)
+    assert script_tester.validate_transaction(utxo, datum) is False
+
+    # Wrong output value
+    script_tester = helpers.ScriptTesterFallbackWrongOutputValue(
+        get_env_val("BLOCKFROST_ID"),
+        Network.TESTNET,
+        "script/script.plutus",
+        "keys/alice/payment.skey",
+        str(alice_address),
+    )
+
+    utxo = script_tester.submit_script(5_149_265, datum)
+    assert script_tester.validate_transaction(utxo, datum) is False
+
+    # Wrong output address
+    script_tester = helpers.ScriptTesterFallbackWrongOutputAddress(
+        get_env_val("BLOCKFROST_ID"),
+        Network.TESTNET,
+        "script/script.plutus",
+        "keys/alice/payment.skey",
+        str(alice_address),
+    )
+
+    utxo = script_tester.submit_script(5_149_265, datum)
+    assert script_tester.validate_transaction(utxo, datum) is False
+
+    # No mediator token
+    script_tester = helpers.ScriptTesterFallbackNoMediatorToken(
+        get_env_val("BLOCKFROST_ID"),
+        Network.TESTNET,
+        "script/script.plutus",
+        "keys/alice/payment.skey",
+        str(alice_address),
+    )
+
+    utxo = script_tester.submit_script(5_149_265, datum)
+    assert script_tester.validate_transaction(utxo, datum) is False
+
+    # With mediator token but no mediator signed
+    script_tester = helpers.ScriptTesterFallbackNoMediatorSignature(
+        get_env_val("BLOCKFROST_ID"),
+        Network.TESTNET,
+        "script/script.plutus",
+        "keys/alice/payment.skey",
+        str(alice_address),
+    )
+
+    utxo = script_tester.submit_script(5_149_265, datum)
+    assert script_tester.validate_transaction(utxo, datum) is False

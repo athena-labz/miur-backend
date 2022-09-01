@@ -363,3 +363,91 @@ class ScriptTesterTargetWrongToken(ScriptTester):
         signed_tx = builder.build_and_sign([bob_skey], bob_address)
 
         return signed_tx
+
+
+class ScriptTesterTargetWrongOutputValue(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteTarget())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(bob_address)
+
+        alice_utxos = self._chain_context.utxos(str(alice_address))
+
+        alice_utxo = None
+        for utxo in alice_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(target_policy) in utxo.output.amount.multi_asset:
+                    alice_utxo = utxo
+
+        if alice_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(alice_address)}")
+
+        builder.reference_inputs.add(alice_utxo.input)
+
+        take_output = TransactionOutput(alice_address, 2_000_000)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([bob_skey], bob_address)
+
+        return signed_tx
+
+
+class ScriptTesterTargetWrongOutputAddress(ScriptTester):
+
+    def transaction_builder(self, utxo: UTxO, datum: Datum) -> Transaction:
+        redeemer = Redeemer(RedeemerTag.SPEND, ExecuteTarget())
+
+        # Current slot - Don't know how to calculate the actual current slot
+        # Maybe get the posix time of the last block and use that difference
+        current_slot = self._chain_context.last_block_slot
+
+        print("Current slot", current_slot)
+
+        # Our valid range will be of two hours
+        hour = 60 * 60
+
+        builder = TransactionBuilder(
+            self._chain_context, validity_start=current_slot, ttl=2 * hour)
+
+        builder.add_script_input(
+            utxo, PlutusV2Script(self._script), datum, redeemer)
+        builder.add_input_address(bob_address)
+
+        alice_utxos = self._chain_context.utxos(str(alice_address))
+
+        alice_utxo = None
+        for utxo in alice_utxos:
+            if utxo.output.amount.multi_asset:
+                if ScriptHash.from_primitive(target_policy) in utxo.output.amount.multi_asset:
+                    alice_utxo = utxo
+
+        if alice_utxo is None:
+            raise Exception(
+                f"Could not find UTxO with token in address {str(alice_address)}")
+
+        builder.reference_inputs.add(alice_utxo.input)
+
+        take_output = TransactionOutput(bob_address, 5_149_265)
+
+        builder.add_output(take_output)
+
+        signed_tx = builder.build_and_sign([bob_skey], bob_address)
+
+        return signed_tx

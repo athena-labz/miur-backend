@@ -4,6 +4,9 @@ from lib import cardano_tools
 from model import User
 
 
+EXPIRE_SECONDS = 24 * 60 * 60
+
+
 def validate_signature(signature, address):
     validation = cardano_tools.signature_message(signature, address)
 
@@ -27,8 +30,8 @@ def validate_signature(signature, address):
         (datetime.datetime.utcnow() - datetime.datetime(1970, 1, 1)).total_seconds())
 
     print(abs(current_date_unix - timestamp))
-    if abs(current_date_unix - timestamp) > 60:
-        print("Invalid timestamp given - timestamp outside of the 60 seconds range")
+    if abs(current_date_unix - timestamp) > EXPIRE_SECONDS:
+        print(f"Invalid timestamp given - timestamp outside of the {EXPIRE_SECONDS} seconds range")
         return False
 
     return True

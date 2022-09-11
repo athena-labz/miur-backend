@@ -133,6 +133,7 @@ def test_get_user(api, monkeypatch):
 
     user = User()
     user.nickname = "Nick"
+    user.user_nft_policy = "<nft>"
     user.address = "addr_test123"
     user.public_key_hash = "abc123"
 
@@ -145,7 +146,8 @@ def test_get_user(api, monkeypatch):
     assert response.status_code == 200
     assert response.json == {
         "nickname": "Nick",
-        "public_key_hash": "abc123"
+        "public_key_hash": "abc123",
+        "user_nft_policy": "<nft>"
     }
 
     response = client.get("/user/addr_test456")

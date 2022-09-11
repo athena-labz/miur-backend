@@ -40,7 +40,6 @@ def register(address: str):
     user = User()
     user.address = address
     user.public_key_hash = cardano_tools.address_to_pubkeyhash(address)
-
     user.nickname = data["nickname"]
 
     db.session.add(user)
@@ -58,8 +57,9 @@ def get_info(address: str):
             "message": f"Could not find address {address}",
             "code": "address-not-found"
         }, 404
-    
+
     return {
         "nickname": user.nickname,
-        "public_key_hash": user.public_key_hash
+        "public_key_hash": user.public_key_hash,
+        "user_nft_policy": user.user_nft_policy
     }

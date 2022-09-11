@@ -19,6 +19,9 @@ class User(db.Model):
     user_identifier = db.Column(
         db.String(64), default=str_uuid, nullable=False)
 
+    # This is optional, but is required to do certain action
+    user_nft_policy = db.Column(db.String(56))
+
     nickname = db.Column(db.String(), nullable=False)
 
     address = db.Column(db.String(), nullable=False)

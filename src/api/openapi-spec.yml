@@ -201,6 +201,9 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - nickname
+                  - public_key_hash
                 properties:
                   nickname:
                     type: string
@@ -208,6 +211,9 @@ paths:
                   public_key_hash:
                     type: string
                     example: abc123
+                  user_nft_policy:
+                    type: string
+                    example: 65783e84e04af28ecb157abc4d18bb12728d2326c5afd69302077de9
         "404":
           description: If we couldn't find a user with this address
           content:
@@ -250,6 +256,9 @@ paths:
                 change_address:
                   type: string
                   example: "addr_test123"
+                fallback_policy:
+                  type: string
+                  example: 65783e...077de9
       responses:
         "200":
           description: If we were able to create the transaction successfully, return the cbor
@@ -258,6 +267,9 @@ paths:
               schema:
                 type: object
                 properties:
+                  success:
+                    type: boolean
+                    example: true
                   transaction_cbor:
                     type: string
                     example: <cbor>
@@ -348,7 +360,6 @@ components:
       type: object
       required:
         - name
-        - project_nft
         - creator_address
         - short_description
         - long_description
@@ -357,12 +368,10 @@ components:
         - days_to_complete
         - collateral
         - deliverables
+        - start_date
       properties:
         signature:
           $ref: "#/components/schemas/Signature"
-        project_nft:
-          type: string
-          example: "65783e84e04af28ecb157abc4d18bb12728d2326c5afd69302077de952414e444f4d5f544f4b454e"
         name:
           type: string
           example: "Who Done It 200+ Pages Book"
@@ -399,3 +408,6 @@ components:
           items:
             type: string
             example: "The good people that are going to assess this project when the time comes"
+        start_date:
+          type: integer
+          example: 1662910298

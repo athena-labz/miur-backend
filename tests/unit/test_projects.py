@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import sys
 import datetime
+import pycardano as pyc
 
 from fixtures import api
 
@@ -114,7 +115,6 @@ def test_create_project(api, monkeypatch):
     # Creator does not exist
     response = client.post("/projects/create", json={
         "name": "Project",
-        "project_nft": "<nft>",
         "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
         "short_description": "lorem ipsum...",
         "long_description": "lorem ipsum dolor sit amet...",
@@ -122,8 +122,9 @@ def test_create_project(api, monkeypatch):
         "reward_requested": 50,
         "days_to_complete": 15,
         "collateral": 130,
+        "start_date": 1662910298,
         "deliverables": ["I'm gonna do real good", "Trust me bro"],
-        "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
+        "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a",
     })
 
     assert response.status_code == 400
@@ -145,7 +146,6 @@ def test_create_project(api, monkeypatch):
     # Signature is not valid
     response = client.post("/projects/create", json={
         "name": "Project",
-        "project_nft": "<nft>",
         "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
         "short_description": "lorem ipsum...",
         "long_description": "lorem ipsum dolor sit amet...",
@@ -153,6 +153,7 @@ def test_create_project(api, monkeypatch):
         "reward_requested": 50,
         "days_to_complete": 15,
         "collateral": 130,
+        "start_date": 1662910298,
         "deliverables": ["I'm gonna do real good", "Trust me bro"],
         "signature": "84584da301276761646472657373581d6045979b6a06fc37fffdb901304d5c970b08217b4e17b749be604b6c9704582067eef9883bd41729d2b2e26cc095e2ada32ddeee4529352e7a8d41810ed2800fa166686173686564f45818417468656e61204d495552207c203136343039393532303058408963af15e0fa9c22ccf8320712f7787d732eab1aa6976b4caa5400bcb6ba5b4e9eb0d9a46278bf3a78a36d6bbcfb7a6b6403f9128e3c00a5c955e0d33443ba00"
     })
@@ -165,7 +166,6 @@ def test_create_project(api, monkeypatch):
     # Creator does exist
     response = client.post("/projects/create", json={
         "name": "Project",
-        "project_nft": "<nft>",
         "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
         "short_description": "lorem ipsum...",
         "long_description": "lorem ipsum dolor sit amet...",
@@ -173,6 +173,7 @@ def test_create_project(api, monkeypatch):
         "reward_requested": 50,
         "days_to_complete": 15,
         "collateral": 130,
+        "start_date": 1662910298,
         "deliverables": ["I'm gonna do real good", "Trust me bro"],
         "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
     })
@@ -185,7 +186,6 @@ def test_create_project(api, monkeypatch):
 
     # Make sure project created is equal to the sample provided
     project: Project = projects[0]
-    assert project.project_nft == "<nft>"
     assert project.name == "Project"
 
     assert project.creator.address == "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq"
@@ -202,6 +202,8 @@ def test_create_project(api, monkeypatch):
 
     assert set([deliverable.deliverable for deliverable in project.deliverables]) == {
         "I'm gonna do real good", "Trust me bro"}
+
+    assert project.start_date == datetime.datetime(2022, 9, 11, 15, 31, 38)
 
 
 def test_get_projects(api):
@@ -234,7 +236,6 @@ def test_get_projects(api):
     deliverable_2.deliverable = "I am doint it I swear"
 
     project_1 = Project()
-    project_1.project_nft = "<nft>"
     project_1.creator = user_1
     project_1.subjects = [subject_1, subject_2]
 
@@ -249,6 +250,7 @@ def test_get_projects(api):
 
     project_1.deliverables = [deliverable_1, deliverable_2]
     project_1.mediators = [user_1, user_2]
+    project_1.start_date = datetime.datetime(2022, 9, 11, 15, 31, 38)
 
     with app.app_context():
         db.session.add(project_1)
@@ -282,7 +284,6 @@ def test_get_projects(api):
         "success": True,
         "project": {
             "name": "Project",
-            "project_nft": "<nft>",
             "creator_address": "addr_test123",
             "short_description": "lorem ipsum...",
             "long_description": "lorem ipsum dolor sit amet...",
@@ -294,3 +295,90 @@ def test_get_projects(api):
             "mediators": ["addr_test123", "addr_test456"]
         }
     }
+
+
+# def test_fund_project(api, monkeypatch):
+#     client, app = api
+
+#     sys.path.append("src")
+
+#     from model import db, Project, User, Subject, Deliverable
+
+#     user_1 = User()
+#     user_1.nickname = "fastandfury"
+#     user_1.address = "addr_test123"
+#     user_1.public_key_hash = "pubkey123"
+
+#     user_2 = User()
+#     user_2.nickname = "arsene"
+#     user_2.address = "addr_test456"
+#     user_2.public_key_hash = "pubkey456"
+
+#     subject_1 = Subject()
+#     subject_1.subject_name = "Math"
+
+#     subject_2 = Subject()
+#     subject_2.subject_name = "Tourism"
+
+#     deliverable_1 = Deliverable()
+#     deliverable_1.deliverable = "I am going to do it"
+
+#     deliverable_2 = Deliverable()
+#     deliverable_2.deliverable = "I am doint it I swear"
+
+#     project_1 = Project()
+#     project_1.creator = user_1
+#     project_1.subjects = [subject_1, subject_2]
+
+#     project_1.name = "Project"
+
+#     project_1.short_description = "lorem ipsum..."
+#     project_1.long_description = "lorem ipsum dolor sit amet..."
+
+#     project_1.reward_requested = 50
+#     project_1.days_to_complete = 15
+#     project_1.collateral = 130
+
+#     project_1.deliverables = [deliverable_1, deliverable_2]
+#     project_1.mediators = [user_1, user_2]
+
+#     project_1.start_date = datetime.datetime.now()
+
+#     with app.app_context():
+#         db.session.add(project_1)
+
+#         db.session.add(user_1)
+#         db.session.add(user_2)
+
+#         db.session.add(subject_1)
+#         db.session.add(subject_2)
+
+#         db.session.add(deliverable_1)
+#         db.session.add(deliverable_2)
+
+#         db.session.commit()
+
+#         db.session.refresh(project_1)
+
+#         db.session.refresh(user_1)
+#         db.session.refresh(user_2)
+
+#         db.session.refresh(subject_1)
+#         db.session.refresh(subject_2)
+
+#         db.session.refresh(deliverable_1)
+#         db.session.refresh(deliverable_2)
+
+#     fake_tx_cbor = "84a400818258200c0fd889c606bac1df9e1efabb6d620349151c1103cd54c6987f22dc03ff3f1701018283581d70527f218f37135737e0021700b14624788685b07f7f1e5342ebf3619b1a009896805820f838e0ecfa4d88b5b40d8b871379a1eb0f63aa52ac89b702a91d38766cb0f91a825839002f47b85e82875e187f28dd77a43a776073c9aaf19013991f5912808b761e443202246af7643f3ecaa4c122b58dde94892e6bcae0e0c452781b00000001dc35eb99021a0002a98d0b58207d00bd1981adf1fa914bd610e202a8cedc425dbdb4003f9d9a74425e17004cf3a0f5f6"
+#     monkeypatch.setattr("lib.cardano_tools.create_fund_project_transaction", pyc.Transaction.from_cbor(fake_tx_cbor))
+
+#     response = client.post(f"/projects/{project_1.project_identifier}/fund", json={
+#         "utxos": ["<cbor_1>", "<cbor_2>"],
+#         "change_address": "addr_test123"
+#     })
+
+#     assert response.status_code == 200
+#     assert response.json == {
+#         "success": True,
+#         "transaction_cbor": fake_tx_cbor
+#     }

@@ -134,68 +134,75 @@ def get_project(project_id):
 
 
 def fund_project(project_id: str):
-    pass
+    data = request.json
 
+    load_dotenv()
 
-# def fund_project(project_id: str):
-#     data = request.json
+    BLOCKFROST_PROJECT_ID = os.environ.get("BLOCKFROST_PROJECT_ID")
+    NETWORK_MODE = os.environ.get("NETWORK_MODE")
+    MEDIATOR_POLICY = os.environ.get("MEDIATOR_POLICY")
 
-#     load_dotenv()
+    if BLOCKFROST_PROJECT_ID is None:
+        raise ValueError("BLOCKFROST_PROJECT_ID env variable not found")
 
-#     BLOCKFROST_PROJECT_ID = os.environ.get("BLOCKFROST_PROJECT_ID")
-#     NETWORK_MODE = os.environ.get("NETWORK_MODE")
-#     MEDIATOR_POLICY = os.environ.get("MEDIATOR_POLICY")
+    if NETWORK_MODE is None:
+        raise ValueError("NETWORK_MODE env variable not found")
 
-#     if BLOCKFROST_PROJECT_ID is None:
-#         raise ValueError("BLOCKFROST_PROJECT_ID env variable not found")
+    if MEDIATOR_POLICY is None:
+        raise ValueError("MEDIATOR_POLICY env variable not found")
 
-#     if NETWORK_MODE is None:
-#         raise ValueError("NETWORK_MODE env variable not found")
+    project: Project = Project.query.filter(
+        Project.project_identifier == project_id).first()
 
-#     if MEDIATOR_POLICY is None:
-#         raise ValueError("MEDIATOR_POLICY env variable not found")
+    if project is None:
+        return {"success": False}, 404
 
-#     project: Project = Project.query.filter(
-#         Project.project_identifier == project_id).first()
+    chain_context = pyc.BlockFrostChainContext(
+        base_url="https://cardano-mainnet.blockfrost.io/api" if NETWORK_MODE.lower(
+        ) == "mainnet" else "https://cardano-preview.blockfrost.io/api",
+        network=pyc.Network.MAINNET if NETWORK_MODE.lower(
+        ) == "mainnet" else pyc.Network.TESTNET,
+        project_id=BLOCKFROST_PROJECT_ID
+    )
 
-#     if project is None:
-#         return {"success": False}, 404
+    with open("script/script.plutus", "r") as f:
+        script_cbor = f.read()
 
-#     chain_context = pyc.BlockFrostChainContext(
-#         base_url="https://cardano-mainnet.blockfrost.io/api" if NETWORK_MODE.lower(
-#         ) == "mainnet" else "https://cardano-preview.blockfrost.io/api",
-#         network=pyc.Network.MAINNET if NETWORK_MODE.lower(
-#         ) == "mainnet" else pyc.Network.TESTNET,
-#         project_id=BLOCKFROST_PROJECT_ID
-#     )
+    # Find target NFT
+    target_policy = project.creator.user_nft_policy
 
-#     with open("script/script.plutus", "r") as f:
-#         script_cbor = f.read()
+    mediator_policy = MEDIATOR_POLICY
 
-#     # Find target NFT
-#     target_policy = project.creator.user_nft_policy
+    fallback_policy = data["fallback_policy"]
 
-#     mediator_policy = MEDIATOR_POLICY
+    # Calculate deadline timestamp
+    start_date = project.start_date.replace(tzinfo=datetime.timezone.utc)
+    start_date_timestamp = start_date.timestamp()
+    days_timestamp = project.days_to_complete * 24 * 60 * 60
 
-#     fallback_policy = data["fallback_policy"]
+    deadline = start_date_timestamp + days_timestamp
 
-#     # Calculate deadline timestamp
+    @dataclass
+    class ContractDatum(pyc.PlutusData):
+        CONSTR_ID = 0
+        mediators: bytes
+        target: bytes
+        fallback: bytes
+        deadline: int
 
-#     # Convert this to UTC
-#     project.start_date
+    datum = ContractDatum(mediator_policy, target_policy,
+                          fallback_policy, deadline)
 
-#     deadline = undefined
+    transaction: pyc.Transaction = cardano_tools.create_fund_project_transaction(
+        chain_context,
+        script_cbor,
+        pyc.Address.from_primitive(data["change_address"]),
+        [cardano_tools.utxo_from_cbor(utxo) for utxo in data["utxos"]],
+        project.reward_requested,
+        datum
+    )
 
-#     @dataclass
-#     class ContractDatum(pyc.PlutusData):
-#         CONSTR_ID = 0
-#         mediators: bytes
-#         target: bytes
-#         fallback: bytes
-#         deadline: int
-
-#     datum = ContractDatum(mediator_policy, target_policy,
-#                           fallback_policy, deadline)
-
-#     transaction_cbor = cardano_tools.create_fund_project_transaction(
-#         chain_context, script_cbor, data["change_address"], data["utxos"], project.reward_requested, )
+    return {
+        "success": True,
+        "transaction_cbor": transaction.to_cbor()
+    }

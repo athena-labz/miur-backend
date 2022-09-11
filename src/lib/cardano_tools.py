@@ -29,6 +29,18 @@ def signature_message(signature, address):
     return validation["message"]
 
 
+def utxo_from_cbor(utxo_cbor: str) -> pyc.UTxO:
+    cbor_lst = cbor2.loads(bytes.fromhex(utxo_cbor))
+
+    transaction_input_cbor_bytes = cbor2.dumps(cbor_lst[0])
+    transaction_output_cbor_bytes = cbor2.dumps(cbor_lst[1])
+
+    return pyc.UTxO(
+        pyc.TransactionInput.from_cbor(transaction_input_cbor_bytes),
+        pyc.TransactionOutput.from_cbor(transaction_output_cbor_bytes),
+    )
+
+
 def create_fund_project_transaction(
     chain_context: pyc.ChainContext,
     script_cbor: str,
@@ -61,3 +73,14 @@ def create_fund_project_transaction(
     # pyc.Transaction.from_cbor("")
 
     return pyc.Transaction(tx_body, pyc.TransactionWitnessSet())
+
+
+def submit_transaction(chain_context: pyc.ChainContext, transaction_cbor: str, witness_cbor: str):
+    transaction = pyc.Transaction.from_cbor(transaction_cbor)
+    witness = pyc.TransactionWitnessSet.from_cbor(witness_cbor)
+
+    print(transaction)
+
+    transaction.transaction_witness_set = witness
+
+    chain_context.submit_tx(transaction.to_cbor())

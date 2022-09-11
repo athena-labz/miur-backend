@@ -247,6 +247,7 @@ paths:
               required:
                 - utxos
                 - change_address
+                - fallback_policy
               properties:
                 utxos:
                   type: array

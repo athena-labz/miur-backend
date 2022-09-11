@@ -1,5 +1,8 @@
 import sys
 
+from dataclasses import dataclass
+from dotenv import load_dotenv
+
 
 def test_signature_message(monkeypatch):
     sys.path.append("src")

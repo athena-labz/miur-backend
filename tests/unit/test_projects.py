@@ -114,6 +114,7 @@ def test_create_project(api, monkeypatch):
     # Creator does not exist
     response = client.post("/projects/create", json={
         "name": "Project",
+        "project_nft": "<nft>",
         "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
         "short_description": "lorem ipsum...",
         "long_description": "lorem ipsum dolor sit amet...",
@@ -144,6 +145,7 @@ def test_create_project(api, monkeypatch):
     # Signature is not valid
     response = client.post("/projects/create", json={
         "name": "Project",
+        "project_nft": "<nft>",
         "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
         "short_description": "lorem ipsum...",
         "long_description": "lorem ipsum dolor sit amet...",
@@ -163,6 +165,7 @@ def test_create_project(api, monkeypatch):
     # Creator does exist
     response = client.post("/projects/create", json={
         "name": "Project",
+        "project_nft": "<nft>",
         "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
         "short_description": "lorem ipsum...",
         "long_description": "lorem ipsum dolor sit amet...",
@@ -182,6 +185,7 @@ def test_create_project(api, monkeypatch):
 
     # Make sure project created is equal to the sample provided
     project: Project = projects[0]
+    assert project.project_nft == "<nft>"
     assert project.name == "Project"
 
     assert project.creator.address == "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq"
@@ -230,6 +234,7 @@ def test_get_projects(api):
     deliverable_2.deliverable = "I am doint it I swear"
 
     project_1 = Project()
+    project_1.project_nft = "<nft>"
     project_1.creator = user_1
     project_1.subjects = [subject_1, subject_2]
 
@@ -277,6 +282,7 @@ def test_get_projects(api):
         "success": True,
         "project": {
             "name": "Project",
+            "project_nft": "<nft>",
             "creator_address": "addr_test123",
             "short_description": "lorem ipsum...",
             "long_description": "lorem ipsum dolor sit amet...",

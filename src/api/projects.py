@@ -55,6 +55,8 @@ def create_project():
 
     project = Project()
 
+    project.project_nft = data["project_nft"]
+
     project.name = data["name"]
 
     creator = User.query.filter(User.address == data["creator_address"]).first()
@@ -101,7 +103,7 @@ def create_project():
 
 
 def get_project(project_id):
-    project = Project.query.filter(Project.project_identifier == project_id).first()
+    project: Project = Project.query.filter(Project.project_identifier == project_id).first()
 
     if project is None:
         return {"success": False}, 404
@@ -110,6 +112,7 @@ def get_project(project_id):
         "success": True,
         "project": {
             "name": project.name,
+            "project_nft": project.project_nft,
             "creator_address": project.creator.address,
             "short_description": project.short_description,
             "long_description": project.long_description,
@@ -121,3 +124,7 @@ def get_project(project_id):
             "mediators": [mediator.address for mediator in project.mediators],
         }
     }, 200
+
+
+def fund_project(project_id: str):
+    pass

@@ -218,7 +218,59 @@ paths:
                   message:
                     type: string
                     example: "Sorry bro, couldn't find your address"
-                  
+
+  /projects/{project_id}/fund:
+    post:
+      summary: Get funding project transaction to sign
+      operationId: api.projects.fund_project
+      description: Returns a transaction sending the tokens to the script for funding a project
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - utxos
+                - change_address
+              properties:
+                utxos:
+                  type: array
+                  items:
+                    type: string
+                    example: "<utxo_cbor>"
+                change_address:
+                  type: string
+                  example: "addr_test123"
+      responses:
+        "200":
+          description: If we were able to create the transaction successfully, return the cbor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_cbor:
+                    type: string
+                    example: <cbor>
+        "400":
+          description: If something went wrong and app wasn't able to create tx
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Sorry bro, couldn't find your address"
 
 components:
   schemas:
@@ -296,6 +348,7 @@ components:
       type: object
       required:
         - name
+        - project_nft
         - creator_address
         - short_description
         - long_description
@@ -307,6 +360,9 @@ components:
       properties:
         signature:
           $ref: "#/components/schemas/Signature"
+        project_nft:
+          type: string
+          example: "65783e84e04af28ecb157abc4d18bb12728d2326c5afd69302077de952414e444f4d5f544f4b454e"
         name:
           type: string
           example: "Who Done It 200+ Pages Book"

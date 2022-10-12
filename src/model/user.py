@@ -16,8 +16,6 @@ class User(db.Model):
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_identifier = db.Column(
-        db.String(64), default=str_uuid, nullable=False)
 
     # This is optional, but is required to do certain action
     user_nft_policy = db.Column(db.String(56))

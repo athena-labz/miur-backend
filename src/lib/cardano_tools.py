@@ -69,9 +69,6 @@ def create_fund_project_transaction(
 
     tx_body = builder.build(change_address=change_address)
 
-
-    # pyc.Transaction.from_cbor("")
-
     return pyc.Transaction(tx_body, pyc.TransactionWitnessSet())
 
 

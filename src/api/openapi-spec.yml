@@ -157,12 +157,12 @@ paths:
             schema:
               type: object
               required:
-                - nickname
+                - email
                 - signature
               properties:
-                nickname:
+                email:
                   type: string
-                  example: Babatomano
+                  example: babatomano@email.com
                 signature:
                   $ref: "#/components/schemas/Signature"
       responses:

@@ -19,10 +19,14 @@ class User(db.Model):
     user_identifier = db.Column(
         db.String(64), default=str_uuid, nullable=False)
 
-    nickname = db.Column(db.String(), nullable=False)
+    email = db.Column(db.String(), nullable=False, unique=True)
 
-    address = db.Column(db.String(), nullable=False)
-    public_key_hash = db.Column(db.String(), nullable=False)
+    # This address is the one we are using for our operations
+    # NFT identifier should be sent to this address
+    address = db.Column(db.String(), nullable=False, unique=True)
+
+    # NFT policy ID that will identify this user for the smart contracts
+    nft_identifier_policy = db.Column(db.String(), unique=True)
 
     created_projects = relationship("Project", back_populates="creator")
     mediated_projects = relationship(

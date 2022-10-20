@@ -27,9 +27,7 @@ class Project(db.Model):
     short_description = db.Column(db.String(), nullable=False)
     long_description = db.Column(db.String(), nullable=False)
 
-    reward_requested = db.Column(db.Integer, nullable=False)
     days_to_complete = db.Column(db.Integer, nullable=False)
-    collateral = db.Column(db.Integer, nullable=False)
 
     deliverables = relationship("Deliverable", back_populates="project")
     mediators = relationship(

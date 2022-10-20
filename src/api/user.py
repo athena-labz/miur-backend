@@ -14,34 +14,33 @@ def register(address: str):
     data = request.json
 
     existing_user: User | None = User.query.filter(
-        or_(User.address == address, User.nickname == data["nickname"])).first()
+        or_(User.address == address, User.email == data["email"])
+    ).first()
 
     if existing_user is not None:
         if existing_user.address == address:
             return {
                 "success": False,
                 "message": f"User with address {address} already exists",
-                "code": "address-exists"
+                "code": "address-exists",
             }, 400
         else:
             return {
                 "success": False,
-                "message": f"User with nickname {data['nickname']} already exists",
-                "code": "nickname-exists"
+                "message": f"User with email {data['email']} already exists",
+                "code": "email-exists",
             }, 400
 
     if not auth_tools.validate_signature(data["signature"], address):
         return {
             "success": False,
             "message": "Invalid signature",
-            "code": "invalid-signature"
+            "code": "invalid-signature",
         }, 400
 
     user = User()
     user.address = address
-    user.public_key_hash = cardano_tools.address_to_pubkeyhash(address)
-
-    user.nickname = data["nickname"]
+    user.email = data["email"]
 
     db.session.add(user)
     db.session.commit()
@@ -56,10 +55,16 @@ def get_info(address: str):
         return {
             "success": False,
             "message": f"Could not find address {address}",
-            "code": "address-not-found"
+            "code": "address-not-found",
         }, 404
-    
+
     return {
-        "nickname": user.nickname,
-        "public_key_hash": user.public_key_hash
+        "id": user.user_identifier,
+        "address": user.address,
+        "email": user.email,
+        **(
+            {"nft_identifier_policy": user.nft_identifier_policy}
+            if user.nft_identifier_policy is not None
+            else {}
+        ),
     }

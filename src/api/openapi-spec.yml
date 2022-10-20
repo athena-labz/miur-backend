@@ -74,7 +74,7 @@ paths:
                   projects:
                     type: array
                     items:
-                      $ref: "#/components/schemas/ProjectShort"
+                      $ref: "#/components/schemas/ProjectInfo"
                   count:
                     type: integer
                     example: 5
@@ -90,7 +90,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ProjectLong"
+              $ref: "#/components/schemas/ProjectCreateProps"
       responses:
         "200":
           description: |
@@ -132,7 +132,7 @@ paths:
                     type: boolean
                     example: True
                   projects:
-                    $ref: "#/components/schemas/ProjectLong"
+                    $ref: "#/components/schemas/ProjectInfo"
 
         "404":
           description: Project ID not found
@@ -157,12 +157,12 @@ paths:
             schema:
               type: object
               required:
-                - nickname
+                - email
                 - signature
               properties:
-                nickname:
+                email:
                   type: string
-                  example: Babatomano
+                  example: babatomano@email.com
                 signature:
                   $ref: "#/components/schemas/Signature"
       responses:
@@ -234,6 +234,23 @@ components:
           type: string
           example: "Something really bad happened!"
 
+    User:
+      type: object
+      required:
+        - id
+        - address
+        - email
+      properties:
+        id:
+          type: string
+          example: 5e97a1ee-7ed2-4287-85cf-d3f8d566da0c
+        address:
+          type: string
+          example: addr_test123
+        email:
+          type: string
+          example: mateus@email.com
+
     Signature:
       oneOf:
         - type: object
@@ -253,17 +270,64 @@ components:
           example: 84584d...db070c
           description: Another possible format that already includes signature and key in one string
 
-    ProjectShort:
+    ProjectCreateProps:
+      type: object
+      required:
+        - signature
+        - name
+        - short_description
+        - long_description
+        - creator
+        - mediators
+        - subjects
+        - deliverables
+        - days_to_complete
+      properties:
+        signature:
+          $ref: "#/components/schemas/Signature"
+        name:
+          type: string
+          example: "Who Done It 200+ Pages Book"
+        creator:
+          type: string
+          example: addr_test123
+        mediators:
+          type: array
+          items:
+            type: string
+            example: "mediator@email.com"
+        short_description:
+          type: string
+          example: "I will write a story about a murder that happened in a spaceship! The ending will be incredible!"
+        long_description:
+          type: string
+          example: "Loooong and boooooring description..."
+        subjects:
+          type: array
+          items:
+            type: string
+            example: Math
+        deliverables:
+          type: array
+          items:
+            type: string
+            example: "I am gonna do a very good job, trust me :wink"
+        days_to_complete:
+          type: integer
+          example: 31
+
+    ProjectInfo:
       type: object
       required:
         - project_id
         - name
-        - creator_address
+        - creator
         - short_description
+        - long_description
+        - mediators
         - subjects
-        - reward_requested
+        - deliverables
         - days_to_complete
-        - collateral
       properties:
         project_id:
           type: string
@@ -271,48 +335,12 @@ components:
         name:
           type: string
           example: "Who Done It 200+ Pages Book"
-        creator_address:
-          type: string
-          example: "stake_test123...abc"
-        short_description:
-          type: string
-          example: "I will write a story about a murder that happened in a spaceship! The ending will be incredible!"
-        subjects:
+        creator:
+          $ref: "#/components/schemas/User"
+        mediators:
           type: array
           items:
-            type: string
-            example: Math
-        reward_requested:
-          type: integer
-          example: 100
-        days_to_complete:
-          type: integer
-          example: 31
-        collateral:
-          type: integer
-          example: 200
-
-    ProjectLong:
-      type: object
-      required:
-        - name
-        - creator_address
-        - short_description
-        - long_description
-        - subjects
-        - reward_requested
-        - days_to_complete
-        - collateral
-        - deliverables
-      properties:
-        signature:
-          $ref: "#/components/schemas/Signature"
-        name:
-          type: string
-          example: "Who Done It 200+ Pages Book"
-        creator_address:
-          type: string
-          example: "stake_test123...abc"
+            $ref: "#/components/schemas/User"
         short_description:
           type: string
           example: "Short description..."
@@ -338,8 +366,3 @@ components:
           items:
             type: string
             example: "I am gonna do a very good job, trust me :wink"
-        mediators:
-          type: array
-          items:
-            type: string
-            example: "The good people that are going to assess this project when the time comes"

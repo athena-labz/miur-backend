@@ -14,14 +14,14 @@ def test_get_projects(api):
     from model import db, Project, User, Subject, Deliverable
 
     user_1 = User()
-    user_1.nickname = "fastandfury"
+    user_1.user_identifier = "abc123"
+    user_1.email = "bonjour@email.com"
     user_1.address = "addr_test123"
-    user_1.public_key_hash = "pubkey123"
 
     user_2 = User()
-    user_2.nickname = "arsene"
+    user_2.user_identifier = "def456"
+    user_2.email = "arsene@email.com"
     user_2.address = "addr_test456"
-    user_2.public_key_hash = "pubkey456"
 
     subject_1 = Subject()
     subject_1.subject_name = "Math"
@@ -44,9 +44,7 @@ def test_get_projects(api):
     project_1.short_description = "lorem ipsum..."
     project_1.long_description = "lorem ipsum dolor sit amet..."
 
-    project_1.reward_requested = 50
     project_1.days_to_complete = 15
-    project_1.collateral = 130
 
     project_1.deliverables = [deliverable_1, deliverable_2]
     project_1.mediators = [user_1, user_2]
@@ -81,16 +79,34 @@ def test_get_projects(api):
     assert response.status_code == 200
     assert response.json == {
         "count": 1,
-        "projects": [{
-            "project_id": project_1.project_identifier,
-            "name": "Project",
-            "creator_address": "addr_test123",
-            "short_description": "lorem ipsum...",
-            "subjects": ["Math", "Tourism"],
-            "reward_requested": 50,
-            "days_to_complete": 15,
-            "collateral": 130,
-        }]
+        "projects": [
+            {
+                "project_id": project_1.project_identifier,
+                "name": "Project",
+                "creator": {
+                    "id": "abc123",
+                    "email": "bonjour@email.com",
+                    "address": "addr_test123",
+                },
+                "short_description": "lorem ipsum...",
+                "long_description": "lorem ipsum dolor sit amet...",
+                "subjects": ["Math", "Tourism"],
+                "days_to_complete": 15,
+                "mediators": [
+                    {
+                        "id": "abc123",
+                        "email": "bonjour@email.com",
+                        "address": "addr_test123",
+                    },
+                    {
+                        "id": "def456",
+                        "email": "arsene@email.com",
+                        "address": "addr_test456",
+                    },
+                ],
+                "deliverables": ["I am going to do it", "I am doint it I swear"],
+            }
+        ],
     }
 
 
@@ -112,18 +128,20 @@ def test_create_project(api, monkeypatch):
     from model import db, Project, User, Subject, Deliverable
 
     # Creator does not exist
-    response = client.post("/projects/create", json={
-        "name": "Project",
-        "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
-        "short_description": "lorem ipsum...",
-        "long_description": "lorem ipsum dolor sit amet...",
-        "subjects": ["Math", "Tourism"],
-        "reward_requested": 50,
-        "days_to_complete": 15,
-        "collateral": 130,
-        "deliverables": ["I'm gonna do real good", "Trust me bro"],
-        "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
-    })
+    response = client.post(
+        "/projects/create",
+        json={
+            "name": "Project",
+            "creator": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
+            "short_description": "lorem ipsum...",
+            "long_description": "lorem ipsum dolor sit amet...",
+            "subjects": ["Math", "Tourism"],
+            "days_to_complete": 15,
+            "deliverables": ["I'm gonna do real good", "Trust me bro"],
+            "mediators": [],
+            "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a",
+        },
+    )
 
     assert response.status_code == 400
 
@@ -132,9 +150,8 @@ def test_create_project(api, monkeypatch):
 
     # Create user
     user = User()
-    user.nickname = "blahblah"
     user.address = "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq"
-    user.public_key_hash = "pubkey123"
+    user.email = "hanz@email.com"
 
     with app.app_context():
         db.session.add(user)
@@ -142,18 +159,20 @@ def test_create_project(api, monkeypatch):
         db.session.refresh(user)
 
     # Signature is not valid
-    response = client.post("/projects/create", json={
-        "name": "Project",
-        "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
-        "short_description": "lorem ipsum...",
-        "long_description": "lorem ipsum dolor sit amet...",
-        "subjects": ["Math", "Tourism"],
-        "reward_requested": 50,
-        "days_to_complete": 15,
-        "collateral": 130,
-        "deliverables": ["I'm gonna do real good", "Trust me bro"],
-        "signature": "84584da301276761646472657373581d6045979b6a06fc37fffdb901304d5c970b08217b4e17b749be604b6c9704582067eef9883bd41729d2b2e26cc095e2ada32ddeee4529352e7a8d41810ed2800fa166686173686564f45818417468656e61204d495552207c203136343039393532303058408963af15e0fa9c22ccf8320712f7787d732eab1aa6976b4caa5400bcb6ba5b4e9eb0d9a46278bf3a78a36d6bbcfb7a6b6403f9128e3c00a5c955e0d33443ba00"
-    })
+    response = client.post(
+        "/projects/create",
+        json={
+            "name": "Project",
+            "creator": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
+            "short_description": "lorem ipsum...",
+            "long_description": "lorem ipsum dolor sit amet...",
+            "subjects": ["Math", "Tourism"],
+            "days_to_complete": 15,
+            "deliverables": ["I'm gonna do real good", "Trust me bro"],
+            "mediators": ["hanz@email.com"],
+            "signature": "84584da301276761646472657373581d6045979b6a06fc37fffdb901304d5c970b08217b4e17b749be604b6c9704582067eef9883bd41729d2b2e26cc095e2ada32ddeee4529352e7a8d41810ed2800fa166686173686564f45818417468656e61204d495552207c203136343039393532303058408963af15e0fa9c22ccf8320712f7787d732eab1aa6976b4caa5400bcb6ba5b4e9eb0d9a46278bf3a78a36d6bbcfb7a6b6403f9128e3c00a5c955e0d33443ba00",
+        },
+    )
 
     assert response.status_code == 400
 
@@ -161,18 +180,20 @@ def test_create_project(api, monkeypatch):
     assert response.json["success"] is False
 
     # Creator does exist
-    response = client.post("/projects/create", json={
-        "name": "Project",
-        "creator_address": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
-        "short_description": "lorem ipsum...",
-        "long_description": "lorem ipsum dolor sit amet...",
-        "subjects": ["Math", "Tourism"],
-        "reward_requested": 50,
-        "days_to_complete": 15,
-        "collateral": 130,
-        "deliverables": ["I'm gonna do real good", "Trust me bro"],
-        "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
-    })
+    response = client.post(
+        "/projects/create",
+        json={
+            "name": "Project",
+            "creator": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
+            "short_description": "lorem ipsum...",
+            "long_description": "lorem ipsum dolor sit amet...",
+            "subjects": ["Math", "Tourism"],
+            "days_to_complete": 15,
+            "deliverables": ["I'm gonna do real good", "Trust me bro"],
+            "mediators": ["hanz@email.com"],
+            "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a",
+        },
+    )
 
     assert response.status_code == 200
     assert response.json == {"success": True}
@@ -184,20 +205,27 @@ def test_create_project(api, monkeypatch):
     project: Project = projects[0]
     assert project.name == "Project"
 
-    assert project.creator.address == "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq"
+    assert (
+        project.creator.address
+        == "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq"
+    )
 
     assert project.short_description == "lorem ipsum..."
     assert project.long_description == "lorem ipsum dolor sit amet..."
 
     assert set([subject.subject_name for subject in project.subjects]) == {
-        "Math", "Tourism"}
+        "Math",
+        "Tourism",
+    }
 
-    assert project.reward_requested == 50
     assert project.days_to_complete == 15
-    assert project.collateral == 130
+
+    assert set([mediator.email for mediator in project.mediators]) == {"hanz@email.com"}
 
     assert set([deliverable.deliverable for deliverable in project.deliverables]) == {
-        "I'm gonna do real good", "Trust me bro"}
+        "I'm gonna do real good",
+        "Trust me bro",
+    }
 
 
 def test_get_projects(api):
@@ -208,14 +236,14 @@ def test_get_projects(api):
     from model import db, Project, User, Subject, Deliverable
 
     user_1 = User()
-    user_1.nickname = "fastandfury"
+    user_1.user_identifier = "abc123"
     user_1.address = "addr_test123"
-    user_1.public_key_hash = "pubkey123"
+    user_1.email = "alice@email.com"
 
     user_2 = User()
-    user_2.nickname = "arsene"
+    user_2.user_identifier = "def456"
     user_2.address = "addr_test456"
-    user_2.public_key_hash = "pubkey456"
+    user_2.email = "bob@email.com"
 
     subject_1 = Subject()
     subject_1.subject_name = "Math"
@@ -238,9 +266,7 @@ def test_get_projects(api):
     project_1.short_description = "lorem ipsum..."
     project_1.long_description = "lorem ipsum dolor sit amet..."
 
-    project_1.reward_requested = 50
     project_1.days_to_complete = 15
-    project_1.collateral = 130
 
     project_1.deliverables = [deliverable_1, deliverable_2]
     project_1.mediators = [user_1, user_2]
@@ -277,14 +303,24 @@ def test_get_projects(api):
         "success": True,
         "project": {
             "name": "Project",
-            "creator_address": "addr_test123",
+            "creator": {
+                "id": "abc123",
+                "email": "alice@email.com",
+                "address": "addr_test123",
+            },
             "short_description": "lorem ipsum...",
             "long_description": "lorem ipsum dolor sit amet...",
             "subjects": ["Math", "Tourism"],
-            "reward_requested": 50,
             "days_to_complete": 15,
-            "collateral": 130,
             "deliverables": ["I am going to do it", "I am doint it I swear"],
-            "mediators": ["addr_test123", "addr_test456"]
+            "mediators": [{
+                "id": "abc123",
+                "address": "addr_test123",
+                "email": "alice@email.com"
+            }, {
+                "id": "def456",
+                "address": "addr_test456",
+                "email": "bob@email.com"
+            }]
         }
     }

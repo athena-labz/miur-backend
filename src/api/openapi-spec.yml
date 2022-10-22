@@ -202,12 +202,15 @@ paths:
               schema:
                 type: object
                 properties:
-                  nickname:
+                  email:
                     type: string
-                    example: Babatomano
-                  public_key_hash:
+                    example: babatomano@email.com
+                  address:
                     type: string
-                    example: abc123
+                    example: addr_test123
+                  nft_policy_identifier:
+                    type: string
+                    example: policy123
         "404":
           description: If we couldn't find a user with this address
           content:

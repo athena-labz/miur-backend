@@ -45,6 +45,8 @@ def register(address: str):
     db.session.add(user)
     db.session.commit()
 
+    logging.warning(User.query.all())
+
     return {"success": True}, 200
 
 

@@ -54,7 +54,7 @@ def mint_nfts(
 
     min_ada = pyc.min_lovelace_post_alonzo(attempt_output, chain_context)
 
-    logging.warning("min ada", min_ada)
+    logging.warning("min ada" + min_ada)
 
     output_value = pyc.Value(min_ada, my_assets)
     output = pyc.TransactionOutput(receiver_address, output_value)

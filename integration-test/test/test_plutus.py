@@ -1,5 +1,5 @@
 import time
-
+import sys
 import cbor2
 import pytest
 from retry import retry
@@ -10,308 +10,100 @@ from .base import TEST_RETRIES, TestBase
 
 
 class TestPlutus(TestBase):
+
     @retry(tries=TEST_RETRIES, backoff=1.5, delay=6, jitter=(0, 4))
-    def test_plutus_v1(self):
+    def test_create_user_stake_transaction(self):
+        sys.path.append("../src")
+
+        from lib import script_tools
+
+        sender_address = Address(self.payment_vkey.hash(), network=self.NETWORK)
+        nft_symbol = (
+            ScriptPubkey(VerificationKey.from_signing_key(self.payment_skey).hash())
+            .hash()
+            .payload
+        )
+
+        # ----------- Mint Script NFT -----------
+
+        script_tools.mint_nfts(
+            self.chain_context,
+            self.payment_skey,
+            self.payment_skey,
+            sender_address,
+            {b"mediator": 3, b"target": 2},
+        )
+
+        time.sleep(3)
+
+        self.assert_output(
+            sender_address,
+            TransactionOutput(
+                address=sender_address,
+                amount=Value.from_primitive(
+                    [
+                        3_000_000,
+                        {nft_symbol: {b"mediator": 3, b"target": 2}},
+                    ]
+                ),
+            ),
+        )
 
         # ----------- Giver give ---------------
 
-        with open("./plutus_scripts/fortytwo.plutus", "r") as f:
-            script_hex = f.read()
-            forty_two_script = cbor2.loads(bytes.fromhex(script_hex))
-
-        script_hash = plutus_script_hash(PlutusV1Script(forty_two_script))
-
-        script_address = Address(script_hash, network=self.NETWORK)
-
-        giver_address = Address(self.payment_vkey.hash(), network=self.NETWORK)
-
-        builder = TransactionBuilder(self.chain_context)
-        builder.add_input_address(giver_address)
-        datum = PlutusData()  # A Unit type "()" in Haskell
-        builder.add_output(
-            TransactionOutput(script_address, 50000000, datum_hash=datum_hash(datum))
-        )
-
-        signed_tx = builder.build_and_sign([self.payment_skey], giver_address)
-
-        print("############### Transaction created ###############")
-        print(signed_tx)
-        print(signed_tx.to_cbor())
-        print("############### Submitting transaction ###############")
-        self.chain_context.submit_tx(signed_tx.to_cbor())
-        time.sleep(3)
-
-        # ----------- Fund taker a collateral UTxO ---------------
-
-        taker_address = Address(self.extended_payment_vkey.hash(), network=self.NETWORK)
-
-        builder = TransactionBuilder(self.chain_context)
-
-        builder.add_input_address(giver_address)
-        builder.add_output(TransactionOutput(taker_address, 5000000))
-
-        signed_tx = builder.build_and_sign([self.payment_skey], giver_address)
-
-        print("############### Transaction created ###############")
-        print(signed_tx)
-        print(signed_tx.to_cbor())
-        print("############### Submitting transaction ###############")
-        self.chain_context.submit_tx(signed_tx.to_cbor())
-        time.sleep(3)
-
-        # ----------- Taker take ---------------
-
-        redeemer = Redeemer(RedeemerTag.SPEND, 42)
-
-        utxo_to_spend = self.chain_context.utxos(str(script_address))[0]
-
-        taker_address = Address(self.extended_payment_vkey.hash(), network=self.NETWORK)
-
-        builder = TransactionBuilder(self.chain_context)
-
-        builder.add_script_input(
-            utxo_to_spend, PlutusV1Script(forty_two_script), datum, redeemer
-        )
-        take_output = TransactionOutput(taker_address, 25123456)
-        builder.add_output(take_output)
-
-        non_nft_utxo = None
-        for utxo in self.chain_context.utxos(str(taker_address)):
-            # multi_asset should be empty for collateral utxo
-            if not utxo.output.amount.multi_asset:
-                non_nft_utxo = utxo
-                break
-
-        builder.collaterals.append(non_nft_utxo)
-
-        signed_tx = builder.build_and_sign([self.extended_payment_skey], taker_address)
-
-        print("############### Transaction created ###############")
-        print(signed_tx)
-        print(signed_tx.to_cbor())
-        print("############### Submitting transaction ###############")
-        self.chain_context.submit_tx(signed_tx.to_cbor())
-
-        self.assert_output(taker_address, take_output)
-
-    # @retry(tries=TEST_RETRIES, backoff=1.5, delay=6, jitter=(0, 4))
-    # @pytest.mark.post_alonzo
-    # def test_plutus_v2_datum_hash(self):
-
-    #     # ----------- Giver give ---------------
-
-    #     with open("./plutus_scripts/fortytwoV2.plutus", "r") as f:
-    #         script_hex = f.read()
-    #         forty_two_script = cbor2.loads(bytes.fromhex(script_hex))
-
-    #     script_hash = plutus_script_hash(PlutusV2Script(forty_two_script))
-
-    #     script_address = Address(script_hash, network=self.NETWORK)
-
-    #     giver_address = Address(self.payment_vkey.hash(), network=self.NETWORK)
-
-    #     builder = TransactionBuilder(self.chain_context)
-    #     builder.add_input_address(giver_address)
-    #     datum = 42
-    #     builder.add_output(
-    #         TransactionOutput(script_address, 50000000, datum_hash=datum_hash(datum))
-    #     )
-
-    #     signed_tx = builder.build_and_sign([self.payment_skey], giver_address)
-
-    #     print("############### Transaction created ###############")
-    #     print(signed_tx)
-    #     print(signed_tx.to_cbor())
-    #     print("############### Submitting transaction ###############")
-    #     self.chain_context.submit_tx(signed_tx.to_cbor())
-    #     time.sleep(3)
-
-    #     # ----------- Taker take ---------------
-
-    #     redeemer = Redeemer(RedeemerTag.SPEND, 42)
-
-    #     utxo_to_spend = None
-
-    #     # Speed the utxo that doesn't have datum/datum_hash or script attached
-    #     for utxo in self.chain_context.utxos(str(script_address)):
-    #         if not utxo.output.script and (
-    #             utxo.output.datum_hash == datum_hash(datum)
-    #             or utxo.output.datum == datum
-    #         ):
-    #             utxo_to_spend = utxo
-    #             break
-
-    #     taker_address = Address(self.extended_payment_vkey.hash(), network=self.NETWORK)
-
-    #     builder = TransactionBuilder(self.chain_context)
-
-    #     builder.add_script_input(
-    #         utxo_to_spend, PlutusV2Script(forty_two_script), datum, redeemer
-    #     )
-    #     take_output = TransactionOutput(taker_address, 25123456)
-    #     builder.add_output(take_output)
-
-    #     non_nft_utxo = None
-    #     for utxo in self.chain_context.utxos(str(taker_address)):
-    #         # multi_asset should be empty for collateral utxo
-    #         if not utxo.output.amount.multi_asset:
-    #             non_nft_utxo = utxo
-    #             break
-
-    #     builder.collaterals.append(non_nft_utxo)
-
-    #     signed_tx = builder.build_and_sign([self.extended_payment_skey], taker_address)
-
-    #     print("############### Transaction created ###############")
-    #     print(signed_tx)
-    #     print(signed_tx.to_cbor())
-    #     print("############### Submitting transaction ###############")
-    #     self.chain_context.submit_tx(signed_tx.to_cbor())
-
-    #     self.assert_output(taker_address, take_output)
-
-    # @retry(tries=TEST_RETRIES, backoff=1.5, delay=6, jitter=(0, 4))
-    # @pytest.mark.post_alonzo
-    # def test_plutus_v2_inline_script_inline_datum(self):
-
-    #     # ----------- Giver give ---------------
-
-    #     with open("./plutus_scripts/fortytwoV2.plutus", "r") as f:
-    #         script_hex = f.read()
-    #         forty_two_script = PlutusV2Script(cbor2.loads(bytes.fromhex(script_hex)))
-
-    #     script_hash = plutus_script_hash(forty_two_script)
-
-    #     script_address = Address(script_hash, network=self.NETWORK)
-
-    #     giver_address = Address(self.payment_vkey.hash(), network=self.NETWORK)
-
-    #     builder = TransactionBuilder(self.chain_context)
-    #     builder.add_input_address(giver_address)
-    #     datum = 42
-    #     builder.add_output(
-    #         TransactionOutput(
-    #             script_address, 50000000, datum=datum, script=forty_two_script
-    #         )
-    #     )
-
-    #     signed_tx = builder.build_and_sign([self.payment_skey], giver_address)
-
-    #     print("############### Transaction created ###############")
-    #     print(signed_tx)
-    #     print(signed_tx.to_cbor())
-    #     print("############### Submitting transaction ###############")
-    #     self.chain_context.submit_tx(signed_tx.to_cbor())
-    #     time.sleep(3)
-
-    #     # ----------- Taker take ---------------
-
-    #     redeemer = Redeemer(RedeemerTag.SPEND, 42)
-
-    #     utxo_to_spend = None
-
-    #     # Speed the utxo that has both inline script and inline datum
-    #     for utxo in self.chain_context.utxos(str(script_address)):
-    #         if utxo.output.datum and utxo.output.script:
-    #             utxo_to_spend = utxo
-    #             break
-
-    #     taker_address = Address(self.extended_payment_vkey.hash(), network=self.NETWORK)
-
-    #     builder = TransactionBuilder(self.chain_context)
-
-    #     builder.add_script_input(utxo_to_spend, redeemer=redeemer)
-    #     take_output = TransactionOutput(taker_address, 25123456)
-    #     builder.add_output(take_output)
-
-    #     signed_tx = builder.build_and_sign([self.extended_payment_skey], taker_address)
-
-    #     print("############### Transaction created ###############")
-    #     print(signed_tx)
-    #     print(signed_tx.to_cbor())
-    #     print("############### Submitting transaction ###############")
-    #     self.chain_context.submit_tx(signed_tx.to_cbor())
-
-    #     self.assert_output(taker_address, take_output)
-
-    # @retry(tries=TEST_RETRIES, backoff=1.5, delay=6, jitter=(0, 4))
-    # @pytest.mark.post_alonzo
-    # def test_plutus_v2_ref_script(self):
-
-    #     # ----------- Create a reference script ---------------
-
-    #     with open("./plutus_scripts/fortytwoV2.plutus", "r") as f:
-    #         script_hex = f.read()
-    #         forty_two_script = PlutusV2Script(cbor2.loads(bytes.fromhex(script_hex)))
-
-    #     script_hash = plutus_script_hash(forty_two_script)
-
-    #     script_address = Address(script_hash, network=self.NETWORK)
-
-    #     giver_address = Address(self.payment_vkey.hash(), network=self.NETWORK)
-
-    #     builder = TransactionBuilder(self.chain_context)
-    #     builder.add_input_address(giver_address)
-    #     datum = 42
-    #     builder.add_output(
-    #         TransactionOutput(script_address, 50000000, script=forty_two_script)
-    #     )
-
-    #     signed_tx = builder.build_and_sign([self.payment_skey], giver_address)
-
-    #     print("############### Transaction created ###############")
-    #     print(signed_tx)
-    #     print(signed_tx.to_cbor())
-    #     print("############### Submitting transaction ###############")
-    #     self.chain_context.submit_tx(signed_tx.to_cbor())
-    #     time.sleep(3)
-
-    #     # ----------- Send ADA to the same script address without datum or script ---------------
-
-    #     builder = TransactionBuilder(self.chain_context)
-    #     builder.add_input_address(giver_address)
-    #     builder.add_output(
-    #         TransactionOutput(script_address, 50000000, datum_hash=datum_hash(datum))
-    #     )
-
-    #     signed_tx = builder.build_and_sign([self.payment_skey], giver_address)
-
-    #     print("############### Transaction created ###############")
-    #     print(signed_tx)
-    #     print(signed_tx.to_cbor())
-    #     print("############### Submitting transaction ###############")
-    #     self.chain_context.submit_tx(signed_tx.to_cbor())
-    #     time.sleep(3)
-
-    #     # ----------- Taker take ---------------
-
-    #     redeemer = Redeemer(RedeemerTag.SPEND, 42)
-
-    #     utxo_to_spend = None
-
-    #     # Spend the utxo that doesn't have datum/datum_hash or script attached
-    #     for utxo in self.chain_context.utxos(str(script_address)):
-    #         if not utxo.output.script and (
-    #             utxo.output.datum_hash == datum_hash(datum)
-    #             or utxo.output.datum == datum
-    #         ):
-    #             utxo_to_spend = utxo
-    #             break
-
-    #     taker_address = Address(self.extended_payment_vkey.hash(), network=self.NETWORK)
-
-    #     builder = TransactionBuilder(self.chain_context)
-
-    #     builder.add_script_input(utxo_to_spend, redeemer=redeemer, datum=datum)
-    #     take_output = TransactionOutput(taker_address, 25123456)
-    #     builder.add_output(take_output)
-
-    #     signed_tx = builder.build_and_sign([self.extended_payment_skey], taker_address)
-
-    #     print("############### Transaction created ###############")
-    #     print(signed_tx)
-    #     print(signed_tx.to_cbor())
-    #     print("############### Submitting transaction ###############")
-    #     self.chain_context.submit_tx(signed_tx.to_cbor())
-
-    #     self.assert_output(taker_address, take_output)
+        # with open("../script/script.plutus", "r") as f:
+        #     script_hex = f.read()
+
+        #     transaction = cardano_utils.create_user_stake_transaction(
+        #         self.chain_context,
+        #         sender_address,
+        #         script_hex,
+        #         ScriptPubkey(VerificationKey.from_signing_key(self.payment_skey).hash())
+        #         .hash()
+        #         .payload.hex(),
+        #     )
+
+        #     gero_script = cbor2.loads(bytes.fromhex(script_hex))
+        #     script_hash = plutus_script_hash(PlutusV1Script(gero_script))
+        #     script_address = Address(script_hash, network=self.NETWORK)
+
+        # # ----------- Submit Transaction --------------
+
+        # # Sign the transaction body hash
+        # signature = self.payment_skey.sign(transaction.transaction_body.hash())
+
+        # # Add verification key and the signature to the witness set
+        # vk_witnesses = [VerificationKeyWitness(self.payment_vkey, signature)]
+
+        # transaction.transaction_witness_set = TransactionWitnessSet(
+        #     vkey_witnesses=vk_witnesses
+        # )
+
+        # signed_tx = Transaction(
+        #     transaction.transaction_body,
+        #     TransactionWitnessSet(vkey_witnesses=vk_witnesses),
+        # )
+
+        # self.chain_context.submit_tx(signed_tx.to_cbor())
+
+        # time.sleep(3)
+
+        # self.assert_output(
+        #     script_address,
+        #     TransactionOutput(
+        #         address=script_address,
+        #         amount=Value.from_primitive(
+        #             [
+        #                 3_000_000,
+        #                 {nft_symbol: {b"us-0": 1}},
+        #             ]
+        #         ),
+        #         datum_hash=cardano_types.UserStakeDetail(
+        #             user_pkh=sender_address.payment_part.payload,
+        #             votes={},
+        #             delegated_to=sender_address.payment_part.payload,
+        #             index=0,
+        #             sym=nft_symbol,
+        #         ).hash(),
+        #     ),
+        # )

@@ -5,7 +5,7 @@ description = ""
 authors = ["Mateus Santos <santos.mateus@protonmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.7"
 Flask-SQLAlchemy = "^2.5.1"
 connexion = {extras = ["swagger-ui"], version = "^2.14.0"}
 python-dotenv = "^0.20.0"

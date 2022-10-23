@@ -28,12 +28,9 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-      - name: Lint with flake8
-        run: |
-          poetry run flake8 pycardano
       - name: Run unit tests
         run: |
-          poetry run pytest --doctest-modules --ignore=examples --cov=pycardano --cov-config=.coveragerc --cov-report=xml
+          poetry run pytest test/unit
       - name: "Upload coverage to Codecov"
         uses: codecov/codecov-action@v2
         with:

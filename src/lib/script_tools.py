@@ -54,6 +54,8 @@ def mint_nfts(
 
     min_ada = pyc.min_lovelace_post_alonzo(attempt_output, chain_context)
 
+    logging.warning("min ada", min_ada)
+
     output_value = pyc.Value(min_ada, my_assets)
     output = pyc.TransactionOutput(receiver_address, output_value)
 
@@ -82,16 +84,8 @@ def mint_nfts(
 
     # Submit signed transaction to the network
     logging.debug("############### Submitting transaction ###############")
-    try:
-        chain_context.submit_tx(signed_tx.to_cbor())
-    except Exception as e:
-        logging.error(e)
-        logging.error(f"e.message: {e.message}")
-        if e.status_code == 202:
-            logging.error(f"WTF: I hate you blockfrost!!!")
-            return signed_tx
-        else:
-            raise e
+
+    chain_context.submit_tx(signed_tx.to_cbor())
 
     return signed_tx
 

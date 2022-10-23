@@ -11,7 +11,7 @@ from .base import TEST_RETRIES, TestBase
 
 class TestPlutus(TestBase):
 
-    @retry(tries=TEST_RETRIES, backoff=1.5, delay=6, jitter=(0, 4))
+    @retry(tries=TEST_RETRIES, backoff=1.5, delay=3, jitter=(0, 4))
     def test_create_user_stake_transaction(self):
         sys.path.append("../src")
 

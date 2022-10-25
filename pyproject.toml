@@ -11,7 +11,7 @@ connexion = {extras = ["swagger-ui"], version = "^2.14.0"}
 python-dotenv = "^0.20.0"
 Flask-Cors = "^3.0.10"
 Flask-Migrate = "^3.1.0"
-pycardano = "^0.6.0"
+pycardano = "^0.7.0"
 psycopg2-binary = "^2.9.4"
 
 [tool.poetry.dev-dependencies]

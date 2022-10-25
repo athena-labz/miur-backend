@@ -52,9 +52,11 @@ def mint_nfts(
     attempt_output_value = pyc.Value(2_000_000, my_assets)
     attempt_output = pyc.TransactionOutput(receiver_address, attempt_output_value)
 
-    min_ada = pyc.min_lovelace_post_alonzo(attempt_output, chain_context)
+    # min_ada = pyc.min_lovelace_post_alonzo(attempt_output, chain_context)
+    min_ada = pyc.min_lovelace(chain_context, attempt_output, amount=attempt_output.amount)
 
-    logging.warning("min ada" + min_ada)
+    if min_ada == 0:
+        min_ada = 5_000_000
 
     output_value = pyc.Value(min_ada, my_assets)
     output = pyc.TransactionOutput(receiver_address, output_value)
@@ -102,7 +104,7 @@ def create_transaction_fund_project(
 ):
     escrow_script = cbor2.loads(bytes.fromhex(script_hex))
     script_hash = pyc.plutus_script_hash(pyc.PlutusV1Script(escrow_script))
-    script_address = pyc.Address(script_hash, network=chain_context.network)
+    script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
 
     builder = pyc.TransactionBuilder(chain_context)
     builder.add_input_address(sender_address)

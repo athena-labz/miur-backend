@@ -53,7 +53,9 @@ def mint_nfts(
     attempt_output = pyc.TransactionOutput(receiver_address, attempt_output_value)
 
     # min_ada = pyc.min_lovelace_post_alonzo(attempt_output, chain_context)
-    min_ada = pyc.min_lovelace(chain_context, attempt_output, amount=attempt_output.amount)
+    min_ada = pyc.min_lovelace(
+        chain_context, attempt_output, amount=attempt_output.amount
+    )
 
     if min_ada == 0:
         min_ada = 5_000_000
@@ -103,7 +105,7 @@ def create_transaction_fund_project(
     deadline: int,
 ):
     escrow_script = cbor2.loads(bytes.fromhex(script_hex))
-    script_hash = pyc.plutus_script_hash(pyc.PlutusV1Script(escrow_script))
+    script_hash = pyc.plutus_script_hash(pyc.PlutusV2Script(escrow_script))
     script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
 
     builder = pyc.TransactionBuilder(chain_context)
@@ -127,3 +129,83 @@ def create_transaction_fund_project(
     tx_body = builder.build(change_address=sender_address, merge_change=True)
 
     return pyc.Transaction(tx_body, pyc.TransactionWitnessSet())
+
+
+def create_transaction_mediate_project(
+    chain_context: pyc.ChainContext,
+    mediator_address: pyc.Address,
+    mediator_policy: bytes,
+    fallback_address: pyc.Address,
+    fallback_policy: bytes,
+    script_hex: str,
+    script_utxo: pyc.UTxO,
+    script_datum: pyc.Datum,
+):
+    escrow_script = cbor2.loads(bytes.fromhex(script_hex))
+    script_hash = pyc.plutus_script_hash(pyc.PlutusV1Script(escrow_script))
+    script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
+
+    # Current slot - Don't know how to calculate the actual current slot
+    # Maybe get the posix time of the last block and use that difference
+    current_slot = chain_context.last_block_slot
+
+    print("Current slot", current_slot)
+
+    # Our valid range will be of two hours
+    hour = 60 * 60
+
+    builder = pyc.TransactionBuilder(
+        chain_context, validity_start=current_slot, ttl=2 * hour
+    )
+
+    builder.required_signers = [mediator_address.payment_part]
+
+    builder.add_script_input(
+        script_utxo,
+        pyc.PlutusV2Script(escrow_script),
+        script_datum,
+        cardano_types.ExecuteFallback(),
+    )
+    builder.add_input_address(mediator_address)
+
+    sender_utxos = chain_context.utxos(str(mediator_address))
+
+    mediator_utxo = None
+    for utxo in sender_utxos:
+        if utxo.output.amount.multi_asset:
+            if (
+                pyc.ScriptHash.from_primitive(mediator_policy)
+                in utxo.output.amount.multi_asset
+            ):
+                mediator_utxo = utxo
+
+    if mediator_utxo is None:
+        raise Exception(
+            f"Could not find UTxO with mediator token in address {str(mediator_address)}"
+        )
+
+    fallback_utxos = chain_context.utxos(str(fallback_address))
+
+    fallback_utxo = None
+    for utxo in fallback_utxos:
+        if utxo.output.amount.multi_asset:
+            if (
+                pyc.ScriptHash.from_primitive(fallback_policy)
+                in utxo.output.amount.multi_asset
+            ):
+                fallback_utxo = utxo
+
+    if fallback_utxo is None:
+        raise Exception(
+            f"Could not find UTxO with token in address {str(fallback_address)}"
+        )
+
+    builder.reference_inputs.add(fallback_utxo.input)
+
+    dummy_key: pyc.PaymentSigningKey = pyc.PaymentSigningKey.from_cbor(
+        "5820ac29084c8ceca56b02c4118e76c1845c40b5eb810444a069e8edf2f5280ee875"
+    )
+
+    transaction = builder.build_and_sign(
+        signing_keys=[dummy_key], change_address=fallback_address, merge_change=True
+    )

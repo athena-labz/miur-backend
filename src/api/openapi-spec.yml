@@ -221,6 +221,65 @@ paths:
                   message:
                     type: string
                     example: "Sorry bro, couldn't find your address"
+
+  /transaction/projects/fund:
+    post:
+      operationId: "api.transaction.fund_project"
+      summary: "Get cbor from transaction to fund a project"
+      description: "Get cbor from transaction to fund a project"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - sender_address
+                - funding_amount
+                - transaction_index
+                - deposit_amount
+                - identifier_policy_id
+                - nft_policy_id
+                - nft_asset_name
+              properties:
+                sender_address:
+                  type: string
+                  example: addr_test123
+                transaction_hash:
+                  type: string
+                  example: abc123
+                transaction_index:
+                  type: integer
+                  example: 1
+                deposit_amount:
+                  type: integer
+                  example: 10_000_000
+                identifier_policy_id:
+                  type: string
+                  example: policy123
+                nft_policy_id:
+                  type: string
+                  example: policy456
+                nft_asset_name:
+                  type: string
+                  example: generic0001
+      responses:
+        200:
+          description: "Successful entry will respond with {success:true}"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_cbor:
+                    type: string
+                    example: "cbor123"
+                  witness_cbor:
+                    type: string
+                    example: "cbor123"
+                  message:
+                    type: string
+                    example: "An error has ocurred"
                   
 
 components:

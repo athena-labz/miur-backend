@@ -110,6 +110,7 @@ class TestPlutus(TestBase):
             transaction = script_tools.create_transaction_fund_project(
                 self.chain_context,
                 sender_address,
+                sender_address,
                 10_000_000,
                 script_hex,
                 mediator_policy,
@@ -296,6 +297,7 @@ class TestPlutus(TestBase):
 
     #         transaction = script_tools.create_transaction_fund_project(
     #             self.chain_context,
+    #             sender_address,
     #             sender_address,
     #             10_000_000,
     #             script_hex,

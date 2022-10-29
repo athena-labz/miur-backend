@@ -33,5 +33,7 @@ class Project(db.Model):
     mediators = relationship(
         "User", secondary=mediator_association_table, back_populates="mediated_projects")
 
+    status = db.Column(db.String(), default="open", nullable=False)
+
     creation_date = db.Column(db.DateTime(
         timezone=False), server_default=func.now(), nullable=False)

@@ -1,10 +1,13 @@
 from __future__ import annotations
 from lib import cardano_types
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
+from dotenv import load_dotenv
 
 import pycardano as pyc
 import logging
 import cbor2
+import sys
+import os
 
 
 def mint_nfts(
@@ -97,7 +100,8 @@ def mint_nfts(
 
 def create_transaction_fund_project(
     chain_context: pyc.ChainContext,
-    sender_address: pyc.Address,
+    registered_address: pyc.Address,
+    funding_utxos: List[pyc.UTxO],
     funding_amount: pyc.Value,
     script_hex: str,
     mediator_policy: bytes,
@@ -110,7 +114,9 @@ def create_transaction_fund_project(
     script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
 
     builder = pyc.TransactionBuilder(chain_context)
-    builder.add_input_address(sender_address)
+
+    for utxo in funding_utxos:
+        builder.add_input(utxo)
 
     datum = cardano_types.ContractDatum(
         mediators=mediator_policy,
@@ -127,7 +133,9 @@ def create_transaction_fund_project(
         )
     )
 
-    tx_body = builder.build(change_address=sender_address, merge_change=True)
+    builder.required_signers = [registered_address.payment_part]
+
+    tx_body = builder.build(change_address=registered_address, merge_change=True)
 
     return pyc.Transaction(tx_body, pyc.TransactionWitnessSet())
 
@@ -168,6 +176,7 @@ def create_transaction_fallback_project(
         pyc.Redeemer(
             pyc.RedeemerTag.SPEND,
             cardano_types.ExecuteFallback(),
+            ex_units=pyc.ExecutionUnits(1549238, 442841802),
         ),
     )
     builder.add_input_address(mediator_address)
@@ -228,9 +237,7 @@ def create_transaction_target_project(
 
     builder.reference_inputs.add(target_input)
 
-    builder.add_output(
-        pyc.TransactionOutput(target_address, script_utxo.output.amount)
-    )
+    builder.add_output(pyc.TransactionOutput(target_address, script_utxo.output.amount))
 
     dummy_key: pyc.PaymentSigningKey = pyc.PaymentSigningKey.from_cbor(
         "5820ac29084c8ceca56b02c4118e76c1845c40b5eb810444a069e8edf2f5280ee875"
@@ -241,3 +248,55 @@ def create_transaction_target_project(
     )
 
     return transaction
+
+
+def initialise_cardano():
+    # Initialise env variables, if any of them are not
+    # here, raise exception
+    sys.path.append("src")
+    load_dotenv()
+
+    envs = {}
+    for env in [
+        "BLOCKFROST_PROJECT_ID",
+        "BLOCKFROST_BASE_URL",
+        "NETWORK_MODE",
+        "SCRIPT_PATH",
+        "MEDIATOR_POLICY",
+    ]:
+        val = os.environ.get(env)
+        if val is None:
+            raise ValueError(f"Env variable {env} not found!")
+
+        envs[env] = val
+
+    # ChainContext will depend on the environment variables
+    chain_context = pyc.BlockFrostChainContext(
+        project_id=envs["BLOCKFROST_PROJECT_ID"],
+        base_url=envs["BLOCKFROST_BASE_URL"],
+        network=pyc.Network.MAINNET
+        if envs["NETWORK_MODE"].lower() == "mainnet"
+        else pyc.Network.TESTNET,
+    )
+
+    with open(envs["SCRIPT_PATH"], "r") as f:
+        script = f.read()
+
+    return {
+        "chain_context": chain_context,
+        "script": script,
+        "mediator_policy": envs["MEDIATOR_POLICY"],
+    }
+
+
+def cbor_to_utxo(utxo_cbor: str) -> pyc.UTxO:
+    cbor_lst = cbor2.loads(bytes.fromhex(utxo_cbor))
+    transaction_input_cbor_bytes = cbor2.dumps(cbor_lst[0])
+    transaction_output_cbor_bytes = cbor2.dumps(cbor_lst[1])
+
+    utxo = pyc.UTxO(
+        pyc.TransactionInput.from_cbor(transaction_input_cbor_bytes),
+        pyc.TransactionOutput.from_cbor(transaction_output_cbor_bytes),
+    )
+
+    return utxo

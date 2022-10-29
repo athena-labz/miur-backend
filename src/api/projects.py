@@ -76,6 +76,8 @@ def create_project():
             "message": f"User {data['creator']} is not registered",
         }, 400
 
+    # TODO: Enforce that creator has identity NFT
+
     project.creator = creator
 
     project.short_description = data["short_description"]

@@ -234,35 +234,25 @@ paths:
             schema:
               type: object
               required:
-                - sender_address
+                - registered_address
+                - funding_utxos
                 - funding_amount
-                - transaction_index
-                - deposit_amount
-                - identifier_policy_id
-                - nft_policy_id
-                - nft_asset_name
+                - project_id
               properties:
-                sender_address:
+                registered_address:
                   type: string
                   example: addr_test123
-                transaction_hash:
-                  type: string
-                  example: abc123
-                transaction_index:
-                  type: integer
-                  example: 1
-                deposit_amount:
+                funding_utxos:
+                  type: array
+                  items:
+                    type: string
+                    example: cbor123
+                funding_amount:
                   type: integer
                   example: 10_000_000
-                identifier_policy_id:
+                project_id:
                   type: string
-                  example: policy123
-                nft_policy_id:
-                  type: string
-                  example: policy456
-                nft_asset_name:
-                  type: string
-                  example: generic0001
+                  example: ba3fa9fd-79c8-4a78-b75d-893620de0e7b
       responses:
         200:
           description: "Successful entry will respond with {success:true}"

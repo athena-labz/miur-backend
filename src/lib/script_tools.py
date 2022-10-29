@@ -132,7 +132,7 @@ def create_transaction_fund_project(
     return pyc.Transaction(tx_body, pyc.TransactionWitnessSet())
 
 
-def create_transaction_mediate_project(
+def create_transaction_fallback_project(
     chain_context: pyc.ChainContext,
     mediator_address: pyc.Address,
     mediator_input: pyc.TransactionInput,
@@ -190,98 +190,54 @@ def create_transaction_mediate_project(
     return transaction
 
 
-# def create_transaction_target_project(
-#     chain_context: pyc.ChainContext,
-#     target_address: pyc.Address,
-#     target_policy: bytes,
-#     script_hex: str,
-#     script_utxo: pyc.UTxO,
-#     script_datum: pyc.Datum,
-# ):
-#     escrow_script = cbor2.loads(bytes.fromhex(script_hex))
-#     script_hash = pyc.plutus_script_hash(pyc.PlutusV1Script(escrow_script))
-#     script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
+def create_transaction_target_project(
+    chain_context: pyc.ChainContext,
+    target_address: pyc.Address,
+    target_input: pyc.TransactionInput,
+    script_hex: str,
+    script_utxo: pyc.UTxO,
+    script_datum: pyc.Datum,
+):
+    escrow_script = cbor2.loads(bytes.fromhex(script_hex))
+    script_hash = pyc.plutus_script_hash(pyc.PlutusV1Script(escrow_script))
+    script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
 
-#     # Current slot - Don't know how to calculate the actual current slot
-#     # Maybe get the posix time of the last block and use that difference
-#     current_slot = chain_context.last_block_slot
+    # Current slot - Don't know how to calculate the actual current slot
+    # Maybe get the posix time of the last block and use that difference
+    current_slot = chain_context.last_block_slot
 
-#     print("Current slot", current_slot)
+    print("Current slot", current_slot)
 
-#     # Our valid range will be of two hours
-#     hour = 60 * 60
+    # Our valid range will be of two hours
+    hour = 60 * 60
 
-#     builder = pyc.TransactionBuilder(
-#         chain_context, validity_start=current_slot, ttl=2 * hour
-#     )
+    builder = pyc.TransactionBuilder(
+        chain_context, validity_start=current_slot, ttl=2 * hour
+    )
 
-#     builder.required_signers = [mediator_address.payment_part]
+    builder.add_script_input(
+        script_utxo,
+        pyc.PlutusV2Script(escrow_script),
+        script_datum,
+        pyc.Redeemer(
+            pyc.RedeemerTag.SPEND,
+            cardano_types.ExecuteTarget(),
+        ),
+    )
+    builder.add_input_address(target_address)
 
-#     builder.add_script_input(
-#         script_utxo,
-#         pyc.PlutusV2Script(escrow_script),
-#         script_datum,
-#         cardano_types.ExecuteFallback(),
-#     )
-#     builder.add_input_address(mediator_address)
+    builder.reference_inputs.add(target_input)
 
-#     sender_utxos = chain_context.utxos(str(mediator_address))
+    builder.add_output(
+        pyc.TransactionOutput(target_address, script_utxo.output.amount)
+    )
 
-#     mediator_utxo = None
-#     for utxo in sender_utxos:
-#         if utxo.output.amount.multi_asset:
-#             if (
-#                 pyc.ScriptHash.from_primitive(mediator_policy)
-#                 in utxo.output.amount.multi_asset
-#             ):
-#                 mediator_utxo = utxo
+    dummy_key: pyc.PaymentSigningKey = pyc.PaymentSigningKey.from_cbor(
+        "5820ac29084c8ceca56b02c4118e76c1845c40b5eb810444a069e8edf2f5280ee875"
+    )
 
-#     if mediator_utxo is None:
-#         raise Exception(
-#             f"Could not find UTxO with mediator token in address {str(mediator_address)}"
-#         )
+    transaction = builder.build_and_sign(
+        signing_keys=[dummy_key], change_address=target_address, merge_change=False
+    )
 
-#     fallback_utxos = chain_context.utxos(str(fallback_address))
-
-#     fallback_utxo = None
-#     for utxo in fallback_utxos:
-#         if utxo.output.amount.multi_asset:
-#             if (
-#                 pyc.ScriptHash.from_primitive(fallback_policy)
-#                 in utxo.output.amount.multi_asset
-#             ):
-#                 fallback_utxo = utxo
-
-#     if fallback_utxo is None:
-#         raise Exception(
-#             f"Could not find UTxO with token in address {str(fallback_address)}"
-#         )
-
-#     builder.reference_inputs.add(fallback_utxo.input)
-
-#     dummy_key: pyc.PaymentSigningKey = pyc.PaymentSigningKey.from_cbor(
-#         "5820ac29084c8ceca56b02c4118e76c1845c40b5eb810444a069e8edf2f5280ee875"
-#     )
-
-#     transaction = builder.build_and_sign(
-#         signing_keys=[dummy_key], change_address=fallback_address, merge_change=True
-#     )
-
-
-# builder.add_script_input(
-#     utxo, PlutusV2Script(self._script), datum, redeemer)
-# builder.add_input_address(bob_address)
-
-# alice_utxos = self._chain_context.utxos(str(alice_address))
-
-# alice_utxo = None
-# for utxo in alice_utxos:
-#     if utxo.output.amount.multi_asset:
-#         if ScriptHash.from_primitive(target_policy) in utxo.output.amount.multi_asset:
-#             alice_utxo = utxo
-
-# if alice_utxo is None:
-#     raise Exception(
-#         f"Could not find UTxO with token in address {str(alice_address)}")
-
-# builder.reference_inputs.add(alice_utxo.input)
+    return transaction

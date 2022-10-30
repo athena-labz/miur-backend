@@ -6,12 +6,13 @@ import datetime
 import pycardano as pyc
 
 from fixtures import api
+from typing import List
 
 
 def test_fund_project(api, monkeypatch):
     client, app = api
 
-    from model import User, Project, Subject, Deliverable, db
+    from model import User, Project, Subject, Deliverable, Funding, db
 
     os.environ = {
         **os.environ,
@@ -169,3 +170,11 @@ def test_fund_project(api, monkeypatch):
         mock_function_environment["create_transaction_fund_project"][8]
         == 1_656_082_800 + 15 * 86_400
     )
+
+    funding: List[Funding] = Funding.query.all()
+    assert len(funding) == 1
+
+    fund = funding[0]
+    assert fund.funder_id == charlie.id
+    assert fund.project_id == project.id
+    assert fund.status == "submitted"

@@ -3,7 +3,7 @@ from flask import request
 from sqlalchemy import and_
 
 from lib import script_tools
-from model import Project, User
+from model import Project, User, Funding, db
 
 import pycardano as pyc
 
@@ -85,6 +85,10 @@ def fund_project():
         bytes.fromhex(funder.nft_identifier_policy),
         project.creation_date.timestamp() + project.days_to_complete * SECONDS_FOR_DAY,
     )
+
+    funding = Funding(funder = funder, project = project)
+    db.session.add(funding)
+    db.session.commit()
 
     # Sender will need to have the identifier NFT in this case
     return {

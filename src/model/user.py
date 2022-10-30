@@ -31,6 +31,7 @@ class User(db.Model):
     created_projects = relationship("Project", back_populates="creator")
     mediated_projects = relationship(
         "Project", secondary=association_table, back_populates="mediators")
+    funding = relationship("Funding", back_populates="funder")
 
     creation_date = db.Column(db.DateTime(
         timezone=False), server_default=func.now(), nullable=False)

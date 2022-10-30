@@ -32,6 +32,7 @@ class Project(db.Model):
     deliverables = relationship("Deliverable", back_populates="project")
     mediators = relationship(
         "User", secondary=mediator_association_table, back_populates="mediated_projects")
+    funding = relationship("Funding", back_populates="project")
 
     status = db.Column(db.String(), default="open", nullable=False)
 

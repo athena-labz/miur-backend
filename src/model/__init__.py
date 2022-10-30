@@ -6,3 +6,4 @@ from .project import Project
 from .subject import Subject
 from .deliverable import Deliverable
 from .user import User
+from .funding import Funding

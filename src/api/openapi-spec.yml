@@ -131,11 +131,55 @@ paths:
                   success:
                     type: boolean
                     example: True
-                  projects:
+                  project:
                     $ref: "#/components/schemas/ProjectInfo"
 
         "404":
           description: Project ID not found
+
+  /projects/{project_id}/{address}:
+    get:
+      summary: Get details of a specific project in relation to this user
+      operationId: api.projects.get_project_user
+      description: Returns detailed information about a specific project in relation to this user
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+        - in: path
+          name: address
+          description: address of the user whose relation with this project we want to get
+          required: true
+          schema:
+            type: string
+            example: "addr_test123"
+      responses:
+        "200":
+          description: Able to get the project successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  funder:
+                    type: boolean
+                    example: True
+                  creator:
+                    type: boolean
+                    example: False
+                  mediator:
+                    type: boolean
+                    example: False
+
+        "400":
+          description: Something wrong happened (return message)
+
+        "404":
+          description: Project ID or User address not found
 
   /register/{address}:
     post:

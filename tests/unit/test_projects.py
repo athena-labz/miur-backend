@@ -220,7 +220,8 @@ def test_create_project(api, monkeypatch):
 
     assert project.days_to_complete == 15
 
-    assert set([mediator.email for mediator in project.mediators]) == {"hanz@email.com"}
+    assert set([mediator.email for mediator in project.mediators]) == {
+        "hanz@email.com"}
 
     assert set([deliverable.deliverable for deliverable in project.deliverables]) == {
         "I'm gonna do real good",
@@ -228,7 +229,7 @@ def test_create_project(api, monkeypatch):
     }
 
 
-def test_get_projects(api):
+def test_get_project(api):
     client, app = api
 
     sys.path.append("src")
@@ -258,6 +259,7 @@ def test_get_projects(api):
     deliverable_2.deliverable = "I am doint it I swear"
 
     project_1 = Project()
+    project_1.project_identifier = "id"
     project_1.creator = user_1
     project_1.subjects = [subject_1, subject_2]
 
@@ -296,12 +298,13 @@ def test_get_projects(api):
         db.session.refresh(deliverable_1)
         db.session.refresh(deliverable_2)
 
-    response = client.get(f"/projects/{project_1.project_identifier}")
+    response = client.get("/projects/id")
 
     assert response.status_code == 200
     assert response.json == {
         "success": True,
         "project": {
+            "project_id": "id",
             "name": "Project",
             "creator": {
                 "id": "abc123",
@@ -323,4 +326,91 @@ def test_get_projects(api):
                 "email": "bob@email.com"
             }]
         }
+    }
+
+
+def test_get_project_user(api):
+    client, app = api
+
+    sys.path.append("src")
+
+    from model import db, Project, User, Subject, Deliverable, Funding
+
+    project = Project()
+    project.project_identifier = "project_id"
+    project.creator = User(
+        user_identifier="alice",
+        email="alice@email.com",
+        address="addr_test123",
+    )
+    project.subjects = [Subject(subject_name="Math"),
+                        Subject(subject_name="Tourism")]
+
+    project.name = "Project"
+
+    project.short_description = "lorem ipsum..."
+    project.long_description = "lorem ipsum dolor sit amet..."
+
+    project.days_to_complete = 15
+
+    project.deliverables = [
+        Deliverable(deliverable="I am going to do it"),
+        Deliverable(deliverable="I am doint it I swear"),
+    ]
+    project.mediators = [
+        User(
+            user_identifier="bob",
+            email="bob@email.com",
+            address="addr_test456",
+        )
+    ]
+
+    project.creation_date = datetime.datetime(2022, 6, 24, 12, 0, 0)
+
+    with app.app_context():
+        db.session.add(project)
+        db.session.commit()
+        db.session.refresh(project)
+
+    funding = Funding(
+        funder=User(
+            user_identifier="charlie",
+            email="charlie@email.com",
+            address="addr_test789",
+        ),
+        project=project
+    )
+
+    with app.app_context():
+        db.session.add(funding)
+        db.session.commit()
+
+    response = client.get(f"/projects/project_id/addr_test123")
+
+    print(response.json)
+    assert response.status_code == 200
+    assert response.json == {
+        "funder": False,
+        "creator": True,
+        "mediator": False,
+    }
+
+    response = client.get(f"/projects/project_id/addr_test456")
+
+    print(response.json)
+    assert response.status_code == 200
+    assert response.json == {
+        "funder": False,
+        "creator": False,
+        "mediator": True,
+    }
+
+    response = client.get(f"/projects/project_id/addr_test789")
+
+    print(response.json)
+    assert response.status_code == 200
+    assert response.json == {
+        "funder": True,
+        "creator": False,
+        "mediator": False,
     }

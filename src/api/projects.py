@@ -1,6 +1,7 @@
 from flask import request
+from sqlalchemy import and_
 
-from model import Project, User, Subject, Deliverable, db
+from model import Project, User, Subject, Deliverable, Funding, db
 from lib import auth_tools
 
 
@@ -123,7 +124,8 @@ def create_project():
 
 
 def get_project(project_id):
-    project = Project.query.filter(Project.project_identifier == project_id).first()
+    project = Project.query.filter(
+        Project.project_identifier == project_id).first()
 
     if project is None:
         return {"success": False}, 404
@@ -131,6 +133,7 @@ def get_project(project_id):
     return {
         "success": True,
         "project": {
+            "project_id": project.project_identifier,
             "name": project.name,
             "creator": {
                 "id": project.creator.user_identifier,
@@ -153,4 +156,26 @@ def get_project(project_id):
                 for mediator in project.mediators
             ],
         },
+    }, 200
+
+
+def get_project_user(project_id, address):
+    project: Project = Project.query.filter(
+        Project.project_identifier == project_id).first()
+
+    if project is None:
+        return {"message": f"Project with project id {project_id} not found!"}, 404
+
+    user: User = User.query.filter(User.address == address).first()
+
+    if user is None:
+        return {"message": f"User with address {address} not found!"}, 404
+
+    funding: Funding = Funding.query.filter(
+        and_(Funding.funder_id == user.id, Funding.project_id == project.id)).first()
+
+    return {
+        "funder": funding is not None,
+        "creator": project.creator_id == user.id,
+        "mediator": user in project.mediators,
     }, 200

@@ -42,7 +42,8 @@ def test_fund_project(api, monkeypatch):
     project = Project()
     project.project_identifier = "project_id"
     project.creator = alice
-    project.subjects = [Subject(subject_name="Math"), Subject(subject_name="Tourism")]
+    project.subjects = [Subject(subject_name="Math"),
+                        Subject(subject_name="Tourism")]
 
     project.name = "Project"
 
@@ -66,13 +67,20 @@ def test_fund_project(api, monkeypatch):
         db.session.refresh(project)
         db.session.refresh(charlie)
 
-    class MockCbor:
+    class MockWitnessSet:
+        def to_cbor(self):
+            return "<cbor>"
+
+    class MockTransactionBody:
+        id = pyc.TransactionId.from_primitive(
+            "c6bb2a88f6f7cc27390788ca80dbd3b851558e004033585df1581f060afafdaf")
+
         def to_cbor(self):
             return "<cbor>"
 
     class MockTransaction:
-        transaction_body = MockCbor()
-        transaction_witness_set = MockCbor()
+        transaction_body = MockTransactionBody()
+        transaction_witness_set = MockWitnessSet()
 
     class MockChainContext(pyc.ChainContext):
         def __init__(self, *args, **kwargs):
@@ -145,7 +153,8 @@ def test_fund_project(api, monkeypatch):
         1
     ] == pyc.Address.from_primitive(fallback_address)
 
-    assert mock_function_environment["create_transaction_fund_project"][2] == [utxo]
+    assert mock_function_environment["create_transaction_fund_project"][2] == [
+        utxo]
 
     assert mock_function_environment["create_transaction_fund_project"][3] == 10_000_000
 
@@ -177,4 +186,5 @@ def test_fund_project(api, monkeypatch):
     fund = funding[0]
     assert fund.funder_id == charlie.id
     assert fund.project_id == project.id
-    assert fund.status == "submitted"
+    assert fund.transaction_hash == "c6bb2a88f6f7cc27390788ca80dbd3b851558e004033585df1581f060afafdaf"
+    assert fund.status == "requested"

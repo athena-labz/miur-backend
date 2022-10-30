@@ -378,7 +378,9 @@ def test_get_project_user(api):
             email="charlie@email.com",
             address="addr_test789",
         ),
-        project=project
+        project=project,
+        status="submitted",
+        transaction_hash="hash"
     )
 
     with app.app_context():

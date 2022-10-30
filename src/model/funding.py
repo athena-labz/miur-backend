@@ -18,8 +18,10 @@ class Funding(db.Model):
         "project.id"), nullable=False)
     project = relationship("Project", back_populates="funding")
 
-    # submitted, on-chain, expired
-    status = db.Column(db.String(), default="submitted", nullable=False)
+    transaction_hash = db.Column(db.String(), nullable=False)
+
+    # requested, submitted, on-chain, expired
+    status = db.Column(db.String(), default="requested", nullable=False)
 
     creation_date = db.Column(db.DateTime(
         timezone=False), server_default=func.now(), nullable=False)

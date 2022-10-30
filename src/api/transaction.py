@@ -57,7 +57,8 @@ def fund_project():
     if project is None:
         return {"message": f"No open project found with ID {project_id}"}, 404
 
-    funder: User = User.query.filter(User.address == registered_address).first()
+    funder: User = User.query.filter(
+        User.address == registered_address).first()
     if funder is None:
         return {
             "message": f"No registered user found with address {registered_address}"
@@ -86,7 +87,12 @@ def fund_project():
         project.creation_date.timestamp() + project.days_to_complete * SECONDS_FOR_DAY,
     )
 
-    funding = Funding(funder = funder, project = project)
+    funding = Funding(
+        funder=funder,
+        project=project,
+        transaction_hash=str(transaction.transaction_body.id)
+    )
+
     db.session.add(funding)
     db.session.commit()
 

@@ -1,5 +1,5 @@
 from flask import request
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 
 from model import Project, User, Subject, Deliverable, Funding, db
 from lib import auth_tools
@@ -172,7 +172,15 @@ def get_project_user(project_id, address):
         return {"message": f"User with address {address} not found!"}, 404
 
     funding: Funding = Funding.query.filter(
-        and_(Funding.funder_id == user.id, Funding.project_id == project.id)).first()
+        and_(
+            Funding.funder_id == user.id,
+            Funding.project_id == project.id,
+            or_(
+                Funding.status == "submitted",
+                Funding.status == "onchain"
+            )
+        )
+    ).first()
 
     return {
         "funder": funding is not None,

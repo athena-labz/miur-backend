@@ -18,6 +18,7 @@ class Funding(db.Model):
         "project.id"), nullable=False)
     project = relationship("Project", back_populates="funding")
 
+    # What if user doesn't sign transaction then tries to get new one?
     transaction_hash = db.Column(db.String(), nullable=False, unique=True)
 
     # requested, submitted, on-chain, expired

@@ -133,7 +133,8 @@ def create_transaction_fund_project(
         )
     )
 
-    builder.required_signers = [registered_address.payment_part]
+    if not registered_address in [utxo.output.address for utxo in funding_utxos]:
+        builder.required_signers = [registered_address.payment_part]
 
     tx_body = builder.build(change_address=registered_address, merge_change=True)
 

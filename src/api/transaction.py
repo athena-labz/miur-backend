@@ -2,7 +2,7 @@ from typing import List
 from flask import request
 from sqlalchemy import and_
 
-from lib import script_tools
+from lib import script_tools, auth_tools
 from model import Project, User, Funding, db
 
 import pycardano as pyc
@@ -101,3 +101,43 @@ def fund_project():
         "transaction_cbor": transaction.transaction_body.to_cbor(),
         "witness_cbor": transaction.transaction_witness_set.to_cbor(),
     }, 200
+
+
+def fund_project_submitted():
+    data = request.json
+
+    address = data["address"]
+    transaction_hash = data["transaction_hash"]
+    signature = data["signature"]
+
+    # Make sure address exists
+    funder: User = User.query.filter(User.address == address).first()
+    if funder is None:
+        return {
+            "message": f"No registered user found with address {address}",
+            "code": "user-not-found"
+        }, 404
+
+    # Make sure funding with transaction hash exists
+    funding: Funding = Funding.query.filter(
+        Funding.transaction_hash == transaction_hash
+    ).first()
+
+    if funding is None:
+        return {
+            "message": f"No funding transaction found with hash {transaction_hash}",
+            "code": "funding-not-found"
+        }, 404
+
+    if not auth_tools.validate_signature(signature, address):
+        return {
+            "message": "Invalid signature",
+            "code": "invalid-signature",
+        }, 400
+
+    funding.status = "submitted"
+
+    db.session.add(funding)
+    db.session.commit()
+
+    return {"message": "Everything went well"}, 200

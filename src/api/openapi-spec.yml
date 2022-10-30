@@ -315,6 +315,44 @@ paths:
                     type: string
                     example: "An error has ocurred"
                   
+  /transaction/projects/fund/submitted:
+    post:
+      operationId: "api.transaction.fund_project_submitted"
+      summary: "Confirm that funding transaction was submitted"
+      description: "Confirm that funding transaction was submitted"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - transaction_hash
+                - address
+                - signature
+              properties:
+                address:
+                  type: string
+                  example: addr_test123
+                transaction_hash:
+                  type: string
+                  example: abc123
+                signature:
+                  $ref: "#/components/schemas/Signature"
+      responses:
+        200:
+          description: "Successful entry will respond with {success:true}"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Everything went well
+        
+        400:
+          description: Something went wrong
 
 components:
   schemas:

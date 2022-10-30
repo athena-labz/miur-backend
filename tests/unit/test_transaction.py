@@ -188,3 +188,85 @@ def test_fund_project(api, monkeypatch):
     assert fund.project_id == project.id
     assert fund.transaction_hash == "c6bb2a88f6f7cc27390788ca80dbd3b851558e004033585df1581f060afafdaf"
     assert fund.status == "requested"
+
+
+def test_fund_project_submitted(api, monkeypatch):
+    client, app = api
+
+    sys.path.append("src")
+
+    class NewDate(datetime.datetime):
+        @classmethod
+        def utcnow(cls):
+            return cls(2022, 1, 1, 0, 0, 0)
+
+    monkeypatch.setattr(
+        "api.user.datetime.datetime",
+        NewDate,
+    )
+
+    from model import db, User, Funding, Project, Subject, Deliverable
+
+    project = Project()
+    project.project_identifier = "project_id"
+    project.creator = User(
+        user_identifier="alice",
+        email="alice@email.com",
+        address="addr_test123",
+    )
+    project.subjects = [Subject(subject_name="Math"),
+                        Subject(subject_name="Tourism")]
+
+    project.name = "Project"
+
+    project.short_description = "lorem ipsum..."
+    project.long_description = "lorem ipsum dolor sit amet..."
+
+    project.days_to_complete = 15
+
+    project.deliverables = [
+        Deliverable(deliverable="I am going to do it"),
+        Deliverable(deliverable="I am doint it I swear"),
+    ]
+    project.mediators = [
+        User(
+            user_identifier="bob",
+            email="bob@email.com",
+            address="addr_test456",
+        )
+    ]
+
+    project.creation_date = datetime.datetime(2022, 6, 24, 12, 0, 0)
+
+    with app.app_context():
+        db.session.add(project)
+        db.session.commit()
+        db.session.refresh(project)
+
+    address = "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq"
+    charlie = User(
+        user_identifier="charlie",
+        email="charlie@email.com",
+        address=address,
+    )
+
+    funding = Funding(
+        funder=charlie,
+        project=project,
+        status="submitted",
+        transaction_hash="hash"
+    )
+
+    with app.app_context():
+        db.session.add(funding)
+        db.session.commit()
+        db.session.refresh(funding)
+    
+    response = client.post("/transaction/projects/fund/submitted", json={
+        "address": address,
+        "transaction_hash": "hash",
+        "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a"
+    })
+
+    assert response.status_code == 200
+    assert funding.status == "submitted"

@@ -115,8 +115,18 @@ def create_transaction_fund_project(
 
     builder = pyc.TransactionBuilder(chain_context)
 
+    total_value = pyc.Value(0)
+
+    target_value = funding_amount + 2_000_000
+    if isinstance(target_value, int):
+        target_value = pyc.Value(target_value)
+
     for utxo in funding_utxos:
         builder.add_input(utxo)
+
+        total_value += utxo.output.amount
+        if total_value >= target_value:
+            break
 
     datum = cardano_types.ContractDatum(
         mediators=mediator_policy,
@@ -132,12 +142,13 @@ def create_transaction_fund_project(
             datum_hash=pyc.datum_hash(datum),
         )
     )
-
-    builder.required_signers = [registered_address.payment_part]
+    # if not registered_address in [utxo.output.address for utxo in funding_utxos]:
+    #     builder.required_signers = [registered_address.payment_part]
 
     tx_body = builder.build(change_address=registered_address, merge_change=True)
 
     return pyc.Transaction(tx_body, pyc.TransactionWitnessSet())
+
 
 
 def create_transaction_fallback_project(

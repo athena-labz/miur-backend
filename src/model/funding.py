@@ -19,6 +19,9 @@ class Funding(db.Model):
     project = relationship("Project", back_populates="funding")
 
     transaction_hash = db.Column(db.String(), nullable=False)
+    transaction_index = db.Column(db.Integer, nullable=False)
+
+    amount = db.Column(db.Integer, nullable=False)
 
     # requested, submitted, on-chain, expired
     status = db.Column(db.String(), default="requested", nullable=False)

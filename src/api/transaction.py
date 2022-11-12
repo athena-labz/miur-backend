@@ -90,7 +90,9 @@ def fund_project():
     funding = Funding(
         funder=funder,
         project=project,
-        transaction_hash=str(transaction.transaction_body.id)
+        transaction_hash=str(transaction.transaction_body.id),
+        transaction_index=0,
+        amount=funding_amount
     )
 
     db.session.add(funding)

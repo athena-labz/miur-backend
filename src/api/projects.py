@@ -5,6 +5,44 @@ from model import Project, User, Subject, Deliverable, Funding, db
 from lib import auth_tools
 
 
+def parse_project(project: Project) -> dict:
+    return {
+        "project_id": project.project_identifier,
+        "name": project.name,
+        "creator": {
+            "id": project.creator.user_identifier,
+            "email": project.creator.email,
+            "address": project.creator.address,
+        },
+        "funders": [
+            {
+                "user": {
+                    "id": funding.funder.user_identifier,
+                    "email": funding.funder.email,
+                    "address": funding.funder.address,
+                },
+                "amount": funding.amount,
+            }
+            for funding in project.funding
+        ],
+        "mediators": [
+            {
+                "id": mediator.user_identifier,
+                "email": mediator.email,
+                "address": mediator.address,
+            }
+            for mediator in project.mediators
+        ],
+        "short_description": project.short_description,
+        "long_description": project.long_description,
+        "subjects": [subject.subject_name for subject in project.subjects],
+        "deliverables": [
+            deliverable.deliverable for deliverable in project.deliverables
+        ],
+        "days_to_complete": project.days_to_complete,
+    }
+
+
 def get_projects():
     data = request.args
 
@@ -45,33 +83,7 @@ def get_projects():
 
     return {
         "count": projects.query.count(),
-        "projects": [
-            {
-                "project_id": project.project_identifier,
-                "name": project.name,
-                "creator": {
-                    "id": project.creator.user_identifier,
-                    "email": project.creator.email,
-                    "address": project.creator.address,
-                },
-                "mediators": [
-                    {
-                        "id": mediator.user_identifier,
-                        "email": mediator.email,
-                        "address": mediator.address,
-                    }
-                    for mediator in project.mediators
-                ],
-                "short_description": project.short_description,
-                "long_description": project.long_description,
-                "subjects": [subject.subject_name for subject in project.subjects],
-                "deliverables": [
-                    deliverable.deliverable for deliverable in project.deliverables
-                ],
-                "days_to_complete": project.days_to_complete,
-            }
-            for project in projects.items
-        ],
+        "projects": [parse_project(project) for project in projects.items],
     }, 200
 
 
@@ -150,30 +162,7 @@ def get_project(project_id):
 
     return {
         "success": True,
-        "project": {
-            "project_id": project.project_identifier,
-            "name": project.name,
-            "creator": {
-                "id": project.creator.user_identifier,
-                "email": project.creator.email,
-                "address": project.creator.address,
-            },
-            "short_description": project.short_description,
-            "long_description": project.long_description,
-            "subjects": [subject.subject_name for subject in project.subjects],
-            "days_to_complete": project.days_to_complete,
-            "deliverables": [
-                deliverable.deliverable for deliverable in project.deliverables
-            ],
-            "mediators": [
-                {
-                    "id": mediator.user_identifier,
-                    "email": mediator.email,
-                    "address": mediator.address,
-                }
-                for mediator in project.mediators
-            ],
-        },
+        "project": parse_project(project),
     }, 200
 
 

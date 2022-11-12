@@ -468,6 +468,7 @@ components:
         - creator
         - short_description
         - long_description
+        - funders
         - mediators
         - subjects
         - deliverables
@@ -481,6 +482,19 @@ components:
           example: "Who Done It 200+ Pages Book"
         creator:
           $ref: "#/components/schemas/User"
+        funders:
+          type: array
+          items:
+            type: object
+            required:
+              - user
+              - amount
+            properties:
+              user:
+                $ref: "#/components/schemas/User"
+              amount:
+                type: integer
+                example: 10_000_000
         mediators:
           type: array
           items:

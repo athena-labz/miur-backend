@@ -187,6 +187,8 @@ def test_fund_project(api, monkeypatch):
     assert fund.funder_id == charlie.id
     assert fund.project_id == project.id
     assert fund.transaction_hash == "c6bb2a88f6f7cc27390788ca80dbd3b851558e004033585df1581f060afafdaf"
+    assert fund.transaction_index == 0
+    assert fund.amount == 10_000_000
     assert fund.status == "requested"
 
 
@@ -253,8 +255,9 @@ def test_fund_project_submitted(api, monkeypatch):
     funding = Funding(
         funder=charlie,
         project=project,
-        status="submitted",
-        transaction_hash="hash"
+        transaction_hash="hash",
+        transaction_index=0,
+        amount=10_000_000
     )
 
     with app.app_context():
@@ -269,4 +272,8 @@ def test_fund_project_submitted(api, monkeypatch):
     })
 
     assert response.status_code == 200
-    assert funding.status == "submitted"
+
+    fundings = Funding.query.all()
+
+    assert len(fundings) == 1
+    assert fundings[0].status == "submitted"

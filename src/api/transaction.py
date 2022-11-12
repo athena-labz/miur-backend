@@ -45,39 +45,54 @@ def fund_project():
 
     data = request.json
 
-    registered_address = data["registered_address"]
+    stake_address = data["stake_address"]
     funding_utxos = data["funding_utxos"]
     funding_amount = data["funding_amount"]
     project_id = data["project_id"]
+    signature = data["signature"]
+
+    if not auth_tools.validate_signature(signature, stake_address):
+        return {
+            "success": False,
+            "message": "Invalid signature",
+            "code": "invalid-signature",
+        }, 400
 
     project: Project = Project.query.filter(
         and_(Project.project_identifier == project_id, Project.status == "open")
     ).first()
 
     if project is None:
-        return {"message": f"No open project found with ID {project_id}"}, 404
+        return {
+            "message": f"No open project found with ID {project_id}",
+            "code": "project-not-found",
+        }, 404
 
-    funder: User = User.query.filter(
-        User.address == registered_address).first()
+    funder: User = User.query.filter(User.stake_address == stake_address).first()
     if funder is None:
         return {
-            "message": f"No registered user found with address {registered_address}"
+            "message": f"No registered user found with address {stake_address}",
+            "code": "address-not-found",
         }, 404
 
     if funder.nft_identifier_policy is None:
-        return {"message": f"User {funder.address} has not any identity NFTs yet!"}, 400
+        return {
+            "message": f"User {funder.address} doesn't have his identity NFT yet!",
+            "code": "missing-identity-nft",
+        }, 400
 
     project_creator_nft = project.creator.nft_identifier_policy
     if project_creator_nft is None:
         return {
-            "message": f"Cannot fund project whose creator has no identity NFTs!"
+            "message": f"Cannot fund project whose creator has no identity NFTs!",
+            "code": "missing-identity-nft",
         }, 400
 
     cardano_handler = script_tools.initialise_cardano()
 
     transaction = script_tools.create_transaction_fund_project(
         cardano_handler["chain_context"],
-        pyc.Address.from_primitive(registered_address),
+        pyc.Address.from_primitive(funder.payment_address),
         [script_tools.cbor_to_utxo(utxo) for utxo in funding_utxos],
         funding_amount,
         cardano_handler["script"],
@@ -92,7 +107,7 @@ def fund_project():
         project=project,
         transaction_hash=str(transaction.transaction_body.id),
         transaction_index=0,
-        amount=funding_amount
+        amount=funding_amount,
     )
 
     db.session.add(funding)
@@ -108,16 +123,16 @@ def fund_project():
 def fund_project_submitted():
     data = request.json
 
-    address = data["address"]
+    stake_address = data["stake_address"]
     transaction_hash = data["transaction_hash"]
     signature = data["signature"]
 
     # Make sure address exists
-    funder: User = User.query.filter(User.address == address).first()
+    funder: User = User.query.filter(User.stake_address == stake_address).first()
     if funder is None:
         return {
-            "message": f"No registered user found with address {address}",
-            "code": "user-not-found"
+            "message": f"No registered user found with address {stake_address}",
+            "code": "address-not-found",
         }, 404
 
     # Make sure funding with transaction hash exists
@@ -128,10 +143,10 @@ def fund_project_submitted():
     if funding is None:
         return {
             "message": f"No funding transaction found with hash {transaction_hash}",
-            "code": "funding-not-found"
+            "code": "funding-not-found",
         }, 404
 
-    if not auth_tools.validate_signature(signature, address):
+    if not auth_tools.validate_signature(signature, stake_address):
         return {
             "message": "Invalid signature",
             "code": "invalid-signature",

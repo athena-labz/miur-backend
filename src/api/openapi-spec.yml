@@ -147,7 +147,7 @@ paths:
         "404":
           description: Project ID not found
 
-  /projects/{project_id}/{address}:
+  /projects/{project_id}/{stake_address}:
     get:
       summary: Get details of a specific project in relation to this user
       operationId: api.projects.get_project_user
@@ -161,12 +161,12 @@ paths:
             type: string
             example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
         - in: path
-          name: address
-          description: address of the user whose relation with this project we want to get
+          name: stake_address
+          description: stake address of the user whose relation with this project we want to get
           required: true
           schema:
             type: string
-            example: "addr_test123"
+            example: "stake_test123"
       responses:
         "200":
           description: Able to get the project successfully
@@ -191,19 +191,19 @@ paths:
         "404":
           description: Project ID or User address not found
 
-  /register/{address}:
+  /register/{stake_address}:
     post:
       summary: Registers a user to the platform
       operationId: api.user.register
       description: Adds user to db if he provides a valid signature
       parameters:
         - in: path
-          name: address
-          description: the address of the user who is trying to register
+          name: stake_address
+          description: the stake address of the user who is trying to register
           required: true
           schema:
             type: string
-            example: "addr_test123"
+            example: "stake_test123"
       requestBody:
         required: true
         content:
@@ -212,11 +212,15 @@ paths:
               type: object
               required:
                 - email
+                - payment_address
                 - signature
               properties:
                 email:
                   type: string
                   example: babatomano@email.com
+                payment_address:
+                  type: string
+                  example: addr_test123
                 signature:
                   $ref: "#/components/schemas/Signature"
       responses:
@@ -235,15 +239,15 @@ paths:
                     type: string
                     example: "Something real bad happened"
 
-  /user/{address}:
+  /user/{stake_address}:
     get:
       summary: Info about user
       operationId: api.user.get_info
-      description: Get's information about user with this address
+      description: Get's information about user with this stake_address
       parameters:
         - in: path
-          name: address
-          description: the address of the user who we are trying to get information from
+          name: stake_address
+          description: the stake_address of the user who we are trying to get information from
           required: true
           schema:
             type: string
@@ -255,11 +259,18 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - email
+                  - payment_address
+                  - stake_address
                 properties:
                   email:
                     type: string
                     example: babatomano@email.com
-                  address:
+                  payment_address:
+                    type: string
+                    example: addr_test123
+                  stake_address:
                     type: string
                     example: addr_test123
                   nft_policy_identifier:
@@ -288,14 +299,15 @@ paths:
             schema:
               type: object
               required:
-                - registered_address
+                - stake_address
                 - funding_utxos
                 - funding_amount
                 - project_id
+                - signature
               properties:
-                registered_address:
+                stake_address:
                   type: string
-                  example: addr_test123
+                  example: stake_test123
                 funding_utxos:
                   type: array
                   items:
@@ -307,6 +319,8 @@ paths:
                 project_id:
                   type: string
                   example: ba3fa9fd-79c8-4a78-b75d-893620de0e7b
+                signature:
+                  $ref: "#/components/schemas/Signature"
       responses:
         200:
           description: "Successful entry will respond with {success:true}"
@@ -338,12 +352,12 @@ paths:
               type: object
               required:
                 - transaction_hash
-                - address
+                - stake_address
                 - signature
               properties:
-                address:
+                stake_address:
                   type: string
-                  example: addr_test123
+                  example: stake_test123
                 transaction_hash:
                   type: string
                   example: abc123
@@ -381,19 +395,22 @@ components:
     User:
       type: object
       required:
-        - id
-        - address
+        - stake_address
+        - payment_address
         - email
       properties:
-        id:
+        stake_ddress:
           type: string
-          example: 5e97a1ee-7ed2-4287-85cf-d3f8d566da0c
-        address:
+          example: addr_test123
+        payment_ddress:
           type: string
           example: addr_test123
         email:
           type: string
           example: mateus@email.com
+        nft_policy_identifier:
+          type: string
+          example: policy123
 
     Signature:
       oneOf:
@@ -439,7 +456,7 @@ components:
           type: array
           items:
             type: string
-            example: "mediator@email.com"
+            example: "stake_test123"
         short_description:
           type: string
           example: "I will write a story about a murder that happened in a spaceship! The ending will be incredible!"

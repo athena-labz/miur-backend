@@ -13,15 +13,17 @@ def test_get_projects(api):
 
     from model import db, Project, User, Subject, Deliverable, Funding
 
-    user_1 = User()
-    user_1.user_identifier = "abc123"
-    user_1.email = "bonjour@email.com"
-    user_1.address = "addr_test123"
+    user_1 = User(
+        email="bonjour@email.com",
+        stake_address="stake_test123",
+        payment_address="addr_test123",
+    )
 
-    user_2 = User()
-    user_2.user_identifier = "def456"
-    user_2.email = "arsene@email.com"
-    user_2.address = "addr_test456"
+    user_2 = User(
+        email="arsene@email.com",
+        stake_address="stake_test456",
+        payment_address="addr_test456",
+    )
 
     subject_1 = Subject()
     subject_1.subject_name = "Math"
@@ -90,9 +92,9 @@ def test_get_projects(api):
         "project_id": project_1.project_identifier,
         "name": "Project",
         "creator": {
-            "id": "abc123",
             "email": "bonjour@email.com",
-            "address": "addr_test123",
+            "payment_address": "addr_test123",
+            "stake_address": "stake_test123",
         },
         "short_description": "lorem ipsum...",
         "long_description": "lorem ipsum dolor sit amet...",
@@ -101,23 +103,23 @@ def test_get_projects(api):
         "funders": [
             {
                 "user": {
-                    "id": "def456",
                     "email": "arsene@email.com",
-                    "address": "addr_test456",
+                    "payment_address": "addr_test456",
+                    "stake_address": "stake_test456",
                 },
                 "amount": 10_000_000,
             }
         ],
         "mediators": [
             {
-                "id": "abc123",
                 "email": "bonjour@email.com",
-                "address": "addr_test123",
+                "payment_address": "addr_test123",
+                "stake_address": "stake_test123",
             },
             {
-                "id": "def456",
                 "email": "arsene@email.com",
-                "address": "addr_test456",
+                "payment_address": "addr_test456",
+                "stake_address": "stake_test456",
             },
         ],
         "deliverables": ["I am going to do it", "I am doint it I swear"],
@@ -132,7 +134,7 @@ def test_get_projects(api):
     }
 
     # Filter by creator
-    response = client.get("/projects?creator=addr_test123")
+    response = client.get("/projects?creator=stake_test123")
 
     assert response.status_code == 200
     assert response.json == {
@@ -140,7 +142,7 @@ def test_get_projects(api):
         "projects": [parsed_project],
     }
 
-    response = client.get("/projects?creator=addr_test456")
+    response = client.get("/projects?creator=stake_test456")
 
     assert response.status_code == 200
     assert response.json == {
@@ -149,7 +151,7 @@ def test_get_projects(api):
     }
 
     # Filter by funder
-    response = client.get("/projects?funder=addr_test456")
+    response = client.get("/projects?funder=stake_test456")
 
     assert response.status_code == 200
     assert response.json == {
@@ -157,7 +159,7 @@ def test_get_projects(api):
         "projects": [parsed_project],
     }
 
-    response = client.get("/projects?funder=addr_test123")
+    response = client.get("/projects?funder=stake_test123")
 
     assert response.status_code == 200
     assert response.json == {
@@ -166,7 +168,7 @@ def test_get_projects(api):
     }
 
     # Filter by both creator and funder
-    response = client.get("/projects?creator=addr_test123&funder=addr_test456")
+    response = client.get("/projects?creator=stake_test123&funder=stake_test456")
 
     assert response.status_code == 200
     assert response.json == {
@@ -174,7 +176,7 @@ def test_get_projects(api):
         "projects": [parsed_project],
     }
 
-    response = client.get("/projects?creator=addr_test123&funder=addr_test789")
+    response = client.get("/projects?creator=stake_test123&funder=stake_test789")
 
     assert response.status_code == 200
     assert response.json == {
@@ -182,7 +184,7 @@ def test_get_projects(api):
         "projects": [parsed_project],
     }
 
-    response = client.get("/projects?creator=addr_test789&funder=addr_test456")
+    response = client.get("/projects?creator=stake_test789&funder=stake_test456")
 
     assert response.status_code == 200
     assert response.json == {
@@ -190,7 +192,7 @@ def test_get_projects(api):
         "projects": [parsed_project],
     }
 
-    response = client.get("/projects?creator=addr_test789&funder=addr_test789")
+    response = client.get("/projects?creator=stake_test789&funder=stake_test789")
 
     assert response.status_code == 200
     assert response.json == {
@@ -205,7 +207,7 @@ def test_create_project(api, monkeypatch):
     class NewDate(datetime.datetime):
         @classmethod
         def utcnow(cls):
-            return cls(2022, 1, 1, 0, 0, 0)
+            return cls(2022, 11, 12, 10, 15, 0)
 
     monkeypatch.setattr(
         "api.user.datetime.datetime",
@@ -221,14 +223,14 @@ def test_create_project(api, monkeypatch):
         "/projects/create",
         json={
             "name": "Project",
-            "creator": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
+            "creator": "stake_test1uzny4ggqn583qm7hg2neae5tmxjlmq2llfv86mg256xt28sv20c2r",
             "short_description": "lorem ipsum...",
             "long_description": "lorem ipsum dolor sit amet...",
             "subjects": ["Math", "Tourism"],
             "days_to_complete": 15,
             "deliverables": ["I'm gonna do real good", "Trust me bro"],
             "mediators": [],
-            "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a",
+            "signature": "84584da301276761646472657373581d60a64aa1009d0f106fd742a79ee68bd9a5fd815ffa587d6d0aa68cb51e045820f84f04c0054dbbb0a7fcbd1584dac460cbd1b14723a6e9d2571477ba21644858a166686173686564f45818417468656e61204d495552207c2031363638323538353834584020bd7dfdf5d6759193e5a63004949bbb116b702f5e6a334394b55937921bc060e762d7101b1e7200aa53cd6c0e2e373842eb79d20bff063e7c03630d66665a03",
         },
     )
 
@@ -238,28 +240,34 @@ def test_create_project(api, monkeypatch):
     assert response.json["success"] is False
 
     # Create user
-    user = User()
-    user.address = "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq"
-    user.email = "hanz@email.com"
+    user = User(
+        email="hanz@email.com",
+        stake_address="stake_test1uzny4ggqn583qm7hg2neae5tmxjlmq2llfv86mg256xt28sv20c2r",
+        payment_address="addr_test123",
+    )
 
     with app.app_context():
         db.session.add(user)
         db.session.commit()
         db.session.refresh(user)
 
+    print(User.query.all())
+
     # Signature is not valid
     response = client.post(
         "/projects/create",
         json={
             "name": "Project",
-            "creator": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
+            "creator": "stake_test1uzny4ggqn583qm7hg2neae5tmxjlmq2llfv86mg256xt28sv20c2r",
             "short_description": "lorem ipsum...",
             "long_description": "lorem ipsum dolor sit amet...",
             "subjects": ["Math", "Tourism"],
             "days_to_complete": 15,
             "deliverables": ["I'm gonna do real good", "Trust me bro"],
-            "mediators": ["hanz@email.com"],
-            "signature": "84584da301276761646472657373581d6045979b6a06fc37fffdb901304d5c970b08217b4e17b749be604b6c9704582067eef9883bd41729d2b2e26cc095e2ada32ddeee4529352e7a8d41810ed2800fa166686173686564f45818417468656e61204d495552207c203136343039393532303058408963af15e0fa9c22ccf8320712f7787d732eab1aa6976b4caa5400bcb6ba5b4e9eb0d9a46278bf3a78a36d6bbcfb7a6b6403f9128e3c00a5c955e0d33443ba00",
+            "mediators": [
+                "stake_test1uzny4ggqn583qm7hg2neae5tmxjlmq2llfv86mg256xt28sv20c2r"
+            ],
+            "signature": "84584da301276761646472657373581d60f30fcc4e977c7afeb89eefefe327a4d7e71e8767277f275421541320045820db35a31336847bec6a8e5b78b05e14575e7700308bd37302864360b057bcbc54a166686173686564f45818417468656e61204d495552207c203136363832353835383458407b41326e9dc19ea5aa4c49a20cd5828f6f57e13adb4b7eab89a8a0d3cad74009ab6312fae81152d68dcbafed7758524f02e25994f469aff5bec4ebc1c658930d",
         },
     )
 
@@ -273,14 +281,16 @@ def test_create_project(api, monkeypatch):
         "/projects/create",
         json={
             "name": "Project",
-            "creator": "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq",
+            "creator": "stake_test1uzny4ggqn583qm7hg2neae5tmxjlmq2llfv86mg256xt28sv20c2r",
             "short_description": "lorem ipsum...",
             "long_description": "lorem ipsum dolor sit amet...",
             "subjects": ["Math", "Tourism"],
             "days_to_complete": 15,
             "deliverables": ["I'm gonna do real good", "Trust me bro"],
-            "mediators": ["hanz@email.com"],
-            "signature": "84584da301276761646472657373581d60ae31a2873ec4e89d478eee0137f1a41dc65c1b403224a8cafa85bb5f045820bff6dc39c2dd5684cd3015a65e9ea26ee1b3aa950b7de442c2dec9c289733e76a166686173686564f45818417468656e61204d495552207c20313634303939353230305840a50410fcb800b8ea4318ebce8ebf259e05e95a74d014fd954439777d7237c26fded71f4b71c15dc0f64014645f8ffdcb1b12b4dc003246073544d6142739f10a",
+            "mediators": [
+                "stake_test1uzny4ggqn583qm7hg2neae5tmxjlmq2llfv86mg256xt28sv20c2r"
+            ],
+            "signature": "84584da301276761646472657373581d60a64aa1009d0f106fd742a79ee68bd9a5fd815ffa587d6d0aa68cb51e045820f84f04c0054dbbb0a7fcbd1584dac460cbd1b14723a6e9d2571477ba21644858a166686173686564f45818417468656e61204d495552207c2031363638323538353834584020bd7dfdf5d6759193e5a63004949bbb116b702f5e6a334394b55937921bc060e762d7101b1e7200aa53cd6c0e2e373842eb79d20bff063e7c03630d66665a03",
         },
     )
 
@@ -295,8 +305,8 @@ def test_create_project(api, monkeypatch):
     assert project.name == "Project"
 
     assert (
-        project.creator.address
-        == "addr_test1qzhrrg588mzw38283mhqzdl35swuvhqmgqezf2x2l2zmkhaxf2ssp8g0zphaws48nmnghkd9lkq4l7jc04ks4f5vk50qdf28fq"
+        project.creator.stake_address
+        == "stake_test1uzny4ggqn583qm7hg2neae5tmxjlmq2llfv86mg256xt28sv20c2r"
     )
 
     assert project.short_description == "lorem ipsum..."
@@ -324,15 +334,17 @@ def test_get_project(api):
 
     from model import db, Project, User, Subject, Deliverable
 
-    user_1 = User()
-    user_1.user_identifier = "abc123"
-    user_1.address = "addr_test123"
-    user_1.email = "alice@email.com"
+    user_1 = User(
+        email="alice@email.com",
+        stake_address="stake_test123",
+        payment_address="addr_test123",
+    )
 
-    user_2 = User()
-    user_2.user_identifier = "def456"
-    user_2.address = "addr_test456"
-    user_2.email = "bob@email.com"
+    user_2 = User(
+        email="bob@email.com",
+        stake_address="stake_test456",
+        payment_address="addr_test456",
+    )
 
     subject_1 = Subject()
     subject_1.subject_name = "Math"
@@ -395,9 +407,9 @@ def test_get_project(api):
             "project_id": "id",
             "name": "Project",
             "creator": {
-                "id": "abc123",
                 "email": "alice@email.com",
-                "address": "addr_test123",
+                "stake_address": "stake_test123",
+                "payment_address": "addr_test123",
             },
             "funders": [],
             "short_description": "lorem ipsum...",
@@ -406,8 +418,16 @@ def test_get_project(api):
             "days_to_complete": 15,
             "deliverables": ["I am going to do it", "I am doint it I swear"],
             "mediators": [
-                {"id": "abc123", "address": "addr_test123", "email": "alice@email.com"},
-                {"id": "def456", "address": "addr_test456", "email": "bob@email.com"},
+                {
+                    "stake_address": "stake_test123",
+                    "payment_address": "addr_test123",
+                    "email": "alice@email.com",
+                },
+                {
+                    "stake_address": "stake_test456",
+                    "payment_address": "addr_test456",
+                    "email": "bob@email.com",
+                },
             ],
         },
     }
@@ -423,9 +443,9 @@ def test_get_project_user(api):
     project = Project()
     project.project_identifier = "project_id"
     project.creator = User(
-        user_identifier="alice",
         email="alice@email.com",
-        address="addr_test123",
+        stake_address="stake_test123",
+        payment_address="addr_test123",
     )
     project.subjects = [Subject(subject_name="Math"), Subject(subject_name="Tourism")]
 
@@ -442,9 +462,9 @@ def test_get_project_user(api):
     ]
     project.mediators = [
         User(
-            user_identifier="bob",
             email="bob@email.com",
-            address="addr_test456",
+            stake_address="stake_test456",
+            payment_address="addr_test456",
         )
     ]
 
@@ -457,9 +477,9 @@ def test_get_project_user(api):
 
     funding = Funding(
         funder=User(
-            user_identifier="charlie",
             email="charlie@email.com",
-            address="addr_test789",
+            stake_address="stake_test789",
+            payment_address="addr_test789",
         ),
         project=project,
         status="submitted",
@@ -472,7 +492,7 @@ def test_get_project_user(api):
         db.session.add(funding)
         db.session.commit()
 
-    response = client.get(f"/projects/project_id/addr_test123")
+    response = client.get(f"/projects/project_id/stake_test123")
 
     print(response.json)
     assert response.status_code == 200
@@ -482,7 +502,7 @@ def test_get_project_user(api):
         "mediator": False,
     }
 
-    response = client.get(f"/projects/project_id/addr_test456")
+    response = client.get(f"/projects/project_id/stake_test456")
 
     print(response.json)
     assert response.status_code == 200
@@ -492,7 +512,7 @@ def test_get_project_user(api):
         "mediator": True,
     }
 
-    response = client.get(f"/projects/project_id/addr_test789")
+    response = client.get(f"/projects/project_id/stake_test789")
 
     print(response.json)
     assert response.status_code == 200

@@ -29,3 +29,9 @@ class Funding(db.Model):
     creation_date = db.Column(db.DateTime(
         timezone=False), server_default=func.now(), nullable=False)
     update_date = db.Column(db.DateTime(timezone=False), onupdate=func.now())
+
+    def parse(self) -> dict:
+        return {
+            "user": self.funder.parse(),
+            "amount": self.amount
+        }

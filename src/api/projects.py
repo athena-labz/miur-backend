@@ -5,44 +5,6 @@ from model import Project, User, Subject, Deliverable, Funding, db
 from lib import auth_tools
 
 
-def parse_project(project: Project) -> dict:
-    return {
-        "project_id": project.project_identifier,
-        "name": project.name,
-        "creator": {
-            "id": project.creator.user_identifier,
-            "email": project.creator.email,
-            "address": project.creator.address,
-        },
-        "funders": [
-            {
-                "user": {
-                    "id": funding.funder.user_identifier,
-                    "email": funding.funder.email,
-                    "address": funding.funder.address,
-                },
-                "amount": funding.amount,
-            }
-            for funding in project.funding
-        ],
-        "mediators": [
-            {
-                "id": mediator.user_identifier,
-                "email": mediator.email,
-                "address": mediator.address,
-            }
-            for mediator in project.mediators
-        ],
-        "short_description": project.short_description,
-        "long_description": project.long_description,
-        "subjects": [subject.subject_name for subject in project.subjects],
-        "deliverables": [
-            deliverable.deliverable for deliverable in project.deliverables
-        ],
-        "days_to_complete": project.days_to_complete,
-    }
-
-
 def get_projects():
     data = request.args
 
@@ -57,15 +19,15 @@ def get_projects():
     if creator is not None and funder is not None:
         query = Project.query.filter(
             or_(
-                Project.creator.has(User.address == creator),
-                Project.funding.any(Funding.funder.has(User.address == funder)),
+                Project.creator.has(User.stake_address == creator),
+                Project.funding.any(Funding.funder.has(User.stake_address == funder)),
             )
         )
     elif creator is not None:
-        query = Project.query.filter(Project.creator.has(User.address == creator))
+        query = Project.query.filter(Project.creator.has(User.stake_address == creator))
     elif funder is not None:
         query = Project.query.filter(
-            Project.funding.any(Funding.funder.has(User.address == funder))
+            Project.funding.any(Funding.funder.has(User.stake_address == funder))
         )
     else:
         query = Project.query
@@ -83,7 +45,7 @@ def get_projects():
 
     return {
         "count": projects.query.count(),
-        "projects": [parse_project(project) for project in projects.items],
+        "projects": [project.parse() for project in projects.items],
     }, 200
 
 
@@ -100,7 +62,7 @@ def create_project():
 
     project.name = data["name"]
 
-    creator = User.query.filter(User.address == data["creator"]).first()
+    creator = User.query.filter(User.stake_address == data["creator"]).first()
 
     if creator is None:
         return {
@@ -118,12 +80,12 @@ def create_project():
     project.days_to_complete = data["days_to_complete"]
 
     mediators = []
-    for mediator_email in data["mediators"]:
-        user = User.query.filter(User.email == mediator_email).first()
+    for mediator_stake_address in data["mediators"]:
+        user = User.query.filter(User.stake_address == mediator_stake_address).first()
         if user is None:
             return {
                 "success": False,
-                "message": f"Mediator {mediator_email} is not registered",
+                "message": f"Mediator {mediator_stake_address} is not registered",
             }, 404
 
         mediators.append(user)
@@ -162,11 +124,11 @@ def get_project(project_id):
 
     return {
         "success": True,
-        "project": parse_project(project),
+        "project": project.parse(),
     }, 200
 
 
-def get_project_user(project_id, address):
+def get_project_user(project_id, stake_address):
     project: Project = Project.query.filter(
         Project.project_identifier == project_id
     ).first()
@@ -174,10 +136,13 @@ def get_project_user(project_id, address):
     if project is None:
         return {"message": f"Project with project id {project_id} not found!"}, 404
 
-    user: User = User.query.filter(User.address == address).first()
+    user: User = User.query.filter(User.stake_address == stake_address).first()
 
     if user is None:
-        return {"message": f"User with address {address} not found!"}, 404
+        return {
+            "message": f"User with address {stake_address} not found!",
+            "code": "address-not-found",
+        }, 404
 
     funding: Funding = Funding.query.filter(
         and_(

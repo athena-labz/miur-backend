@@ -18,7 +18,7 @@ def get_projects():
 
     if creator is not None and funder is not None:
         query = Project.query.filter(
-            and_(
+            or_(
                 Project.creator.has(User.address == creator),
                 Project.funding.any(Funding.funder.has(User.address == funder)),
             )

@@ -247,16 +247,70 @@ def test_get_projects(api):
 
     assert response.status_code == 200
     assert response.json == {
-        "count": 0,
-        "projects": [],
+        "count": 1,
+        "projects": [
+            {
+                "project_id": project_1.project_identifier,
+                "name": "Project",
+                "creator": {
+                    "id": "abc123",
+                    "email": "bonjour@email.com",
+                    "address": "addr_test123",
+                },
+                "short_description": "lorem ipsum...",
+                "long_description": "lorem ipsum dolor sit amet...",
+                "subjects": ["Math", "Tourism"],
+                "days_to_complete": 15,
+                "mediators": [
+                    {
+                        "id": "abc123",
+                        "email": "bonjour@email.com",
+                        "address": "addr_test123",
+                    },
+                    {
+                        "id": "def456",
+                        "email": "arsene@email.com",
+                        "address": "addr_test456",
+                    },
+                ],
+                "deliverables": ["I am going to do it", "I am doint it I swear"],
+            }
+        ],
     }
 
     response = client.get("/projects?creator=addr_test789&funder=addr_test456")
 
     assert response.status_code == 200
     assert response.json == {
-        "count": 0,
-        "projects": [],
+        "count": 1,
+        "projects": [
+            {
+                "project_id": project_1.project_identifier,
+                "name": "Project",
+                "creator": {
+                    "id": "abc123",
+                    "email": "bonjour@email.com",
+                    "address": "addr_test123",
+                },
+                "short_description": "lorem ipsum...",
+                "long_description": "lorem ipsum dolor sit amet...",
+                "subjects": ["Math", "Tourism"],
+                "days_to_complete": 15,
+                "mediators": [
+                    {
+                        "id": "abc123",
+                        "email": "bonjour@email.com",
+                        "address": "addr_test123",
+                    },
+                    {
+                        "id": "def456",
+                        "email": "arsene@email.com",
+                        "address": "addr_test456",
+                    },
+                ],
+                "deliverables": ["I am going to do it", "I am doint it I swear"],
+            }
+        ],
     }
 
     response = client.get("/projects?creator=addr_test789&funder=addr_test789")

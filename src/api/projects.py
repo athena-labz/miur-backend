@@ -120,7 +120,7 @@ def get_project(project_id):
     project = Project.query.filter(Project.project_identifier == project_id).first()
 
     if project is None:
-        return {"success": False}, 404
+        return {"success": False, "code": "address-not-found"}, 404
 
     return {
         "success": True,

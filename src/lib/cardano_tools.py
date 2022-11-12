@@ -19,9 +19,10 @@ def signature_message(signature, address):
         return None
 
     if (
-        validation["signing_address"].payment_part
+        validation["signing_address"].staking_part
         != Address.from_primitive(address).staking_part
     ):
+        logging.warning("Signing address different from signature address")
         return None
 
     return validation["message"]

@@ -11,7 +11,7 @@ def test_get_projects(api):
 
     sys.path.append("src")
 
-    from model import db, Project, User, Subject, Deliverable
+    from model import db, Project, User, Subject, Deliverable, Funding
 
     user_1 = User()
     user_1.user_identifier = "abc123"
@@ -49,6 +49,12 @@ def test_get_projects(api):
     project_1.deliverables = [deliverable_1, deliverable_2]
     project_1.mediators = [user_1, user_2]
 
+    funding = Funding(
+        funder=user_2,
+        project=project_1,
+        transaction_hash="hash"
+    )
+
     with app.app_context():
         db.session.add(project_1)
 
@@ -60,6 +66,8 @@ def test_get_projects(api):
 
         db.session.add(deliverable_1)
         db.session.add(deliverable_2)
+
+        db.session.add(funding)
 
         db.session.commit()
 
@@ -73,6 +81,8 @@ def test_get_projects(api):
 
         db.session.refresh(deliverable_1)
         db.session.refresh(deliverable_2)
+
+        db.session.refresh(funding)
 
     response = client.get("/projects")
 
@@ -107,6 +117,154 @@ def test_get_projects(api):
                 "deliverables": ["I am going to do it", "I am doint it I swear"],
             }
         ],
+    }
+
+    # Filter by creator
+    response = client.get("/projects?creator=addr_test123")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 1,
+        "projects": [
+            {
+                "project_id": project_1.project_identifier,
+                "name": "Project",
+                "creator": {
+                    "id": "abc123",
+                    "email": "bonjour@email.com",
+                    "address": "addr_test123",
+                },
+                "short_description": "lorem ipsum...",
+                "long_description": "lorem ipsum dolor sit amet...",
+                "subjects": ["Math", "Tourism"],
+                "days_to_complete": 15,
+                "mediators": [
+                    {
+                        "id": "abc123",
+                        "email": "bonjour@email.com",
+                        "address": "addr_test123",
+                    },
+                    {
+                        "id": "def456",
+                        "email": "arsene@email.com",
+                        "address": "addr_test456",
+                    },
+                ],
+                "deliverables": ["I am going to do it", "I am doint it I swear"],
+            }
+        ],
+    }
+
+    response = client.get("/projects?creator=addr_test456")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 0,
+        "projects": [],
+    }
+
+    # Filter by funder
+    response = client.get("/projects?funder=addr_test456")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 1,
+        "projects": [
+            {
+                "project_id": project_1.project_identifier,
+                "name": "Project",
+                "creator": {
+                    "id": "abc123",
+                    "email": "bonjour@email.com",
+                    "address": "addr_test123",
+                },
+                "short_description": "lorem ipsum...",
+                "long_description": "lorem ipsum dolor sit amet...",
+                "subjects": ["Math", "Tourism"],
+                "days_to_complete": 15,
+                "mediators": [
+                    {
+                        "id": "abc123",
+                        "email": "bonjour@email.com",
+                        "address": "addr_test123",
+                    },
+                    {
+                        "id": "def456",
+                        "email": "arsene@email.com",
+                        "address": "addr_test456",
+                    },
+                ],
+                "deliverables": ["I am going to do it", "I am doint it I swear"],
+            }
+        ],
+    }
+
+    response = client.get("/projects?funder=addr_test123")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 0,
+        "projects": [],
+    }
+
+    # Filter by both creator and funder
+    response = client.get("/projects?creator=addr_test123&funder=addr_test456")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 1,
+        "projects": [
+            {
+                "project_id": project_1.project_identifier,
+                "name": "Project",
+                "creator": {
+                    "id": "abc123",
+                    "email": "bonjour@email.com",
+                    "address": "addr_test123",
+                },
+                "short_description": "lorem ipsum...",
+                "long_description": "lorem ipsum dolor sit amet...",
+                "subjects": ["Math", "Tourism"],
+                "days_to_complete": 15,
+                "mediators": [
+                    {
+                        "id": "abc123",
+                        "email": "bonjour@email.com",
+                        "address": "addr_test123",
+                    },
+                    {
+                        "id": "def456",
+                        "email": "arsene@email.com",
+                        "address": "addr_test456",
+                    },
+                ],
+                "deliverables": ["I am going to do it", "I am doint it I swear"],
+            }
+        ],
+    }
+
+    response = client.get("/projects?creator=addr_test123&funder=addr_test789")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 0,
+        "projects": [],
+    }
+
+    response = client.get("/projects?creator=addr_test789&funder=addr_test456")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 0,
+        "projects": [],
+    }
+
+    response = client.get("/projects?creator=addr_test789&funder=addr_test789")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 0,
+        "projects": [],
     }
 
 

@@ -13,10 +13,29 @@ def get_projects():
     page = 1 if not "page" in data else data["page"]
     order = "desc" if not "order" in data else data["order"]
 
-    if order == "asc":
-        query = Project.query.order_by(Project.creation_date.asc())
+    creator = data["creator"] if "creator" in data else None
+    funder = data["funder"] if "funder" in data else None
+
+    if creator is not None and funder is not None:
+        query = Project.query.filter(
+            and_(
+                Project.creator.has(User.address == creator),
+                Project.funding.any(Funding.funder.has(User.address == funder)),
+            )
+        )
+    elif creator is not None:
+        query = Project.query.filter(Project.creator.has(User.address == creator))
+    elif funder is not None:
+        query = Project.query.filter(
+            Project.funding.any(Funding.funder.has(User.address == funder))
+        )
     else:
-        query = Project.query.order_by(Project.creation_date.desc())
+        query = Project.query
+
+    if order == "asc":
+        query = query.order_by(Project.creation_date.asc())
+    else:
+        query = query.order_by(Project.creation_date.desc())
 
     projects = query.paginate(
         page=int(page),
@@ -124,8 +143,7 @@ def create_project():
 
 
 def get_project(project_id):
-    project = Project.query.filter(
-        Project.project_identifier == project_id).first()
+    project = Project.query.filter(Project.project_identifier == project_id).first()
 
     if project is None:
         return {"success": False}, 404
@@ -161,7 +179,8 @@ def get_project(project_id):
 
 def get_project_user(project_id, address):
     project: Project = Project.query.filter(
-        Project.project_identifier == project_id).first()
+        Project.project_identifier == project_id
+    ).first()
 
     if project is None:
         return {"message": f"Project with project id {project_id} not found!"}, 404
@@ -175,10 +194,7 @@ def get_project_user(project_id, address):
         and_(
             Funding.funder_id == user.id,
             Funding.project_id == project.id,
-            or_(
-                Funding.status == "submitted",
-                Funding.status == "onchain"
-            )
+            or_(Funding.status == "submitted", Funding.status == "onchain"),
         )
     ).first()
 

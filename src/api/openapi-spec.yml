@@ -60,6 +60,16 @@ paths:
               - "asc"
               - "desc"
           description: The ordering of the items.
+        - in: query
+          name: creator
+          schema:
+            type: string
+          description: The address of the user who created this projects
+        - in: query
+          name: funder
+          schema:
+            type: string
+          description: The address of the user who is funding these projects
       responses:
         "200":
           description: Able to get all projects successfully

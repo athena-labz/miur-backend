@@ -45,3 +45,4 @@ typeguard==2.13.3; python_version >= "3.7" and python_version < "4.0" and python
 urllib3==1.26.10; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7"
 websocket-client==1.4.0; python_version >= "3.7" and python_version < "4.0"
 werkzeug==2.1.2; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7"
+uwsgi==2.0.21

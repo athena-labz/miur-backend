@@ -14,15 +14,35 @@ services:
     ports:
       - 3001:5432
 
-  api:
+  flask:
     build:
       context: .
-      dockerfile: ./docker/api.Dockerfile
+      dockerfile: ./docker/flask.Dockerfile
+    volumes:
+      - ./src:/app/src
+    expose:
+      - 8080
+    container_name: 'flask'
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx.Dockerfile
     volumes:
       - ./src:/app/src
     ports:
-      - 8080:80
-    hostname: 'api'
+      - "80:80"
+    container_name: 'nginx'
+
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/api.Dockerfile
+  #   volumes:
+  #     - ./src:/app/src
+  #   ports:
+  #     - 8080:80
+  #   hostname: 'api'
 
 
 volumes:

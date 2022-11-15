@@ -13,6 +13,7 @@ Flask-Cors = "^3.0.10"
 Flask-Migrate = "^3.1.0"
 pycardano = "^0.7.0"
 psycopg2-binary = "^2.9.4"
+uwsgi = "^2.0.21"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"

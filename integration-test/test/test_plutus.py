@@ -17,7 +17,7 @@ class TestPlutus(TestBase):
     def test_create_transaction_fallback_project(self):
         sys.path.append("../src")
 
-        from lib import script_tools, cardano_types
+        from lib import cardano_tools, script_tools, cardano_types
 
         sender_address = Address(self.payment_vkey.hash(), network=self.NETWORK)
 
@@ -51,7 +51,7 @@ class TestPlutus(TestBase):
 
         # ----------- Mint Script NFT -----------
 
-        script_tools.mint_nfts(
+        cardano_tools.mint_nfts(
             self.chain_context,
             self.payment_skey,
             [
@@ -239,7 +239,7 @@ class TestPlutus(TestBase):
 
     #     # ----------- Mint Script NFT -----------
 
-    #     script_tools.mint_nfts(
+    #     cardano_tools.mint_nfts(
     #         self.chain_context,
     #         self.payment_skey,
     #         [

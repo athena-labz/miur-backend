@@ -378,6 +378,34 @@ paths:
         400:
           description: Something went wrong
 
+  /quiz/create:
+    post:
+      summary: Creates a quiz
+      operationId: api.quiz.create_quiz
+      description: |
+        Creates a quiz with the specified parameters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizCreateProps"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to create a quiz
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: True
+                  message:
+                    type: string
+                    example: "Something real bad happened"
+
 components:
   schemas:
     HealthStatus:
@@ -541,3 +569,45 @@ components:
           items:
             type: string
             example: "I am gonna do a very good job, trust me :wink"
+
+    QuestionInfo:
+      type: object
+      required:
+        - question
+        - answers
+        - hints
+        - right_answer
+      properties:
+        question:
+          type: string
+          example: Who invented fire?
+        answers:
+          type: array
+          items:
+            type: string
+            example: "Thomas Eddison"
+        hints:
+          type: array
+          items:
+            type: string
+            example: "Think about the train"
+        right_answer:
+          type: integer
+          example: 0
+
+    QuizCreateProps:
+      type: object
+      required:
+        - creator_name
+        - questions
+      properties:
+        creator_name:
+          type: string
+          example: Alice Jones
+        creator_stake_address:
+          type: string
+          example: stake_test123
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionInfo"

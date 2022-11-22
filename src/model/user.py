@@ -1,4 +1,5 @@
 import uuid
+import datetime
 
 from . import db
 
@@ -27,6 +28,8 @@ class User(db.Model):
     nft_identifier_policy = db.Column(db.String(), unique=True)
 
     created_projects = relationship("Project", back_populates="creator")
+    created_quizes = relationship("Quiz", back_populates="creator")
+    quiz_assignments = relationship("QuizAssignment", back_populates="assignee")
     mediated_projects = relationship(
         "Project", secondary=association_table, back_populates="mediators"
     )
@@ -35,6 +38,37 @@ class User(db.Model):
     creation_date = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
     )
+
+    @staticmethod
+    def sample(
+        stake_address: str = -1,
+        email: str = -1,
+        payment_address: str = -1,
+        nft_identifier_policy: str = -1,
+        created_projects: list = -1,
+        created_quizes: list = -1,
+        quiz_assignments: list = -1,
+        mediated_projects: list = -1,
+        funding: list = -1,
+        creation_date: datetime.datetime = -1,
+    ):
+        def if_else(if_val, else_val):
+            return if_val if if_val != -1 else else_val
+
+        return User(
+            stake_address=if_else(stake_address, "stake_test123"),
+            email=if_else(email, "alice@email.com"),
+            payment_address=if_else(payment_address, "addr_test123"),
+            nft_identifier_policy=if_else(
+                nft_identifier_policy, "nft_identifier_policy"
+            ),
+            created_projects=if_else(created_projects, []),
+            created_quizes=if_else(created_quizes, []),
+            quiz_assignments=if_else(quiz_assignments, []),
+            mediated_projects=if_else(mediated_projects, []),
+            funding=if_else(funding, []),
+            creation_date=if_else(creation_date, datetime.datetime.utcnow()),
+        )
 
     def parse(self) -> dict:
         return {

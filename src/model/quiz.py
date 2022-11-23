@@ -58,6 +58,10 @@ class Quiz(db.Model):
         return Quiz.query.filter(Quiz.quiz_identifier == quiz_id).first()
 
     @staticmethod
+    def created_by_user(user: User):
+        return Quiz.query.filter(Quiz.creator_id == user.id).all()
+
+    @staticmethod
     def create_question(
         question: str, answers: List[str], hints: List[str], right_answer: int
     ) -> dict:
@@ -87,17 +91,15 @@ class Quiz(db.Model):
             creator_name=if_else(creator_name, "Alice"),
             questions=if_else(
                 questions,
-                {
-                    "questions": [
-                        Quiz.create_question(
-                            f"Question #{i+1}",
-                            [f"Answer #{j+1}" for j in range(5)],
-                            [f"Hint #{j+1}" for j in range(3)],
-                            0,
-                        )
-                        for i in range(10)
-                    ]
-                },
+                [
+                    Quiz.create_question(
+                        f"Question #{i+1}",
+                        [f"Answer #{j+1}" for j in range(5)],
+                        [f"Hint #{j+1}" for j in range(3)],
+                        0,
+                    )
+                    for i in range(10)
+                ],
             ),
             creation_date=if_else(creation_date, datetime.datetime.utcnow()),
         )

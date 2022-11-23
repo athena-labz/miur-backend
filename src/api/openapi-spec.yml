@@ -287,6 +287,57 @@ paths:
                     type: string
                     example: "Sorry bro, couldn't find your address"
 
+  /user/{stake_address}/quiz:
+    get:
+      summary: Quiz related info related to this user
+      operationId: api.user.get_quiz_info
+      description: Quiz related info related to this user
+      parameters:
+        - in: path
+          name: stake_address
+          description: the stake_address of the user who we are trying to get information from
+          required: true
+          schema:
+            type: string
+            example: "addr_test123"
+      responses:
+        "200":
+          description: Whether everything went okay while trying to register user
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - created_quizes
+                  - ongoing_quiz_assignments
+                  - completed_quiz_assignments
+                properties:
+                  created_quizes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuizInfo"
+                  ongoing_quiz_assignments:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuizAssignmentInfo"
+                  completed_quiz_assignments:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuizAssignmentInfo"
+        "404":
+          description: If we couldn't find a user with this address
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Sorry bro, couldn't find your address"
+                  code:
+                    type: string
+                    example: "address-not-found"
+
   /transaction/projects/fund:
     post:
       operationId: "api.transaction.fund_project"
@@ -726,6 +777,7 @@ components:
         completed_success:
           type: boolean
           example: false
+          nullable: true
         creation_date:
           type: string
           example: "2022-11-23 12:06:38"

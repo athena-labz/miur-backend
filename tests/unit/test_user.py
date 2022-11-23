@@ -152,7 +152,7 @@ def test_get_user(api, monkeypatch):
         email="nick@email.com",
         stake_address="stake_test123",
         payment_address="addr_test123",
-        nft_identifier_policy = "policy123"
+        nft_identifier_policy="policy123",
     )
 
     with app.app_context():
@@ -172,3 +172,54 @@ def test_get_user(api, monkeypatch):
     response = client.get("/user/addr_test456")
 
     assert response.status_code == 404
+
+
+def test_get_user_quiz_info(api, monkeypatch):
+    client, app = api
+
+    from model import db, User, Quiz, QuizAssignment
+
+    with app.app_context():
+        user = User.sample()
+
+        created_quiz = Quiz.sample(creator=user)
+        assigment_quiz = Quiz.sample(
+            creator=User.sample(
+                stake_address="stake_test456", nft_identifier_policy="nft2"
+            )
+        )
+
+        quiz_assignment_ongoing = QuizAssignment.sample(
+            assignee=user,
+            quiz=assigment_quiz,
+            powerups=[],
+            current_question=5,
+            remaining_attempts=3,
+            completed_success=None,
+            creation_date=datetime.datetime(2012, 12, 12, 12, 12, 12),
+        )
+
+        quiz_assignment_completed = QuizAssignment.sample(
+            assignee=user,
+            quiz=assigment_quiz,
+            powerups=[],
+            current_question=3,
+            remaining_attempts=2,
+            completed_success=True,
+            creation_date=datetime.datetime(2011, 11, 11, 11, 11, 11),
+        )
+
+        db.session.add(user)
+        db.session.add(created_quiz)
+        db.session.add(quiz_assignment_ongoing)
+        db.session.add(quiz_assignment_completed)
+        db.session.commit()
+
+        res = client.get(f"/user/{user.stake_address}/quiz")
+
+        assert res.status_code == 200
+        assert res.json == {
+            "created_quizes": [created_quiz.info()],
+            "ongoing_quiz_assignments": [quiz_assignment_ongoing.info()],
+            "completed_quiz_assignments": [quiz_assignment_completed.info()],
+        }

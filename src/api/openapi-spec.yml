@@ -389,7 +389,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/QuizCreateProps"
+              $ref: "#/components/schemas/QuizInfo"
       responses:
         "200":
           description: |
@@ -405,6 +405,71 @@ paths:
                   message:
                     type: string
                     example: "Something real bad happened"
+
+  /quiz/assign:
+    post:
+      summary: Assigns a quiz
+      operationId: api.quiz.assign_quiz
+      description: |
+        Assigns a quiz to a specific user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quiz_id
+                - user_stake_address
+              properties:
+                quiz_id:
+                  type: string
+                  example: 474c366d-4a0d-4838-8530-cfde98e005b3
+                user_stake_address:
+                  type: string
+                  example: stake_test123
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to assign this quiz
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizAssignmentInfo"
+        "404":
+          description: Quiz or User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Quiz not found"
+
+  /quiz/{quiz_id}:
+    get:
+      summary: Quiz info
+      operationId: api.quiz.get_quiz
+      description: Get's information from a specific quiz
+      responses:
+        "200":
+          description: |
+            Everything went okay while trying to get quiz
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizInfo"
+        "404":
+          description: Quiz not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Quiz not found"
 
 components:
   schemas:
@@ -595,12 +660,28 @@ components:
           type: integer
           example: 0
 
-    QuizCreateProps:
+    PowerUpInfo:
+      type: object
+      required:
+        - name
+        - used
+      properties:
+        name:
+          type: string
+          example: Tip
+        used:
+          type: boolean
+          example: false
+
+    QuizInfo:
       type: object
       required:
         - creator_name
         - questions
       properties:
+        quiz_id:
+          type: string
+          example: eb7a5e18-5ed9-45eb-8283-6205aac7e1f5
         creator_name:
           type: string
           example: Alice Jones
@@ -611,3 +692,40 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/QuestionInfo"
+        creation_date:
+          type: string
+          example: "2022-11-23 12:06:38"
+
+    QuizAssignmentInfo:
+      type: object
+      required:
+        - quiz_id
+        - assignee_stake_address
+        - powerups
+        - current_question
+        - remaining_attempts
+        - completed_success
+        - creation_date
+      properties:
+        quiz_id:
+          type: string
+          example: eb7a5e18-5ed9-45eb-8283-6205aac7e1f5
+        assignee_stake_address:
+          type: string
+          example: stake_test123
+        powerups:
+          type: array
+          items:
+            $ref: "#/components/schemas/PowerUpInfo"
+        current_question:
+          type: integer
+          example: 0
+        remaining_attemps:
+          type: integer
+          example: 3
+        completed_success:
+          type: boolean
+          example: false
+        creation_date:
+          type: string
+          example: "2022-11-23 12:06:38"

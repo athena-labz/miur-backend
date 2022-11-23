@@ -40,6 +40,10 @@ class User(db.Model):
     )
 
     @staticmethod
+    def find(stake_address: str):
+        return User.query.filter(User.stake_address == stake_address).first()
+
+    @staticmethod
     def sample(
         stake_address: str = -1,
         email: str = -1,

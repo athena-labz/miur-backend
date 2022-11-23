@@ -1,13 +1,13 @@
 from . import db
 
 from sqlalchemy.orm import relationship
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, func
 from typing import List
 
 from .user import User
 
+import datetime
 import uuid
-import json
 
 sample_questions = {
     "questions": [
@@ -38,6 +38,25 @@ class Quiz(db.Model):
 
     questions = db.Column(db.JSON, nullable=False)
 
+    creation_date = db.Column(
+        db.DateTime(timezone=False), server_default=func.now(), nullable=False
+    )
+
+    def info(self):
+        return {
+            "quiz_id": self.quiz_identifier,
+            "creator_name": self.creator_name,
+            "creator_stake_address": self.creator.stake_address
+            if self.creator
+            else None,
+            "questions": self.questions,
+            "creation_date": self.creation_date.strftime("%Y/%m/%d %H:%M:%S"),
+        }
+
+    @staticmethod
+    def find(quiz_id: str):
+        return Quiz.query.filter(Quiz.quiz_identifier == quiz_id).first()
+
     @staticmethod
     def create_question(
         question: str, answers: List[str], hints: List[str], right_answer: int
@@ -51,15 +70,18 @@ class Quiz(db.Model):
 
     @staticmethod
     def sample(
+        quiz_identifier: str = -1,
         creator: User = -1,
         assignments: List[str] = -1,
         creator_name: str = -1,
         questions: dict = -1,
+        creation_date: datetime.datetime = -1,
     ):
         def if_else(if_val, else_val):
             return if_val if if_val != -1 else else_val
 
         return Quiz(
+            quiz_identifier=if_else(quiz_identifier, str(uuid.uuid4())),
             creator=if_else(creator, None),
             assignments=if_else(assignments, []),
             creator_name=if_else(creator_name, "Alice"),
@@ -77,4 +99,5 @@ class Quiz(db.Model):
                     ]
                 },
             ),
+            creation_date=if_else(creation_date, datetime.datetime.utcnow()),
         )

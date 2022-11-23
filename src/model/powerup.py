@@ -20,12 +20,15 @@ class PowerUp(db.Model):
     name = db.Column(db.String, nullable=False)
     used = db.Column(db.Boolean, default=False, nullable=False)
 
+    def info(self):
+        return {
+            "name": self.name,
+            "used": self.used,
+        }
 
     @staticmethod
     def sample(
-        quiz_assignment: List[QuizAssignment] = -1,
-        name: str = -1,
-        used: bool = -1
+        quiz_assignment: List[QuizAssignment] = -1, name: str = -1, used: bool = -1
     ):
         def if_else(if_val, else_val):
             return if_val if if_val != -1 else else_val
@@ -33,5 +36,5 @@ class PowerUp(db.Model):
         return PowerUp(
             quiz_assignment=if_else(quiz_assignment, QuizAssignment.sample()),
             name=if_else(name, "PowerUp"),
-            used=if_else(used, False)
+            used=if_else(used, False),
         )

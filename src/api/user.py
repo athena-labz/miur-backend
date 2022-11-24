@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from flask import request
-from sqlalchemy import or_
+from sqlalchemy import and_
 
 from lib import cardano_tools, auth_tools
-from model import User, db
+from model import User, Quiz, QuizAssignment, db
 
 import datetime
 import logging
@@ -64,3 +64,34 @@ def get_info(stake_address: str):
             else {}
         ),
     }
+
+
+def get_quiz_info(stake_address: str):
+    user: User | None = User.find(stake_address)
+    if user is None:
+        return {
+            "message": f"Could not find stake address {stake_address}",
+            "code": "address-not-found",
+        }, 404
+
+    return {
+        "created_quizes": [quiz.info() for quiz in Quiz.created_by_user(user)],
+        "ongoing_quiz_assignments": [
+            assignment.info()
+            for assignment in QuizAssignment.query.filter(
+                and_(
+                    QuizAssignment.assignee == user,
+                    QuizAssignment.completed_success == None,
+                )
+            )
+        ],
+        "completed_quiz_assignments": [
+            assignment.info()
+            for assignment in QuizAssignment.query.filter(
+                and_(
+                    QuizAssignment.assignee == user,
+                    QuizAssignment.completed_success != None,
+                )
+            )
+        ],
+    }, 200

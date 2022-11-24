@@ -287,6 +287,57 @@ paths:
                     type: string
                     example: "Sorry bro, couldn't find your address"
 
+  /user/{stake_address}/quiz:
+    get:
+      summary: Quiz related info related to this user
+      operationId: api.user.get_quiz_info
+      description: Quiz related info related to this user
+      parameters:
+        - in: path
+          name: stake_address
+          description: the stake_address of the user who we are trying to get information from
+          required: true
+          schema:
+            type: string
+            example: "addr_test123"
+      responses:
+        "200":
+          description: Whether everything went okay while trying to register user
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - created_quizes
+                  - ongoing_quiz_assignments
+                  - completed_quiz_assignments
+                properties:
+                  created_quizes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuizInfo"
+                  ongoing_quiz_assignments:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuizAssignmentInfo"
+                  completed_quiz_assignments:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuizAssignmentInfo"
+        "404":
+          description: If we couldn't find a user with this address
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Sorry bro, couldn't find your address"
+                  code:
+                    type: string
+                    example: "address-not-found"
+
   /transaction/projects/fund:
     post:
       operationId: "api.transaction.fund_project"
@@ -377,6 +428,99 @@ paths:
         
         400:
           description: Something went wrong
+
+  /quiz/create:
+    post:
+      summary: Creates a quiz
+      operationId: api.quiz.create_quiz
+      description: |
+        Creates a quiz with the specified parameters
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizInfo"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to create a quiz
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: True
+                  message:
+                    type: string
+                    example: "Something real bad happened"
+
+  /quiz/assign:
+    post:
+      summary: Assigns a quiz
+      operationId: api.quiz.assign_quiz
+      description: |
+        Assigns a quiz to a specific user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quiz_id
+                - user_stake_address
+              properties:
+                quiz_id:
+                  type: string
+                  example: 474c366d-4a0d-4838-8530-cfde98e005b3
+                user_stake_address:
+                  type: string
+                  example: stake_test123
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to assign this quiz
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizAssignmentInfo"
+        "404":
+          description: Quiz or User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Quiz not found"
+
+  /quiz/{quiz_id}:
+    get:
+      summary: Quiz info
+      operationId: api.quiz.get_quiz
+      description: Get's information from a specific quiz
+      responses:
+        "200":
+          description: |
+            Everything went okay while trying to get quiz
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizInfo"
+        "404":
+          description: Quiz not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Quiz not found"
 
 components:
   schemas:
@@ -541,3 +685,99 @@ components:
           items:
             type: string
             example: "I am gonna do a very good job, trust me :wink"
+
+    QuestionInfo:
+      type: object
+      required:
+        - question
+        - answers
+        - hints
+        - right_answer
+      properties:
+        question:
+          type: string
+          example: Who invented fire?
+        answers:
+          type: array
+          items:
+            type: string
+            example: "Thomas Eddison"
+        hints:
+          type: array
+          items:
+            type: string
+            example: "Think about the train"
+        right_answer:
+          type: integer
+          example: 0
+
+    PowerUpInfo:
+      type: object
+      required:
+        - name
+        - used
+      properties:
+        name:
+          type: string
+          example: Tip
+        used:
+          type: boolean
+          example: false
+
+    QuizInfo:
+      type: object
+      required:
+        - creator_name
+        - questions
+      properties:
+        quiz_id:
+          type: string
+          example: eb7a5e18-5ed9-45eb-8283-6205aac7e1f5
+        creator_name:
+          type: string
+          example: Alice Jones
+        creator_stake_address:
+          type: string
+          example: stake_test123
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionInfo"
+        creation_date:
+          type: string
+          example: "2022-11-23 12:06:38"
+
+    QuizAssignmentInfo:
+      type: object
+      required:
+        - quiz_id
+        - assignee_stake_address
+        - powerups
+        - current_question
+        - remaining_attempts
+        - completed_success
+        - creation_date
+      properties:
+        quiz_id:
+          type: string
+          example: eb7a5e18-5ed9-45eb-8283-6205aac7e1f5
+        assignee_stake_address:
+          type: string
+          example: stake_test123
+        powerups:
+          type: array
+          items:
+            $ref: "#/components/schemas/PowerUpInfo"
+        current_question:
+          type: integer
+          example: 0
+        remaining_attemps:
+          type: integer
+          example: 3
+        completed_success:
+          type: boolean
+          example: false
+          nullable: true
+        creation_date:
+          type: string
+          example: "2022-11-23 12:06:38"

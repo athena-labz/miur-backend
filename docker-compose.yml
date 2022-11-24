@@ -34,17 +34,6 @@ services:
       - "80:80"
     container_name: 'nginx'
 
-  # api:
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/api.Dockerfile
-  #   volumes:
-  #     - ./src:/app/src
-  #   ports:
-  #     - 8080:80
-  #   hostname: 'api'
-
-
 volumes:
   db-data:
 secrets:

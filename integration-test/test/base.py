@@ -7,6 +7,8 @@ from retry import retry
 
 from pycardano import *
 
+import logging
+
 TEST_RETRIES = 1
 
 
@@ -52,6 +54,11 @@ class TestBase:
             output = utxo.output
             if output == target_output:
                 found = True
+            elif output.address == target_output.address:
+                logging.warning("Found output to same address as the target UTxO, but value is different")
+                logging.warning(output)
+                logging.warning(target_output)
+
 
         assert found, f"Cannot find target UTxO in address: {target_address}"
 

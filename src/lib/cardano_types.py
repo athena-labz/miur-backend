@@ -5,17 +5,19 @@ from pycardano import PlutusData
 @dataclass
 class ContractDatum(PlutusData):
     CONSTR_ID = 0
-    mediators: bytes
     target: bytes
     fallback: bytes
+    mediatorsNFT: bytes
     deadline: int
 
 
 @dataclass
-class ExecuteTarget(PlutusData):
+class SendToTarget(PlutusData):
     CONSTR_ID = 0
 
 
 @dataclass
-class ExecuteFallback(PlutusData):
+class SendToFallback(PlutusData):
     CONSTR_ID = 1
+    mediator: bytes
+    reference_input_index: int

@@ -17,13 +17,14 @@ def create_transaction_fund_project(
     funding_amount: pyc.Value,
     script_hex: str,
     mediator_policy: bytes,
-    target_policy: bytes,
-    fallback_policy: bytes,
+    target_address: pyc.Address,
     deadline: int,
 ):
     escrow_script = cbor2.loads(bytes.fromhex(script_hex))
     script_hash = pyc.plutus_script_hash(pyc.PlutusV2Script(escrow_script))
     script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
+
+    print("Address", script_address)
 
     builder = pyc.TransactionBuilder(chain_context)
 
@@ -41,9 +42,9 @@ def create_transaction_fund_project(
             break
 
     datum = cardano_types.ContractDatum(
-        mediators=mediator_policy,
-        target=target_policy,
-        fallback=fallback_policy,
+        target=target_address.payment_part.to_primitive(),
+        fallback=registered_address.payment_part.to_primitive(),
+        mediatorsNFT=mediator_policy,
         deadline=deadline,
     )
 

@@ -16,7 +16,7 @@ class QuizAssignment(db.Model):
     __tablename__ = "quiz_assignment"
 
     id = db.Column(db.Integer, primary_key=True)
-    quiz_assignmenr_identifier = db.Column(
+    quiz_assignment_identifier = db.Column(
         db.String(64), default=lambda: str(uuid.uuid4()), nullable=False
     )
 
@@ -34,6 +34,7 @@ class QuizAssignment(db.Model):
 
     # None means it's still in progress
     completed_success = db.Column(db.Boolean)
+    completed_date = db.Column(db.DateTime(timezone=False))
 
     creation_date = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
@@ -49,6 +50,35 @@ class QuizAssignment(db.Model):
             "completed_success": self.completed_success,
             "creation_date": self.creation_date.strftime("%Y/%m/%d %H:%M:%S"),
         }
+
+    def lose_attempt(self):
+        self.remaining_attempts -= 1
+
+        db.session.add(self)
+        db.session.commit()
+
+    def move_next_question(self):
+        self.current_question += 1
+
+        db.session.add(self)
+        db.session.commit()
+
+    def complete_with_success(self):
+        self.current_question = None
+        self.completed_success = True
+        self.completed_date = datetime.datetime.utcnow()
+
+        db.session.add(self)
+        db.session.commit()
+
+    def complete_with_failure(self):
+        self.remaining_attempts -= 1
+        self.current_question = None
+        self.completed_success = False
+        self.completed_date = datetime.datetime.utcnow()
+
+        db.session.add(self)
+        db.session.commit()
 
     @staticmethod
     def find(quiz_id: str, assignee_stake_address: str):

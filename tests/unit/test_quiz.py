@@ -158,8 +158,154 @@ def test_get_quiz_assignement(api):
         assert res.json == quiz_assignment.info()
 
 
-def test_attempt_answer(api):
-    pass
+def test_attempt_answer(api, monkeypatch):
+    # Should be a POST request that requires stake address authentication
+    # If user get's right answer, should advance to next question or
+    # complete it if it's the last item
+    # Otherwise, should either lose a life or lose the whole game if the
+    # lives are over
+
+    client, app = api
+
+    monkeypatch.setattr("lib.auth_tools.validate_signature", lambda *_: True)
+
+    from model import Quiz, QuizAssignment, db
+
+    questions = [
+        {
+            "question": "What is the capital of Brazil?",
+            "answers": ["Brasilia", "Rio de Janeiro"],
+            "hints": ["Think about it's name"],
+            "right_answer": 0,
+        },
+        {
+            "question": "Am I gonna give you up?",
+            "answers": ["Yes", "No", "Never"],
+            "hints": ["Am I gonna let you down?"],
+            "right_answer": 2,
+        },
+        {
+            "question": "Who invented the light?",
+            "answers": ["Thomas Eddison", "Nikola Tesla", "God"],
+            "hints": [],
+            "right_answer": 2,
+        },
+    ]
+
+    quiz_assignment = QuizAssignment.sample(
+        quiz=Quiz.sample(questions=questions), remaining_attempts=3
+    )
+    with app.app_context():
+        db.session.add(quiz_assignment)
+        db.session.commit()
+
+        res = client.post(
+            f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "answer": 0,
+                "signature": "sample_signature",
+            },
+        )
+
+        assert res.status_code == 200
+        assert res.json == {
+            "right_answer": True,
+            "state": "ongoing",
+            "remaining_attempts": 3,
+            "current_question": 1
+        }
+
+        res = client.post(
+            f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "answer": 0, # Wrong answer
+                "signature": "sample_signature",
+            },
+        )
+
+        assert res.status_code == 200
+        assert res.json == {
+            "right_answer": False,
+            "state": "ongoing",
+            "remaining_attempts": 2,
+            "current_question": 1
+        }
+
+        res = client.post(
+            f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "answer": 2,
+                "signature": "sample_signature",
+            },
+        )
+
+        assert res.status_code == 200
+        assert res.json == {
+            "right_answer": True,
+            "state": "ongoing",
+            "remaining_attempts": 2,
+            "current_question": 2
+        }
+
+        res = client.post(
+            f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "answer": 2,
+                "signature": "sample_signature",
+            },
+        )
+
+        assert res.status_code == 200
+        assert res.json == {
+            "right_answer": True,
+            "state": "completed_success",
+            "remaining_attempts": 2,
+        }
+
+        quiz_assignment_2 = QuizAssignment.sample(
+            quiz=Quiz.sample(questions=questions[:1]), remaining_attempts=3
+        )
+
+        db.session.add(quiz_assignment_2)
+        db.session.commit()
+
+        for i in range(1, 3):
+            res = client.post(
+                f"/quiz/attempt/{quiz_assignment_2.quiz.quiz_identifier}",
+                json={
+                    "stake_address": quiz_assignment_2.assignee.stake_address,
+                    "answer": 1, # Wrong answer
+                    "signature": "sample_signature",
+                },
+            )
+
+            assert res.status_code == 200
+            assert res.json == {
+                "right_answer": False,
+                "state": "ongoing",
+                "remaining_attempts": 3-i,
+                "current_question": 0
+            }
+
+        res = client.post(
+            f"/quiz/attempt/{quiz_assignment_2.quiz.quiz_identifier}",
+            json={
+                "stake_address": quiz_assignment_2.assignee.stake_address,
+                "answer": 1, # Wrong answer
+                "signature": "sample_signature",
+            },
+        )
+
+        assert res.status_code == 200
+        assert res.json == {
+            "right_answer": False,
+            "state": "completed_failure",
+            "remaining_attempts": 0,
+        }
 
 
 def test_use_powerup(api):

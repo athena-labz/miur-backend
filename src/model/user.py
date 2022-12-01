@@ -1,5 +1,7 @@
 import uuid
 import datetime
+import string
+import random
 
 from . import db
 
@@ -59,12 +61,14 @@ class User(db.Model):
         def if_else(if_val, else_val):
             return if_val if if_val != -1 else else_val
 
+        random_string = ''.join([random.choice(list("0123456789abcdef")) for i in range(8)])
+
         return User(
-            stake_address=if_else(stake_address, "stake_test123"),
+            stake_address=if_else(stake_address, f"stake_test{random_string}"),
             email=if_else(email, "alice@email.com"),
             payment_address=if_else(payment_address, "addr_test123"),
             nft_identifier_policy=if_else(
-                nft_identifier_policy, "nft_identifier_policy"
+                nft_identifier_policy, f"nft_identifier_policy_{random_string}"
             ),
             created_projects=if_else(created_projects, []),
             created_quizes=if_else(created_quizes, []),

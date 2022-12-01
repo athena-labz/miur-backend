@@ -528,14 +528,14 @@ paths:
       operationId: api.quiz.get_assignment
       description: Get's information from a specific quiz assignment
       responses:
-        "200":
+        200:
           description: |
             Everything went okay while trying to get quiz assignment
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/QuizAssignmentInfo"
-        "404":
+        404:
           description: Quiz Assignment not found
           content:
             application/json:
@@ -545,6 +545,59 @@ paths:
                   message:
                     type: string
                     example: "Quiz Assignment not found"
+
+  /quiz/attempt/{quiz_id}:
+    post:
+      operationId: "api.quiz.attempt_answer"
+      summary: "Attempt to answer a question from a quiz"
+      description: "Attempt to answer a question from a quiz"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stake_address
+                - answer
+                - signature
+              properties:
+                stake_address:
+                  type: string
+                  example: stake_test123
+                answer:
+                  type: integer
+                  example: 0
+                signature:
+                  $ref: "#/components/schemas/Signature"
+      responses:
+        200:
+          description: "Successful entry will respond with {success:true}"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - right_answer
+                  - state
+                  - remaining_attempts
+                properties:
+                  right_answer:
+                    type: boolean
+                    description: Whether it was the right answer
+                    example: true
+                  state:
+                    type: string
+                    example: completed
+                  message:
+                    type: string
+                    example: Wrong Answer - User died
+                  current_question:
+                    type: integer
+                    example: 1
+                  remaining_attempts:
+                    type: integer
+                    example: 3
 
 components:
   schemas:

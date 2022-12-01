@@ -43,3 +43,31 @@ def get_quiz(quiz_id: str):
         return {"message": f"Quiz {quiz_id} not found"}, 404
 
     return quiz.public_info(), 200
+
+
+def get_assignment(quiz_id: str, stake_address: str):
+    quiz: Quiz = Quiz.find(quiz_id)
+    if quiz is None:
+        return {
+            "message": f"Quiz {quiz_id} does not exist",
+            "code": "quiz-not-found",
+        }, 404
+
+    user: User = User.find(stake_address)
+    if user is None:
+        return {
+            "message": f"User {stake_address} does not exist",
+            "code": "user-not-found",
+        }, 404
+
+    quiz_assignment: QuizAssignment = QuizAssignment.query.filter(
+        (QuizAssignment.quiz_id == quiz.id) & (QuizAssignment.assignee_id == user.id)
+    ).first()
+
+    if quiz_assignment is None:
+        return {
+            "message": f"Quiz Assignment for quiz {quiz_id} and user {stake_address} does not exist",
+            "code": "quiz-assignment-not-found",
+        }, 404
+
+    return quiz_assignment.info(), 200

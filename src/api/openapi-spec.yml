@@ -522,6 +522,30 @@ paths:
                     type: string
                     example: "Quiz not found"
 
+  /quiz/assignment/{quiz_id}/{stake_address}:
+    get:
+      summary: Quiz Assignment info
+      operationId: api.quiz.get_assignment
+      description: Get's information from a specific quiz assignment
+      responses:
+        "200":
+          description: |
+            Everything went okay while trying to get quiz assignment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizAssignmentInfo"
+        "404":
+          description: Quiz Assignment not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Quiz Assignment not found"
+
 components:
   schemas:
     HealthStatus:

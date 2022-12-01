@@ -135,6 +135,29 @@ def test_get_quiz(api, monkeypatch):
     }
 
 
+def test_get_quiz_assignement(api):
+    # Should return information about the quiz assignment,
+    # such as stake address from the user who is attempting it,
+    # quiz identifier, number of lifes, available powerups and
+    # quiz assignment status
+
+    client, app = api
+
+    from model import QuizAssignment, db
+
+    quiz_assignment = QuizAssignment.sample()
+    with app.app_context():
+        db.session.add(quiz_assignment)
+        db.session.commit()
+
+        res = client.get(
+            f"/quiz/assignment/{quiz_assignment.quiz.quiz_identifier}/{quiz_assignment.assignee.stake_address}"
+        )
+
+        assert res.status_code == 200
+        assert res.json == quiz_assignment.info()
+
+
 def test_attempt_answer(api):
     pass
 

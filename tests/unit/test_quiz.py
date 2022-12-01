@@ -76,10 +76,13 @@ def test_assign_quiz(api):
         db.session.refresh(user)
         db.session.refresh(quiz)
 
-    res = client.post(f"/quiz/assign", json={
-        "quiz_id": quiz.quiz_identifier,
-        "user_stake_address": user.stake_address
-    })
+    res = client.post(
+        f"/quiz/assign",
+        json={
+            "quiz_id": quiz.quiz_identifier,
+            "user_stake_address": user.stake_address,
+        },
+    )
 
     assert res.status_code == 200
 
@@ -122,6 +125,19 @@ def test_get_quiz(api, monkeypatch):
         "quiz_id": "quiz_id",
         "creator_name": "Alice",
         "creator_stake_address": "stake_test123",
-        "questions": questions,
+        "questions": [
+            {
+                "question": "What is the capital of Brazil?",
+                "answers": ["Brasilia", "Rio de Janeiro"],
+            }
+        ],
         "creation_date": "2012/12/12 12:12:12",
     }
+
+
+def test_attempt_answer(api):
+    pass
+
+
+def test_use_powerup(api):
+    pass

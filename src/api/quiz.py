@@ -42,4 +42,4 @@ def get_quiz(quiz_id: str):
     if quiz is None:
         return {"message": f"Quiz {quiz_id} not found"}, 404
 
-    return quiz.info(), 200
+    return quiz.public_info(), 200

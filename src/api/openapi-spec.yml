@@ -691,8 +691,6 @@ components:
       required:
         - question
         - answers
-        - hints
-        - right_answer
       properties:
         question:
           type: string

@@ -53,6 +53,19 @@ class Quiz(db.Model):
             "creation_date": self.creation_date.strftime("%Y/%m/%d %H:%M:%S"),
         }
 
+    def public_info(self):
+        return {
+            "quiz_id": self.quiz_identifier,
+            "creator_name": self.creator_name,
+            "creator_stake_address": self.creator.stake_address
+            if self.creator
+            else None,
+            "questions": [
+                Quiz.public_question(question) for question in self.questions
+            ],
+            "creation_date": self.creation_date.strftime("%Y/%m/%d %H:%M:%S"),
+        }
+
     @staticmethod
     def find(quiz_id: str):
         return Quiz.query.filter(Quiz.quiz_identifier == quiz_id).first()
@@ -70,6 +83,13 @@ class Quiz(db.Model):
             "answers": answers,
             "hints": hints,
             "right_answer": right_answer,
+        }
+
+    @staticmethod
+    def public_question(question: dict) -> dict:
+        return {
+            "question": question["question"],
+            "answers": question["answers"],
         }
 
     @staticmethod

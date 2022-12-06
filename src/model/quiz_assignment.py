@@ -9,6 +9,7 @@ from .quiz import Quiz
 from .user import User
 
 import datetime
+import random
 import uuid
 
 
@@ -40,10 +41,37 @@ class QuizAssignment(db.Model):
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
     )
 
+    def in_progress(self):
+        return (
+            self.completed_success is None
+            and self.current_question is not None
+            and self.completed_date is None
+        )
+
+    def find_powerup(self, powerup: str):
+        for possible_powerup in self.powerups:
+            if possible_powerup.name == powerup:
+                return possible_powerup
+        
+        return None
+
+    def powerup_payload(self, powerup: str):
+        if powerup == "get_hints":
+            hints = self.quiz.questions[self.current_question]["hints"]
+            return random.choice(hints)
+        elif powerup == "get_percentage":
+            percentage = {}
+
+
     def info(self):
         return {
+            "quiz_assignment_id": self.quiz_assignment_identifier,
             "quiz_id": self.quiz.quiz_identifier,
             "assignee_stake_address": self.assignee.stake_address,
+            "creator_name": self.quiz.creator_name,
+            "questions": [
+                Quiz.public_question(question) for question in self.quiz.questions
+            ],
             "powerups": [powerup.info() for powerup in self.powerups],
             "current_question": self.current_question,
             "remaining_attempts": self.remaining_attempts,

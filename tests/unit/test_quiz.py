@@ -39,16 +39,14 @@ def test_create_quiz(api):
     quiz: Quiz = quizes[0]
     assert quiz.creator_name == "Alice"
     assert quiz.creator_id == alice.id
-    assert quiz.questions == {
-        "questions": [
-            {
-                "question": "What is the capital of Brazil?",
-                "answers": ["Brasilia", "Rio de Janeiro"],
-                "hints": ["Think about it's name"],
-                "right_answer": 0,
-            }
-        ]
-    }
+    assert quiz.questions == [
+        {
+            "question": "What is the capital of Brazil?",
+            "answers": ["Brasilia", "Rio de Janeiro"],
+            "hints": ["Think about it's name"],
+            "right_answer": 0,
+        }
+    ]
 
 
 def test_assign_quiz(api):
@@ -151,7 +149,7 @@ def test_get_quiz_assignement(api):
         db.session.commit()
 
         res = client.get(
-            f"/quiz/assignment/{quiz_assignment.quiz.quiz_identifier}/{quiz_assignment.assignee.stake_address}"
+            f"/quiz/assignment/{quiz_assignment.quiz_assignment_identifier}"
         )
 
         assert res.status_code == 200
@@ -213,14 +211,14 @@ def test_attempt_answer(api, monkeypatch):
             "right_answer": True,
             "state": "ongoing",
             "remaining_attempts": 3,
-            "current_question": 1
+            "current_question": 1,
         }
 
         res = client.post(
             f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
             json={
                 "stake_address": quiz_assignment.assignee.stake_address,
-                "answer": 0, # Wrong answer
+                "answer": 0,  # Wrong answer
                 "signature": "sample_signature",
             },
         )
@@ -230,7 +228,7 @@ def test_attempt_answer(api, monkeypatch):
             "right_answer": False,
             "state": "ongoing",
             "remaining_attempts": 2,
-            "current_question": 1
+            "current_question": 1,
         }
 
         res = client.post(
@@ -247,7 +245,7 @@ def test_attempt_answer(api, monkeypatch):
             "right_answer": True,
             "state": "ongoing",
             "remaining_attempts": 2,
-            "current_question": 2
+            "current_question": 2,
         }
 
         res = client.post(
@@ -278,7 +276,7 @@ def test_attempt_answer(api, monkeypatch):
                 f"/quiz/attempt/{quiz_assignment_2.quiz.quiz_identifier}",
                 json={
                     "stake_address": quiz_assignment_2.assignee.stake_address,
-                    "answer": 1, # Wrong answer
+                    "answer": 1,  # Wrong answer
                     "signature": "sample_signature",
                 },
             )
@@ -287,15 +285,15 @@ def test_attempt_answer(api, monkeypatch):
             assert res.json == {
                 "right_answer": False,
                 "state": "ongoing",
-                "remaining_attempts": 3-i,
-                "current_question": 0
+                "remaining_attempts": 3 - i,
+                "current_question": 0,
             }
 
         res = client.post(
             f"/quiz/attempt/{quiz_assignment_2.quiz.quiz_identifier}",
             json={
                 "stake_address": quiz_assignment_2.assignee.stake_address,
-                "answer": 1, # Wrong answer
+                "answer": 1,  # Wrong answer
                 "signature": "sample_signature",
             },
         )
@@ -308,5 +306,55 @@ def test_attempt_answer(api, monkeypatch):
         }
 
 
-def test_use_powerup(api):
-    pass
+# def test_activate_powerup(api, monkeypatch):
+#     client, app = api
+
+#     monkeypatch.setattr("lib.auth_tools.validate_signature", lambda *_: True)
+
+#     from model import Quiz, QuizAssignment, PowerUp, db
+
+#     questions = [
+#         {
+#             "question": "What is the capital of Brazil?",
+#             "answers": ["Brasilia", "Rio de Janeiro"],
+#             "hints": ["Think about it's name"],
+#             "right_answer": 0,
+#         },
+#         {
+#             "question": "Am I gonna give you up?",
+#             "answers": ["Yes", "No", "Never"],
+#             "hints": ["Am I gonna let you down?"],
+#             "right_answer": 2,
+#         },
+#         {
+#             "question": "Who invented the light?",
+#             "answers": ["Thomas Eddison", "Nikola Tesla", "God"],
+#             "hints": [],
+#             "right_answer": 2,
+#         },
+#     ]
+
+#     quiz_assignment = QuizAssignment.sample(
+#         quiz=Quiz.sample(questions=questions),
+#         powerups=[
+#             PowerUp(name=powerup, used=False) for powerup in ["get_hints", "percentage"]
+#         ],
+#     )
+#     with app.app_context():
+#         db.session.add(quiz_assignment)
+#         db.session.commit()
+
+#         res = client.post(
+#             f"/quiz/powerup/{quiz_assignment.quiz.quiz_identifier}/get_hints",
+#             {"signature": "signature"},
+#         )
+
+#         assert res.status_code == 200
+#         assert res.json == {
+#             "success": True,
+#             "powerup_payload": {"hint": "Am I gonna let you down?"},
+#             "powerups": [
+#                 {"name": "get_hints", "used": True},
+#                 {"name": "percentage", "used": False},
+#             ],
+#         }

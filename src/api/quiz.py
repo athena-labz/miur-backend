@@ -18,13 +18,14 @@ def create_quiz():
         quiz = Quiz(
             creator=creator,
             creator_name=data["creator_name"],
-            questions={"questions": data["questions"]},
+            questions=data["questions"],
         )
 
     db.session.add(quiz)
     db.session.commit()
+    db.session.refresh(quiz)
 
-    return {"success": True}, 200
+    return {"success": True, "quiz_id": quiz.quiz_identifier}, 200
 
 
 def assign_quiz():
@@ -46,28 +47,14 @@ def get_quiz(quiz_id: str):
     return quiz.public_info(), 200
 
 
-def get_assignment(quiz_id: str, stake_address: str):
-    quiz: Quiz = Quiz.find(quiz_id)
-    if quiz is None:
-        return {
-            "message": f"Quiz {quiz_id} does not exist",
-            "code": "quiz-not-found",
-        }, 404
-
-    user: User = User.find(stake_address)
-    if user is None:
-        return {
-            "message": f"User {stake_address} does not exist",
-            "code": "user-not-found",
-        }, 404
-
+def get_assignment(quiz_assignment_id: str):
     quiz_assignment: QuizAssignment = QuizAssignment.query.filter(
-        (QuizAssignment.quiz_id == quiz.id) & (QuizAssignment.assignee_id == user.id)
+        QuizAssignment.quiz_assignment_identifier == quiz_assignment_id
     ).first()
 
     if quiz_assignment is None:
         return {
-            "message": f"Quiz Assignment for quiz {quiz_id} and user {stake_address} does not exist",
+            "message": f"Quiz Assignment {quiz_assignment_id} does not exist",
             "code": "quiz-assignment-not-found",
         }, 404
 
@@ -154,3 +141,48 @@ def attempt_answer(quiz_id: str):
             response["current_question"] = quiz_assignment.current_question
 
         return response, 200
+
+
+def activate_powerup(quiz_assignment_id: str, powerup: str):
+    data = request.json
+
+    signature = data["signature"]
+
+    quiz_assignment: QuizAssignment = QuizAssignment.query.filter(
+        (QuizAssignment.quiz_assignment_identifier == quiz_assignment_id)
+    ).first()
+
+    if quiz_assignment is None:
+        return {
+            "message": f"Quiz Assignment {quiz_assignment_id} does not exist",
+            "code": "quiz-assignment-not-found",
+        }, 404
+
+    if not auth_tools.validate_signature(
+        signature, quiz_assignment.assignee.stake_address
+    ):
+        return {
+            "success": False,
+            "message": "Invalid signature",
+            "code": "invalid-signature",
+        }, 400
+
+    # Do we have the powerup, if not return success false
+    # Otherwise, return the payload according to the powerup
+
+    if not quiz_assignment.in_progress():
+        # Have we completed yet? If so, return error
+
+        return {
+            "success": False,
+            "message": f"Quiz Assignment {quiz_assignment.quiz_assignment_identifier} is not in progress",
+            "code": "quiz-assignment-completed",
+        }, 200
+
+    activated_powerup = quiz_assignment.find_powerup(powerup)
+    if activated_powerup is None:
+        return {
+            "success": False,
+            "message": f"Quiz Assignment {quiz_assignment.quiz_assignment_identifier} has no powerup {powerup}",
+            "code": "powerup-not-found",
+        }, 200

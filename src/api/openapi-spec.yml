@@ -522,11 +522,19 @@ paths:
                     type: string
                     example: "Quiz not found"
 
-  /quiz/assignment/{quiz_id}/{stake_address}:
+  /quiz/assignment/{quiz_assignment_id}:
     get:
       summary: Quiz Assignment info
       operationId: api.quiz.get_assignment
       description: Get's information from a specific quiz assignment
+      parameters:
+        - in: path
+          name: quiz_assignment_id
+          description: the UUID representing this quiz assigment
+          required: true
+          schema:
+            type: string
+            example: "bcefdff3-b728-4231-9de2-aa3512fb3228"
       responses:
         200:
           description: |
@@ -598,6 +606,69 @@ paths:
                   remaining_attempts:
                     type: integer
                     example: 3
+
+  /quiz/powerup/{quiz_assignment_id}/activate/{powerup}:
+    post:
+      operationId: "api.quiz.activate_powerup"
+      summary: "Activates one of the remaining powerups the user has"
+      description: "Activates one of the remaining powerups the user has"
+      parameters:
+        - in: path
+          name: quiz_assignment_id
+          description: the quiz identifier we are activating this powerup on
+          required: true
+          schema:
+            type: string
+            example: "05405c65-dc4c-4e2e-a67c-46c2606868b3"
+        - in: path
+          name: powerup
+          description: the powerup you want to activate
+          required: true
+          schema:
+            type: string
+            example: "get_hints"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stake_address
+                - signature
+              properties:
+                stake_address:
+                  type: string
+                  example: stake_test123
+                signature:
+                  $ref: "#/components/schemas/Signature"
+      responses:
+        200:
+          description: "If the body and auth were valid"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - powerups
+                properties:
+                  success:
+                    type: boolean
+                    description: \
+                      Whether we were able to successfully activate the powerup
+                    example: true
+                  message:
+                    type: string
+                    example: Wrong Answer - User died
+                  powerup_payload:
+                    type: object
+                    description: \
+                      The necessary response info for the powerup we are activating
+                  powerups:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PowerUpInfo"
 
 components:
   schemas:
@@ -827,18 +898,30 @@ components:
       required:
         - quiz_id
         - assignee_stake_address
+        - creator_name
+        - questions
         - powerups
         - current_question
         - remaining_attempts
         - completed_success
         - creation_date
       properties:
+        quiz_assignment_id:
+          type: string
+          example: eb7a5e18-5ed9-45eb-8283-6205aac7e1f5
         quiz_id:
           type: string
           example: eb7a5e18-5ed9-45eb-8283-6205aac7e1f5
         assignee_stake_address:
           type: string
           example: stake_test123
+        creator_name:
+          type: string
+          example: Alice Jones
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionInfo"
         powerups:
           type: array
           items:

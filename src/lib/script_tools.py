@@ -41,11 +41,13 @@ def create_transaction_fund_project(
         if total_value >= target_value:
             break
 
-    datum = cardano_types.ContractDatum(
-        target=target_address.payment_part.to_primitive(),
-        fallback=registered_address.payment_part.to_primitive(),
-        mediatorsNFT=mediator_policy,
-        deadline=deadline,
+    # datum = cardano_types.ContractDatum(
+    #     target=target_address.payment_part.to_primitive(),
+    #     mediators_nft=mediator_policy,
+    #     deadline=deadline,
+    # )
+    datum = pyc.IndefiniteList(
+        [target_address.payment_part.to_primitive(), mediator_policy, deadline]
     )
 
     builder.add_output(
@@ -55,28 +57,23 @@ def create_transaction_fund_project(
             datum_hash=pyc.datum_hash(datum),
         )
     )
-    # if not registered_address in [utxo.output.address for utxo in funding_utxos]:
-    #     builder.required_signers = [registered_address.payment_part]
 
     tx_body = builder.build(change_address=registered_address, merge_change=True)
 
     return pyc.Transaction(tx_body, pyc.TransactionWitnessSet())
 
 
-
 def create_transaction_fallback_project(
     chain_context: pyc.ChainContext,
+    collateral_input: pyc.UTxO,
     mediator_address: pyc.Address,
     mediator_input: pyc.TransactionInput,
     fallback_address: pyc.Address,
-    fallback_input: pyc.TransactionInput,
     script_hex: str,
     script_utxo: pyc.UTxO,
     script_datum: pyc.Datum,
 ):
     escrow_script = cbor2.loads(bytes.fromhex(script_hex))
-    script_hash = pyc.plutus_script_hash(pyc.PlutusV1Script(escrow_script))
-    script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
 
     # Current slot - Don't know how to calculate the actual current slot
     # Maybe get the posix time of the last block and use that difference
@@ -84,12 +81,13 @@ def create_transaction_fallback_project(
 
     print("Current slot", current_slot)
 
-    # Our valid range will be of two hours
-    hour = 60 * 60
+    builder = pyc.TransactionBuilder(chain_context)
 
-    builder = pyc.TransactionBuilder(
-        chain_context, validity_start=current_slot, ttl=2 * hour
-    )
+    builder.collaterals = [collateral_input]
+
+    # Range [current_slot, current_slot+1]
+    builder.validity_start = current_slot
+    builder.ttl = current_slot + 2 * 60
 
     builder.required_signers = [mediator_address.payment_part]
 
@@ -99,25 +97,17 @@ def create_transaction_fallback_project(
         script_datum,
         pyc.Redeemer(
             pyc.RedeemerTag.SPEND,
-            cardano_types.ExecuteFallback(),
-            ex_units=pyc.ExecutionUnits(1549238, 442841802),
+            cardano_types.SendToFallback(reference_input_index=0),
         ),
     )
-    builder.add_input_address(mediator_address)
-
     builder.reference_inputs.add(mediator_input)
-    builder.reference_inputs.add(fallback_input)
-
-    builder.add_output(
-        pyc.TransactionOutput(fallback_address, script_utxo.output.amount)
-    )
 
     dummy_key: pyc.PaymentSigningKey = pyc.PaymentSigningKey.from_cbor(
         "5820ac29084c8ceca56b02c4118e76c1845c40b5eb810444a069e8edf2f5280ee875"
     )
 
     transaction = builder.build_and_sign(
-        signing_keys=[dummy_key], change_address=mediator_address, merge_change=True
+        signing_keys=[dummy_key], change_address=fallback_address
     )
 
     return transaction
@@ -126,14 +116,12 @@ def create_transaction_fallback_project(
 def create_transaction_target_project(
     chain_context: pyc.ChainContext,
     target_address: pyc.Address,
-    target_input: pyc.TransactionInput,
+    collateral_input: pyc.UTxO,
     script_hex: str,
     script_utxo: pyc.UTxO,
     script_datum: pyc.Datum,
 ):
     escrow_script = cbor2.loads(bytes.fromhex(script_hex))
-    script_hash = pyc.plutus_script_hash(pyc.PlutusV1Script(escrow_script))
-    script_address = pyc.Address(script_hash, network=pyc.Network.TESTNET)
 
     # Current slot - Don't know how to calculate the actual current slot
     # Maybe get the posix time of the last block and use that difference
@@ -141,12 +129,13 @@ def create_transaction_target_project(
 
     print("Current slot", current_slot)
 
-    # Our valid range will be of two hours
-    hour = 60 * 60
+    builder = pyc.TransactionBuilder(chain_context)
 
-    builder = pyc.TransactionBuilder(
-        chain_context, validity_start=current_slot, ttl=2 * hour
-    )
+    builder.collaterals = [collateral_input]
+
+    # Range [current_slot, current_slot+1]
+    builder.validity_start = current_slot
+    builder.ttl = current_slot + 2 * 60
 
     builder.add_script_input(
         script_utxo,
@@ -154,21 +143,18 @@ def create_transaction_target_project(
         script_datum,
         pyc.Redeemer(
             pyc.RedeemerTag.SPEND,
-            cardano_types.ExecuteTarget(),
+            cardano_types.SendToTarget(),
         ),
     )
-    builder.add_input_address(target_address)
 
-    builder.reference_inputs.add(target_input)
-
-    builder.add_output(pyc.TransactionOutput(target_address, script_utxo.output.amount))
+    builder.required_signers = [target_address.payment_part]
 
     dummy_key: pyc.PaymentSigningKey = pyc.PaymentSigningKey.from_cbor(
         "5820ac29084c8ceca56b02c4118e76c1845c40b5eb810444a069e8edf2f5280ee875"
     )
 
     transaction = builder.build_and_sign(
-        signing_keys=[dummy_key], change_address=target_address, merge_change=False
+        signing_keys=[dummy_key], change_address=target_address, merge_change=True
     )
 
     return transaction

@@ -75,19 +75,6 @@ def fund_project():
             "code": "address-not-found",
         }, 404
 
-    if funder.nft_identifier_policy is None:
-        return {
-            "message": f"User {funder.address} doesn't have his identity NFT yet!",
-            "code": "missing-identity-nft",
-        }, 400
-
-    project_creator_nft = project.creator.nft_identifier_policy
-    if project_creator_nft is None:
-        return {
-            "message": f"Cannot fund project whose creator has no identity NFTs!",
-            "code": "missing-identity-nft",
-        }, 400
-
     cardano_handler = script_tools.initialise_cardano()
 
     transaction = script_tools.create_transaction_fund_project(
@@ -97,8 +84,7 @@ def fund_project():
         funding_amount,
         cardano_handler["script"],
         bytes.fromhex(cardano_handler["mediator_policy"]),
-        bytes.fromhex(project_creator_nft),
-        bytes.fromhex(funder.nft_identifier_policy),
+        pyc.Address.from_primitive(project.creator.payment_address),
         project.creation_date.timestamp() + project.days_to_complete * SECONDS_FOR_DAY,
     )
 

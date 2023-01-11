@@ -6,6 +6,7 @@ from lib import script_tools, auth_tools
 from model import Project, User, Funding, db
 
 import pycardano as pyc
+import os
 
 
 SECONDS_FOR_DAY = 86_400
@@ -77,11 +78,26 @@ def fund_project():
 
     cardano_handler = script_tools.initialise_cardano()
 
+    # Funding policy ID concated with asset name
+    funding_asset = os.environ.get("FUNDING_ASSET")
+    funding_policy_id, funding_asset_name = funding_asset[:56], funding_asset[56:]
+
+    funding_value = pyc.Value.from_primitive(
+        [
+            2_000_000,
+            {
+                bytes.fromhex(funding_policy_id): {
+                    bytes.fromhex(funding_asset_name): funding_amount
+                }
+            },
+        ]
+    )
+
     transaction = script_tools.create_transaction_fund_project(
         cardano_handler["chain_context"],
         pyc.Address.from_primitive(funder.payment_address),
         [script_tools.cbor_to_utxo(utxo) for utxo in funding_utxos],
-        funding_amount,
+        funding_value,
         cardano_handler["script"],
         bytes.fromhex(cardano_handler["mediator_policy"]),
         pyc.Address.from_primitive(project.creator.payment_address),

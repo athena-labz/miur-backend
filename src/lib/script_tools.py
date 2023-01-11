@@ -30,22 +30,13 @@ def create_transaction_fund_project(
 
     total_value = pyc.Value(0)
 
-    target_value = funding_amount + 2_000_000
+    target_value = funding_amount
     if isinstance(target_value, int):
         target_value = pyc.Value(target_value)
 
     for utxo in funding_utxos:
         builder.add_input(utxo)
 
-        total_value += utxo.output.amount
-        if total_value >= target_value:
-            break
-
-    # datum = cardano_types.ContractDatum(
-    #     target=target_address.payment_part.to_primitive(),
-    #     mediators_nft=mediator_policy,
-    #     deadline=deadline,
-    # )
     datum = pyc.IndefiniteList(
         [target_address.payment_part.to_primitive(), mediator_policy, deadline]
     )

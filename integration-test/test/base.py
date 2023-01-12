@@ -49,16 +49,21 @@ class TestBase:
     def assert_output(self, target_address, target_output):
         utxos = self.chain_context.utxos(str(target_address))
         found = False
+        utxo_not_matching = None
 
         for utxo in utxos:
             output = utxo.output
             if output == target_output:
                 found = True
-            elif output.address == target_output.address:
-                logging.warning("Found output to same address as the target UTxO, but value is different")
-                logging.warning(output)
-                logging.warning(target_output)
+            else:
+                utxo_not_matching = utxo
 
+        if found is False and utxo_not_matching is not None:
+            logging.warning(
+                "Found output to same address as the target UTxO, but value is different"
+            )
+            logging.warning(utxo_not_matching.output)
+            logging.warning(target_output)
 
         assert found, f"Cannot find target UTxO in address: {target_address}"
 

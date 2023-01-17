@@ -223,3 +223,97 @@ def test_get_user_quiz_info(api, monkeypatch):
             "ongoing_quiz_assignments": [quiz_assignment_ongoing.info()],
             "completed_quiz_assignments": [quiz_assignment_completed.info()],
         }
+
+
+def test_get_users(api):
+    client, app = api
+
+    sys.path.append("src")
+
+    from model import db, Project, User, Subject, Deliverable
+
+    user_1 = User(
+        email="bonjour@email.com",
+        stake_address="stake_test123",
+        payment_address="addr_test123",
+    )
+
+    user_2 = User(
+        email="arsene@email.com",
+        stake_address="stake_test456",
+        payment_address="addr_test456",
+    )
+
+    subject_1 = Subject()
+    subject_1.subject_name = "Math"
+
+    subject_2 = Subject()
+    subject_2.subject_name = "Tourism"
+
+    deliverable_1 = Deliverable()
+    deliverable_1.deliverable = "I am going to do it"
+
+    deliverable_2 = Deliverable()
+    deliverable_2.deliverable = "I am doint it I swear"
+
+    project_1 = Project()
+    project_1.creator = user_1
+    project_1.subjects = [subject_1, subject_2]
+
+    project_1.name = "Project"
+
+    project_1.short_description = "lorem ipsum..."
+    project_1.long_description = "lorem ipsum dolor sit amet..."
+
+    project_1.days_to_complete = 15
+
+    project_1.deliverables = [deliverable_1, deliverable_2]
+    project_1.mediators = [user_1, user_2]
+
+    with app.app_context():
+        db.session.add(project_1)
+
+        db.session.add(user_1)
+        db.session.add(user_2)
+
+        db.session.add(subject_1)
+        db.session.add(subject_2)
+
+        db.session.add(deliverable_1)
+        db.session.add(deliverable_2)
+
+        db.session.commit()
+
+        db.session.refresh(project_1)
+
+        db.session.refresh(user_1)
+        db.session.refresh(user_2)
+
+        db.session.refresh(subject_1)
+        db.session.refresh(subject_2)
+
+        db.session.refresh(deliverable_1)
+        db.session.refresh(deliverable_2)
+
+    response = client.get("/users")
+
+    assert response.status_code == 200
+    print(response.json)
+    assert response.json == {
+        "total": 2,
+        "pages": 1,
+        "users": [
+            {
+                "email": "bonjour@email.com",
+                "stake_address": "stake_test123",
+                "payment_address": "addr_test123",
+                "project_count": 1,
+            },
+            {
+                "email": "arsene@email.com",
+                "stake_address": "stake_test456",
+                "payment_address": "addr_test456",
+                "project_count": 0,
+            },
+        ],
+    }

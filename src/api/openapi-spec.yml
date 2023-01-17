@@ -338,6 +338,62 @@ paths:
                     type: string
                     example: "address-not-found"
 
+  /users:
+    get:
+      summary: Returns a list of all users
+      operationId: api.user.get_users
+      description: Returns short information about all users paginated
+      parameters:
+        - in: query
+          name: count
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 100
+          description: The number of results displayed on one page.
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: The page number for listing the results.
+        - in: query
+          name: order
+          schema:
+            type: string
+            default: "desc"
+            enum:
+              - "asc"
+              - "desc"
+          description: The ordering of the items.
+      responses:
+        "200":
+          description: Able to get all users successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - users
+                  - total
+                  - pages
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+                  total:
+                    type: integer
+                    example: 5
+                  pages:
+                    type: integer
+                    example: 5
+                  success:
+                    type: boolean
+                    example: true
+
   /transaction/projects/fund:
     post:
       operationId: "api.transaction.fund_project"
@@ -694,7 +750,7 @@ components:
         stake_ddress:
           type: string
           example: addr_test123
-        payment_ddress:
+        payment_address:
           type: string
           example: addr_test123
         email:

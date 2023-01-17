@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from flask import request
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 
 from lib import cardano_tools, auth_tools
 from model import User, Quiz, QuizAssignment, db
@@ -95,3 +95,37 @@ def get_quiz_info(stake_address: str):
             )
         ],
     }, 200
+
+
+def get_users():
+    data = request.args
+
+    users = (
+        User.query.add_columns(
+            User.email,
+            User.payment_address,
+            User.stake_address,
+            func.count(User.created_projects).label("project_count"),
+        )
+        .outerjoin(User.created_projects, isouter=True)
+        .group_by(User.id)
+        .paginate(
+            data["page"] if "page" in data else 0,
+            data["count"] if "count" in data else 20,
+            False,
+        )
+    )
+
+    return {
+        "users": [
+            {
+                "email": user.email,
+                "stake_address": user.stake_address,
+                "payment_address": user.payment_address,
+                "project_count": user.project_count,
+            }
+            for user in users.items
+        ],
+        "total": users.total,
+        "pages": users.pages,
+    }

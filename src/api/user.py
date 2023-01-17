@@ -110,8 +110,8 @@ def get_users():
         .outerjoin(User.created_projects, isouter=True)
         .group_by(User.id)
         .paginate(
-            data["page"] if "page" in data else 0,
-            data["count"] if "count" in data else 20,
+            int(data["page"]) if "page" in data else 0,
+            int(data["count"]) if "count" in data else 20,
             False,
         )
     )

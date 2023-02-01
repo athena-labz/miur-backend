@@ -461,6 +461,8 @@ paths:
                 - transaction_hash
                 - stake_address
                 - signature
+                - project_id
+                - funding_amount
               properties:
                 stake_address:
                   type: string
@@ -470,6 +472,12 @@ paths:
                   example: abc123
                 signature:
                   $ref: "#/components/schemas/Signature"
+                project_id:
+                  type: string
+                  example: UUID
+                funding_amount:
+                  type: integer
+                  example: 10_000_000
       responses:
         200:
           description: "Successful entry will respond with {success:true}"

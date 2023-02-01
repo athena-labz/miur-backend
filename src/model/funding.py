@@ -33,5 +33,6 @@ class Funding(db.Model):
     def parse(self) -> dict:
         return {
             "user": self.funder.parse(),
-            "amount": self.amount
+            "amount": self.amount,
+            "status": self.status,
         }

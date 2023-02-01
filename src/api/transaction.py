@@ -127,6 +127,8 @@ def fund_project_submitted():
 
     stake_address = data["stake_address"]
     transaction_hash = data["transaction_hash"]
+    funding_amount = data["funding_amount"]
+    project_id = data["project_id"]
     signature = data["signature"]
 
     # Make sure address exists
@@ -136,25 +138,31 @@ def fund_project_submitted():
             "message": f"No registered user found with address {stake_address}",
             "code": "address-not-found",
         }, 404
-
-    # Make sure funding with transaction hash exists
-    funding: Funding = Funding.query.filter(
-        Funding.transaction_hash == transaction_hash
-    ).first()
-
-    if funding is None:
-        return {
-            "message": f"No funding transaction found with hash {transaction_hash}",
-            "code": "funding-not-found",
-        }, 404
-
+    
     if not auth_tools.validate_signature(signature, stake_address):
         return {
             "message": "Invalid signature",
             "code": "invalid-signature",
         }, 400
 
-    funding.status = "submitted"
+    project: Project = Project.query.filter(
+        and_(Project.project_identifier == project_id, Project.status == "open")
+    ).first()
+
+    if project is None:
+        return {
+            "message": f"No open project found with ID {project_id}",
+            "code": "project-not-found",
+        }, 404
+
+    funding = Funding(
+        funder=funder,
+        project=project,
+        transaction_hash=transaction_hash,
+        transaction_index=0,
+        amount=funding_amount,
+        status="submitted",
+    )
 
     db.session.add(funding)
     db.session.commit()

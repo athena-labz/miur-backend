@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from model import AttemptAnswer, Quiz, QuizAssignment, User, db
+from model import AttemptAnswer, Quiz, QuizAssignment, User, PowerUp, db
 from lib import auth_tools
 from flask import request
 
@@ -101,9 +101,7 @@ def attempt_answer(quiz_id: str):
 
     current_question = quiz.questions[quiz_assignment.current_question]
 
-    AttemptAnswer.attempt(
-        quiz, user, quiz_assignment.current_question, answer
-    )
+    AttemptAnswer.attempt(quiz, user, quiz_assignment.current_question, answer)
 
     if answer == current_question["right_answer"]:
         # Right answer scenario
@@ -183,10 +181,18 @@ def activate_powerup(quiz_assignment_id: str, powerup: str):
             "code": "quiz-assignment-completed",
         }, 200
 
-    activated_powerup = quiz_assignment.find_powerup(powerup)
+    activated_powerup: PowerUp = quiz_assignment.find_powerup(powerup)
     if activated_powerup is None:
         return {
             "success": False,
             "message": f"Quiz Assignment {quiz_assignment.quiz_assignment_identifier} has no powerup {powerup}",
             "code": "powerup-not-found",
         }, 200
+
+    response = activated_powerup.use_powerup()
+
+    return {
+        "success": True,
+        "powerup_payload": response,
+        "powerups": [powerup.info() for powerup in quiz_assignment.powerups],
+    }, 200

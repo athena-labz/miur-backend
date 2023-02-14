@@ -2,7 +2,7 @@ from . import db
 
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey, func
-from typing import List
+from typing import List, Dict
 
 from .quiz import Quiz
 from .user import User
@@ -42,3 +42,19 @@ class AttemptAnswer(db.Model):
         db.session.commit()
 
         return attempt_answer
+
+    
+    @staticmethod
+    def quiz_stats(quiz: Quiz, question_index: int) -> Dict[int, int]:
+        query = AttemptAnswer.query.filter(
+            AttemptAnswer.quiz_id == quiz.id,
+            AttemptAnswer.question_index == question_index,
+        )
+
+        stats = query.with_entities(
+            AttemptAnswer.answer, func.count(AttemptAnswer.answer)
+        ).group_by(AttemptAnswer.answer).all()
+        
+        print({stat[0]: stat[1] for stat in stats})
+
+        return {stat[0]: stat[1] for stat in stats}

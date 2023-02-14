@@ -2,9 +2,10 @@ from . import db
 
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey, func
-from typing import List, Callable, Dict
+from typing import List, Callable, Dict, Any
 
 from .quiz_assignment import QuizAssignment
+from .attempt_answer import AttemptAnswer
 
 import random
 
@@ -22,6 +23,8 @@ class PowerUp(db.Model):
     name = db.Column(db.String, nullable=False)
     used = db.Column(db.Boolean, default=False, nullable=False)
 
+    question_index_used = db.Column(db.Integer, nullable=True)
+
     def info(self):
         return {
             "name": self.name,
@@ -31,24 +34,95 @@ class PowerUp(db.Model):
     def get_hints(self, question_index: int) -> str:
         random.seed(self.id)
 
-        return random.choice(
-            self.quiz_assignment.quiz.questions[question_index]["hints"]
-        )
+        return {
+            "hint": random.choice(
+                self.quiz_assignment.quiz.questions[question_index]["hints"]
+            )
+        }
 
-    def get_percentages(self, question_index: int) -> str:
+    def get_percentages(self, question_index: int) -> Dict[int, float]:
         random.seed(self.id)
 
-        return random.choice(
-            self.quiz_assignment.quiz.questions[question_index]["hints"]
-        )
+        stats = AttemptAnswer.quiz_stats(self.quiz_assignment.quiz, question_index)
 
-    # def powerups_map(self) -> Dict[str, Callable[['PowerUp', int], str]]:
-    #     return {
-    #         "get_hints": self.get_hints,
-    #         "get_percentages",
-    #         "skip_question",
-    #         "eliminate_half",
-    #     }
+        total = sum(stats.values())
+
+        # Avoid division by zero
+        if total == 0:
+            return {
+                choice: 0
+                for choice in self.quiz_assignment.quiz.questions[question_index][
+                    "answers"
+                ]
+            }
+        
+        # Result should include very possible choice (0% if no one has chosen it)
+        result = [
+            stats.get(i, 0) / total
+            for i, _ in enumerate(self.quiz_assignment.quiz.questions[question_index]["answers"])
+        ]
+
+        return {"percentages": result}
+
+    def skip_question(self, question_index: int = None):
+        if not self.used:
+            self.quiz_assignment.move_next_question()
+
+            return {
+                "skipped": True,
+                "last_skipped_question": question_index,
+            }
+
+        return {
+            "skipped": False,
+            "last_skipped_question": self.question_index_used,
+        }
+
+    def eliminate_half(self, question_index: int) -> Dict[str, List[str]]:
+        random.seed(self.id)
+
+        questions_copy = self.quiz_assignment.quiz.questions.copy()
+
+        # Make sure we don't eliminate the right answer
+        choices = questions_copy[question_index]["answers"]
+        right_answer = questions_copy[question_index]["right_answer"]
+
+        answer_content = choices[right_answer]
+
+        # Remove right answer by index
+        del choices[right_answer]
+
+        # Eliminate half of the choices
+        remainder = random.sample(choices, len(choices) // 2)
+
+        remainder.append(answer_content)
+
+        # Shuffle the choices
+        random.shuffle(remainder)
+
+        return {"remaining_choices": remainder}
+
+    def powerups_map(self) -> Dict[str, Callable[["PowerUp", int], dict]]:
+        return {
+            "get_hints": self.get_hints,
+            "get_percentages": self.get_percentages,
+            "skip_question": self.skip_question,
+            "eliminate_half": self.eliminate_half,
+        }
+
+    def use_powerup(self) -> Dict[str, Any]:
+        if self.used is False:
+            self.question_index_used = self.quiz_assignment.current_question
+
+        powerup = self.powerups_map()[self.name](self.question_index_used)
+
+        if self.used is False:
+            self.used = True
+
+            db.session.add(self)
+            db.session.commit()
+
+        return powerup
 
     @staticmethod
     def sample(

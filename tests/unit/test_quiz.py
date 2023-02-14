@@ -326,61 +326,215 @@ def test_attempt_answer(api, monkeypatch):
         }
 
 
-# def test_activate_powerup(api, monkeypatch):
-#     client, app = api
+def test_activate_powerup(api, monkeypatch):
+    client, app = api
 
-#     monkeypatch.setattr("lib.auth_tools.validate_signature", lambda *_: True)
+    monkeypatch.setattr("lib.auth_tools.validate_signature", lambda *_: True)
 
-#     from model import Quiz, QuizAssignment, PowerUp, db
+    from model import AttemptAnswer, Quiz, QuizAssignment, PowerUp, db
 
-#     questions = [
-#         {
-#             "question": "What is the capital of Brazil?",
-#             "answers": ["Brasilia", "Rio de Janeiro"],
-#             "hints": ["Think about it's name"],
-#             "right_answer": 0,
-#         },
-#         {
-#             "question": "Am I gonna give you up?",
-#             "answers": ["Yes", "No", "Never"],
-#             "hints": ["Am I gonna let you down?"],
-#             "right_answer": 2,
-#         },
-#         {
-#             "question": "Who invented the light?",
-#             "answers": ["Thomas Eddison", "Nikola Tesla", "God"],
-#             "hints": [],
-#             "right_answer": 2,
-#         },
-#     ]
+    questions = [
+        {
+            "question": "What is the capital of Brazil?",
+            "answers": ["Brasilia", "Rio de Janeiro"],
+            "hints": ["Think about it's name"],
+            "right_answer": 0,
+        },
+        {
+            "question": "Am I gonna give you up?",
+            "answers": ["Yes", "No", "Never", "Maybe"],
+            "hints": ["Am I gonna let you down?"],
+            "right_answer": 2,
+        },
+        {
+            "question": "Who invented the light?",
+            "answers": ["Thomas Eddison", "Nikola Tesla", "God"],
+            "hints": [],
+            "right_answer": 2,
+        },
+    ]
 
-#     quiz_assignment = QuizAssignment.sample(
-#         quiz=Quiz.sample(questions=questions),
-#         powerups=[
-#             PowerUp(name=powerup, used=False)
-#             for powerup in [
-#                 "get_hints",
-#                 "get_percentages",
-#                 "skip_question",
-#                 "eliminate_half",
-#             ]
-#         ],
-#     )
-#     with app.app_context():
-#         db.session.add(quiz_assignment)
-#         db.session.commit()
+    quiz_assignment = QuizAssignment.sample(
+        quiz=Quiz.sample(questions=questions),
+        powerups=[
+            PowerUp(name=powerup, used=False)
+            for powerup in [
+                "get_hints",
+                "get_percentages",
+                "skip_question",
+                "eliminate_half",
+            ]
+        ],
+    )
+    with app.app_context():
+        db.session.add(quiz_assignment)
+        db.session.commit()
 
-#         res = client.post(
-#             f"/quiz/powerup/{quiz_assignment.quiz.quiz_identifier}/get_hints",
-#             {"signature": "signature"},
-#         )
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/get_hints",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
 
-#         assert res.status_code == 200
-#         assert res.json == {
-#             "success": True,
-#             "powerup_payload": {"hint": "Am I gonna let you down?"},
-#             "powerups": [
-#                 {"name": "get_hints", "used": True},
-#                 {"name": "percentage", "used": False},
-#             ],
-#         }
+        print(res.json)
+
+        expected_response = {
+            "success": True,
+            "powerup_payload": {"hint": "Think about it's name"},
+            "powerups": [
+                {"name": "get_hints", "used": True},
+                {"name": "get_percentages", "used": False},
+                {"name": "skip_question", "used": False},
+                {"name": "eliminate_half", "used": False},
+            ],
+        }
+
+        assert res.status_code == 200
+        assert res.json == expected_response
+
+        # Try to use same powerup again, should work
+
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/get_hints",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
+
+        assert res.status_code == 200
+        assert res.json == expected_response
+
+        # Try to skip question
+
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/skip_question",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
+
+        expected_response = {
+            "success": True,
+            "powerup_payload": {
+                "skipped": True,
+                "last_skipped_question": 0,
+            },
+            "powerups": [
+                {"name": "get_hints", "used": True},
+                {"name": "get_percentages", "used": False},
+                {"name": "skip_question", "used": True},
+                {"name": "eliminate_half", "used": False},
+            ],
+        }
+
+        assert res.status_code == 200
+        assert res.json == expected_response
+
+        # Make sure current question is updated
+
+        assert quiz_assignment.current_question == 1
+
+        # Make sure we cannot skip question again
+
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/skip_question",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
+
+        expected_response["powerup_payload"]["skipped"] = False
+
+        assert res.status_code == 200
+        assert res.json == expected_response
+
+        assert quiz_assignment.current_question == 1
+
+        # Try to eliminate half
+
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/eliminate_half",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
+
+        expected_response = {
+            "success": True,
+            "powerup_payload": {
+                "remaining_choices": ["Yes", "Never"],
+            },
+            "powerups": [
+                {"name": "get_hints", "used": True},
+                {"name": "get_percentages", "used": False},
+                {"name": "skip_question", "used": True},
+                {"name": "eliminate_half", "used": True},
+            ],
+        }
+
+        assert res.status_code == 200
+        assert res.json == expected_response
+
+        # Try to eliminate half again
+        # Should receive same values
+
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/eliminate_half",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
+
+        assert res.status_code == 200
+        assert res.json == expected_response
+
+        # Try to get percentages
+
+        # First, insert some mock answers
+
+        # 10%, 20%, 30%, 40%
+        answers = [0, 1, 3, 2, 3, 1, 2, 2, 3, 3]
+
+        for answer in answers:
+            db.session.add(
+                AttemptAnswer(
+                    attempter=quiz_assignment.assignee,
+                    quiz=quiz_assignment.quiz,
+                    question_index=1,
+                    answer=answer,
+                    right_answer=answer==2,
+                )
+            )
+
+        db.session.commit()
+
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/get_percentages",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
+
+        expected_response = {
+            "success": True,
+            "powerup_payload": {
+                "percentages": [0.1, 0.2, 0.3, 0.4],
+            },
+            "powerups": [
+                {"name": "get_hints", "used": True},
+                {"name": "get_percentages", "used": True},
+                {"name": "skip_question", "used": True},
+                {"name": "eliminate_half", "used": True},
+            ],
+        }
+
+        assert res.status_code == 200
+        assert res.json == expected_response

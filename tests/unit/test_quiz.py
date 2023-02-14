@@ -378,8 +378,6 @@ def test_activate_powerup(api, monkeypatch):
             },
         )
 
-        print(res.json)
-
         expected_response = {
             "success": True,
             "powerup_payload": {"hint": "Think about it's name"},
@@ -448,12 +446,14 @@ def test_activate_powerup(api, monkeypatch):
             },
         )
 
-        expected_response["powerup_payload"]["skipped"] = False
+        expected_response = {
+            "success": False,
+            "message": "Powerup already used and in different question",
+            "code": "powerup_already_used",
+        }
 
-        assert res.status_code == 200
+        assert res.status_code == 400
         assert res.json == expected_response
-
-        assert quiz_assignment.current_question == 1
 
         # Try to eliminate half
 
@@ -537,4 +537,22 @@ def test_activate_powerup(api, monkeypatch):
         }
 
         assert res.status_code == 200
+        assert res.json == expected_response
+
+        # Try to use used powerup in a different question
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/get_hints",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
+
+        expected_response = {
+            "success": False,
+            "message": "Powerup already used and in different question",
+            "code": "powerup_already_used",
+        }
+
+        assert res.status_code == 400
         assert res.json == expected_response

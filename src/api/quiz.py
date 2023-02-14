@@ -189,6 +189,16 @@ def activate_powerup(quiz_assignment_id: str, powerup: str):
             "code": "powerup-not-found",
         }, 200
 
+    if (
+        activated_powerup.used is True
+        and activated_powerup.question_index_used != quiz_assignment.current_question
+    ):
+        return {
+            "success": False,
+            "message": "Powerup already used and in different question",
+            "code": "powerup_already_used",
+        }, 400
+
     response = activated_powerup.use_powerup()
 
     return {

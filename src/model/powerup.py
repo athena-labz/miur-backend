@@ -2,9 +2,11 @@ from . import db
 
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey, func
-from typing import List
+from typing import List, Callable, Dict
 
 from .quiz_assignment import QuizAssignment
+
+import random
 
 
 class PowerUp(db.Model):
@@ -25,6 +27,28 @@ class PowerUp(db.Model):
             "name": self.name,
             "used": self.used,
         }
+
+    def get_hints(self, question_index: int) -> str:
+        random.seed(self.id)
+
+        return random.choice(
+            self.quiz_assignment.quiz.questions[question_index]["hints"]
+        )
+
+    def get_percentages(self, question_index: int) -> str:
+        random.seed(self.id)
+
+        return random.choice(
+            self.quiz_assignment.quiz.questions[question_index]["hints"]
+        )
+
+    # def powerups_map(self) -> Dict[str, Callable[['PowerUp', int], str]]:
+    #     return {
+    #         "get_hints": self.get_hints,
+    #         "get_percentages",
+    #         "skip_question",
+    #         "eliminate_half",
+    #     }
 
     @staticmethod
     def sample(

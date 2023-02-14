@@ -33,6 +33,7 @@ class Quiz(db.Model):
     creator = relationship("User", back_populates="created_quizes")
 
     assignments = relationship("QuizAssignment", back_populates="quiz")
+    answer_attempts = relationship("AttemptAnswer", back_populates="quiz")
 
     creator_name = db.Column(db.String(), nullable=False)
 

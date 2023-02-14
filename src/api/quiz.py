@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from model import Quiz, QuizAssignment, User, db
+from model import AttemptAnswer, Quiz, QuizAssignment, User, db
 from lib import auth_tools
 from flask import request
 
@@ -100,6 +100,10 @@ def attempt_answer(quiz_id: str):
         }, 400
 
     current_question = quiz.questions[quiz_assignment.current_question]
+
+    AttemptAnswer.attempt(
+        quiz, user, quiz_assignment.current_question, answer
+    )
 
     if answer == current_question["right_answer"]:
         # Right answer scenario

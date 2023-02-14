@@ -57,6 +57,7 @@ def test_get_projects(api):
         transaction_hash="hash",
         transaction_index=0,
         amount=10_000_000,
+        status="foobar"
     )
 
     with app.app_context():
@@ -108,6 +109,7 @@ def test_get_projects(api):
                     "stake_address": "stake_test456",
                 },
                 "amount": 10_000_000,
+                "status": "foobar"
             }
         ],
         "mediators": [

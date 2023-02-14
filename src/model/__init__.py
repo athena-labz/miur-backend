@@ -10,3 +10,4 @@ from .funding import Funding
 from .quiz import Quiz
 from .quiz_assignment import QuizAssignment
 from .powerup import PowerUp
+from .attempt_answer import AttemptAnswer

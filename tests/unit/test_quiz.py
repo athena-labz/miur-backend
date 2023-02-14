@@ -167,7 +167,7 @@ def test_attempt_answer(api, monkeypatch):
 
     monkeypatch.setattr("lib.auth_tools.validate_signature", lambda *_: True)
 
-    from model import Quiz, QuizAssignment, db
+    from model import Quiz, QuizAssignment, AttemptAnswer, db
 
     questions = [
         {
@@ -214,6 +214,16 @@ def test_attempt_answer(api, monkeypatch):
             "current_question": 1,
         }
 
+        attempts = AttemptAnswer.query.all()
+
+        assert len(attempts) == 1
+        assert attempts[0].quiz_id == quiz_assignment.quiz.id
+        assert attempts[0].attempter_id == quiz_assignment.assignee.id
+
+        assert attempts[0].question_index == 0
+        assert attempts[0].answer == 0
+        assert attempts[0].right_answer == True
+
         res = client.post(
             f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
             json={
@@ -230,6 +240,16 @@ def test_attempt_answer(api, monkeypatch):
             "remaining_attempts": 2,
             "current_question": 1,
         }
+
+        attempts = AttemptAnswer.query.all()
+
+        assert len(attempts) == 2
+        assert attempts[1].quiz_id == quiz_assignment.quiz.id
+        assert attempts[1].attempter_id == quiz_assignment.assignee.id
+
+        assert attempts[1].question_index == 1
+        assert attempts[1].answer == 0
+        assert attempts[1].right_answer == False
 
         res = client.post(
             f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
@@ -337,7 +357,13 @@ def test_attempt_answer(api, monkeypatch):
 #     quiz_assignment = QuizAssignment.sample(
 #         quiz=Quiz.sample(questions=questions),
 #         powerups=[
-#             PowerUp(name=powerup, used=False) for powerup in ["get_hints", "percentage"]
+#             PowerUp(name=powerup, used=False)
+#             for powerup in [
+#                 "get_hints",
+#                 "get_percentages",
+#                 "skip_question",
+#                 "eliminate_half",
+#             ]
 #         ],
 #     )
 #     with app.app_context():

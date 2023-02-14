@@ -211,8 +211,6 @@ def activate_powerup(quiz_assignment_id: str, powerup: str):
 def create_powerup(quiz_assignment_id: str, powerup: str):
     data = request.json
 
-    signature = data["signature"]
-
     quiz_assignment: QuizAssignment = QuizAssignment.query.filter(
         (QuizAssignment.quiz_assignment_identifier == quiz_assignment_id)
     ).first()
@@ -222,15 +220,6 @@ def create_powerup(quiz_assignment_id: str, powerup: str):
             "message": f"Quiz Assignment {quiz_assignment_id} does not exist",
             "code": "quiz-assignment-not-found",
         }, 404
-
-    if not auth_tools.validate_signature(
-        signature, quiz_assignment.assignee.stake_address
-    ):
-        return {
-            "success": False,
-            "message": "Invalid signature",
-            "code": "invalid-signature",
-        }, 400
 
     # Do we have the powerup, if not return success false
     # Otherwise, return the payload according to the powerup

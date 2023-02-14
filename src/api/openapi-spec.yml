@@ -754,21 +754,6 @@ paths:
           schema:
             type: string
             example: "get_hints"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - stake_address
-                - signature
-              properties:
-                stake_address:
-                  type: string
-                  example: stake_test123
-                signature:
-                  $ref: "#/components/schemas/Signature"
       responses:
         200:
           description: "If the body and auth were valid"

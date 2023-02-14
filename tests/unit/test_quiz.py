@@ -584,11 +584,7 @@ def test_create_powerup(api, monkeypatch):
         db.session.commit()
 
         res = client.post(
-            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/create/foobar",
-            json={
-                "stake_address": quiz_assignment.assignee.stake_address,
-                "signature": "signature",
-            },
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/create/foobar", json={}
         )
 
         expected_response = {
@@ -598,5 +594,6 @@ def test_create_powerup(api, monkeypatch):
             ],
         }
 
+        print(res.json)
         assert res.status_code == 200
         assert res.json == expected_response

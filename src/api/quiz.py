@@ -206,3 +206,55 @@ def activate_powerup(quiz_assignment_id: str, powerup: str):
         "powerup_payload": response,
         "powerups": [powerup.info() for powerup in quiz_assignment.powerups],
     }, 200
+
+
+def create_powerup(quiz_assignment_id: str, powerup: str):
+    data = request.json
+
+    signature = data["signature"]
+
+    quiz_assignment: QuizAssignment = QuizAssignment.query.filter(
+        (QuizAssignment.quiz_assignment_identifier == quiz_assignment_id)
+    ).first()
+
+    if quiz_assignment is None:
+        return {
+            "message": f"Quiz Assignment {quiz_assignment_id} does not exist",
+            "code": "quiz-assignment-not-found",
+        }, 404
+
+    if not auth_tools.validate_signature(
+        signature, quiz_assignment.assignee.stake_address
+    ):
+        return {
+            "success": False,
+            "message": "Invalid signature",
+            "code": "invalid-signature",
+        }, 400
+
+    # Do we have the powerup, if not return success false
+    # Otherwise, return the payload according to the powerup
+
+    if not quiz_assignment.in_progress():
+        # Have we completed yet? If so, return error
+
+        return {
+            "success": False,
+            "message": f"Quiz Assignment {quiz_assignment.quiz_assignment_identifier} is not in progress",
+            "code": "quiz-assignment-completed",
+        }, 200
+
+    activated_powerup: PowerUp = quiz_assignment.find_powerup(powerup)
+    if activated_powerup is not None:
+        return {
+            "success": False,
+            "message": f"Quiz Assignment {quiz_assignment.quiz_assignment_identifier} has an existing powerup {powerup}",
+            "code": "powerup-already-exists",
+        }, 200
+
+    powerup = PowerUp.create(quiz_assignment, powerup)
+
+    return {
+        "success": True,
+        "powerups": [powerup.info() for powerup in quiz_assignment.powerups],
+    }, 200

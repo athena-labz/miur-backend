@@ -509,7 +509,7 @@ def test_activate_powerup(api, monkeypatch):
                     quiz=quiz_assignment.quiz,
                     question_index=1,
                     answer=answer,
-                    right_answer=answer==2,
+                    right_answer=answer == 2,
                 )
             )
 
@@ -555,4 +555,48 @@ def test_activate_powerup(api, monkeypatch):
         }
 
         assert res.status_code == 400
+        assert res.json == expected_response
+
+
+def test_create_powerup(api, monkeypatch):
+    client, app = api
+
+    monkeypatch.setattr("lib.auth_tools.validate_signature", lambda *_: True)
+
+    from model import AttemptAnswer, Quiz, QuizAssignment, PowerUp, db
+
+    questions = [
+        {
+            "question": "What is the capital of Brazil?",
+            "answers": ["Brasilia", "Rio de Janeiro"],
+            "hints": ["Think about it's name"],
+            "right_answer": 0,
+        }
+    ]
+
+    quiz_assignment = QuizAssignment.sample(
+        quiz=Quiz.sample(questions=questions),
+        powerups=[],
+    )
+
+    with app.app_context():
+        db.session.add(quiz_assignment)
+        db.session.commit()
+
+        res = client.post(
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/create/foobar",
+            json={
+                "stake_address": quiz_assignment.assignee.stake_address,
+                "signature": "signature",
+            },
+        )
+
+        expected_response = {
+            "success": True,
+            "powerups": [
+                {"name": "foobar", "used": False},
+            ],
+        }
+
+        assert res.status_code == 200
         assert res.json == expected_response

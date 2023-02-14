@@ -734,6 +734,65 @@ paths:
                     items:
                       $ref: "#/components/schemas/PowerUpInfo"
 
+  /quiz/powerup/{quiz_assignment_id}/create/{powerup}:
+    post:
+      operationId: "api.quiz.create_powerup"
+      summary: "Creates a powerup for this quiz assignment"
+      description: "Creates a powerup for this quiz assignment"
+      parameters:
+        - in: path
+          name: quiz_assignment_id
+          description: the quiz identifier we are activating this powerup on
+          required: true
+          schema:
+            type: string
+            example: "05405c65-dc4c-4e2e-a67c-46c2606868b3"
+        - in: path
+          name: powerup
+          description: the powerup you want to activate
+          required: true
+          schema:
+            type: string
+            example: "get_hints"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - stake_address
+                - signature
+              properties:
+                stake_address:
+                  type: string
+                  example: stake_test123
+                signature:
+                  $ref: "#/components/schemas/Signature"
+      responses:
+        200:
+          description: "If the body and auth were valid"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - powerups
+                properties:
+                  success:
+                    type: boolean
+                    description: \
+                      Whether we were able to successfully activate the powerup
+                    example: true
+                  message:
+                    type: string
+                    example: Wrong Answer - User died
+                  powerups:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PowerUpInfo"
+
 components:
   schemas:
     HealthStatus:

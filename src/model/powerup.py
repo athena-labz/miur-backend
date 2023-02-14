@@ -123,6 +123,18 @@ class PowerUp(db.Model):
             db.session.commit()
 
         return powerup
+    
+    @staticmethod
+    def create(quiz_assignment: QuizAssignment, name: str):
+        powerup = PowerUp(
+            quiz_assignment=quiz_assignment,
+            name=name,
+        )
+
+        db.session.add(powerup)
+        db.session.commit()
+
+        return powerup
 
     @staticmethod
     def sample(

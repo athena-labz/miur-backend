@@ -46,11 +46,18 @@ class Project(db.Model):
     )
 
     def parse(self) -> dict:
+        funders = []
+        total_funding_amount = 0
+        for funding in self.funding:
+            funders.append(funding.parse())
+            total_funding_amount += funding.amount
+
         return {
             "project_id": self.project_identifier,
             "name": self.name,
             "creator": self.creator.parse(),
-            "funders": [funding.parse() for funding in self.funding],
+            "funders": funders,
+            "total_funding_amount": total_funding_amount,
             "mediators": [mediator.parse() for mediator in self.mediators],
             "short_description": self.short_description,
             "long_description": self.long_description,

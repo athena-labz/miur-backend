@@ -57,7 +57,7 @@ def test_get_projects(api):
         transaction_hash="hash",
         transaction_index=0,
         amount=10_000_000,
-        status="foobar"
+        status="foobar",
     )
 
     with app.app_context():
@@ -109,9 +109,10 @@ def test_get_projects(api):
                     "stake_address": "stake_test456",
                 },
                 "amount": 10_000_000,
-                "status": "foobar"
+                "status": "foobar",
             }
         ],
+        "total_funding_amount": 10_000_000,
         "mediators": [
             {
                 "email": "bonjour@email.com",
@@ -414,6 +415,7 @@ def test_get_project(api):
                 "payment_address": "addr_test123",
             },
             "funders": [],
+            "total_funding_amount": 0,
             "short_description": "lorem ipsum...",
             "long_description": "lorem ipsum dolor sit amet...",
             "subjects": ["Math", "Tourism"],

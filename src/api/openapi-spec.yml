@@ -886,6 +886,7 @@ components:
         - short_description
         - long_description
         - funders
+        - total_funding_amount
         - mediators
         - subjects
         - deliverables
@@ -912,6 +913,9 @@ components:
               amount:
                 type: integer
                 example: 10_000_000
+        total_funding_amount:
+          type: integer
+          example: 30_000_000
         mediators:
           type: array
           items:

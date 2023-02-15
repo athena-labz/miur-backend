@@ -29,6 +29,7 @@ class PowerUp(db.Model):
         return {
             "name": self.name,
             "used": self.used,
+            "question_index_used": self.question_index_used,
         }
 
     def get_hints(self, question_index: int) -> str:
@@ -49,18 +50,20 @@ class PowerUp(db.Model):
 
         # Avoid division by zero
         if total == 0:
-            return {
-                choice: 0
-                for choice in self.quiz_assignment.quiz.questions[question_index][
-                    "answers"
-                ]
-            }
-        
-        # Result should include very possible choice (0% if no one has chosen it)
-        result = [
-            stats.get(i, 0) / total
-            for i, _ in enumerate(self.quiz_assignment.quiz.questions[question_index]["answers"])
-        ]
+            result = [
+                0
+                for _ in range(
+                    len(self.quiz_assignment.quiz.questions[question_index]["answers"])
+                )
+            ]
+        else:
+            # Result should include very possible choice (0% if no one has chosen it)
+            result = [
+                stats.get(i, 0) / total
+                for i, _ in enumerate(
+                    self.quiz_assignment.quiz.questions[question_index]["answers"]
+                )
+            ]
 
         return {"percentages": result}
 
@@ -123,7 +126,7 @@ class PowerUp(db.Model):
             db.session.commit()
 
         return powerup
-    
+
     @staticmethod
     def create(quiz_assignment: QuizAssignment, name: str):
         powerup = PowerUp(

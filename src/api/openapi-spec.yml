@@ -970,6 +970,7 @@ components:
       required:
         - name
         - used
+        - question_index_used
       properties:
         name:
           type: string
@@ -977,6 +978,10 @@ components:
         used:
           type: boolean
           example: false
+        question_index_used:
+          type: integer
+          nullable: true
+          example: 0
 
     QuizInfo:
       type: object

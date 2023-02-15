@@ -382,10 +382,10 @@ def test_activate_powerup(api, monkeypatch):
             "success": True,
             "powerup_payload": {"hint": "Think about it's name"},
             "powerups": [
-                {"name": "get_hints", "used": True},
-                {"name": "get_percentages", "used": False},
-                {"name": "skip_question", "used": False},
-                {"name": "eliminate_half", "used": False},
+                {"name": "get_hints", "used": True, "question_index_used": 0},
+                {"name": "get_percentages", "used": False, "question_index_used": None},
+                {"name": "skip_question", "used": False, "question_index_used": None},
+                {"name": "eliminate_half", "used": False, "question_index_used": None},
             ],
         }
 
@@ -422,10 +422,10 @@ def test_activate_powerup(api, monkeypatch):
                 "last_skipped_question": 0,
             },
             "powerups": [
-                {"name": "get_hints", "used": True},
-                {"name": "get_percentages", "used": False},
-                {"name": "skip_question", "used": True},
-                {"name": "eliminate_half", "used": False},
+                {"name": "get_hints", "used": True, "question_index_used": 0},
+                {"name": "get_percentages", "used": False, "question_index_used": None},
+                {"name": "skip_question", "used": True, "question_index_used": 0},
+                {"name": "eliminate_half", "used": False, "question_index_used": None},
             ],
         }
 
@@ -471,10 +471,10 @@ def test_activate_powerup(api, monkeypatch):
                 "remaining_choices": ["Yes", "Never"],
             },
             "powerups": [
-                {"name": "get_hints", "used": True},
-                {"name": "get_percentages", "used": False},
-                {"name": "skip_question", "used": True},
-                {"name": "eliminate_half", "used": True},
+                {"name": "get_hints", "used": True, "question_index_used": 0},
+                {"name": "get_percentages", "used": False, "question_index_used": None},
+                {"name": "skip_question", "used": True, "question_index_used": 0},
+                {"name": "eliminate_half", "used": True, "question_index_used": 1},
             ],
         }
 
@@ -529,10 +529,10 @@ def test_activate_powerup(api, monkeypatch):
                 "percentages": [0.1, 0.2, 0.3, 0.4],
             },
             "powerups": [
-                {"name": "get_hints", "used": True},
-                {"name": "get_percentages", "used": True},
-                {"name": "skip_question", "used": True},
-                {"name": "eliminate_half", "used": True},
+                {"name": "get_hints", "used": True, "question_index_used": 0},
+                {"name": "get_percentages", "used": True, "question_index_used": 1},
+                {"name": "skip_question", "used": True, "question_index_used": 0},
+                {"name": "eliminate_half", "used": True, "question_index_used": 1},
             ],
         }
 
@@ -584,13 +584,14 @@ def test_create_powerup(api, monkeypatch):
         db.session.commit()
 
         res = client.post(
-            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/create/foobar", json={}
+            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/create/foobar",
+            json={},
         )
 
         expected_response = {
             "success": True,
             "powerups": [
-                {"name": "foobar", "used": False},
+                {"name": "foobar", "used": False, "question_index_used": None},
             ],
         }
 

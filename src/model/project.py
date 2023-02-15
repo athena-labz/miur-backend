@@ -50,7 +50,9 @@ class Project(db.Model):
         total_funding_amount = 0
         for funding in self.funding:
             funders.append(funding.parse())
-            total_funding_amount += funding.amount
+
+            if funding.status == "submitted":
+                total_funding_amount += funding.amount
 
         return {
             "project_id": self.project_identifier,

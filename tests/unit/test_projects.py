@@ -112,7 +112,7 @@ def test_get_projects(api):
                 "status": "foobar",
             }
         ],
-        "total_funding_amount": 10_000_000,
+        "total_funding_amount": 0,
         "mediators": [
             {
                 "email": "bonjour@email.com",

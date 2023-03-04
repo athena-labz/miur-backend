@@ -37,6 +37,7 @@ class User(db.Model):
     )
     funding = relationship("Funding", back_populates="funder")
     answer_attempts = relationship("AttemptAnswer", back_populates="attempter")
+    reviews = relationship("Review", back_populates="reviewer")
 
     creation_date = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False

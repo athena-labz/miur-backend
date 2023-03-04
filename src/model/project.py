@@ -5,7 +5,9 @@ from . import db
 from sqlalchemy.orm import relationship
 from sqlalchemy import ForeignKey, func
 
-from model.project_subject_association import association_table
+from model.project_subject_association import (
+    association_table as subjects_association_table,
+)
 from model.project_mediator_association import (
     association_table as mediator_association_table,
 )
@@ -23,7 +25,7 @@ class Project(db.Model):
     creator = relationship("User", back_populates="created_projects")
 
     subjects = relationship(
-        "Subject", secondary=association_table, back_populates="projects"
+        "Subject", secondary=subjects_association_table, back_populates="projects"
     )
 
     name = db.Column(db.String(), nullable=False)
@@ -38,6 +40,7 @@ class Project(db.Model):
         "User", secondary=mediator_association_table, back_populates="mediated_projects"
     )
     funding = relationship("Funding", back_populates="project")
+    reviews = relationship("Review", back_populates="project")
 
     status = db.Column(db.String(), default="open", nullable=False)
 

@@ -191,6 +191,56 @@ paths:
         "404":
           description: Project ID or User address not found
 
+  /projects/review/{project_id}:
+    post:
+      summary: Reviews a project
+      operationId: api.projects.submit_review
+      description: |
+        Mediator gives or not the approval to a project and explains the reason why
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - approval
+                - review
+                - deadline
+                - reviewer
+                - signature
+              properties:
+                approval:
+                  type: boolean
+                  example: true
+                review:
+                  type: string
+                  example: The project fails to succeed
+                deadline:
+                  type: integer
+                  description: POSIX Timestamp for deadline in seconds
+                  example: 1_677_952_895
+                reviewer:
+                  type: string
+                  example: stake_test123
+                signature:
+                  $ref: "#/components/schemas/Signature"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to create the project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: True
+                  message:
+                    type: string
+                    example: "Something real bad happened"
+
   /register/{stake_address}:
     post:
       summary: Registers a user to the platform

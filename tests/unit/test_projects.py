@@ -525,3 +525,93 @@ def test_get_project_user(api):
         "creator": False,
         "mediator": False,
     }
+
+
+def test_submit_review(api, monkeypatch):
+    client, app = api
+
+    sys.path.append("src")
+
+    monkeypatch.setattr("api.projects.auth_tools.user_can_signin", lambda *_: True)
+
+    from model import db, Project, User, Subject, Deliverable, Review
+
+    alice = User(
+        email="alice@email.com",
+        stake_address="stake_test123",
+        payment_address="addr_test123",
+    )
+
+    bob = User(
+        email="bob@email.com",
+        stake_address="stake_test456",
+        payment_address="addr_test456",
+    )
+
+    charlie = User(
+        email="charlie@email.com",
+        stake_address="stake_test789",
+        payment_address="addr_test789",
+    )
+
+    project = Project(
+        project_identifier="project_id",
+        creator=alice,
+        subjects=[Subject(subject_name="Math"), Subject(subject_name="Tourism")],
+        name="Project",
+        short_description="lorem ipsum...",
+        long_description="lorem ipsum dolor sit amet...",
+        days_to_complete=15,
+        deliverables=[
+            Deliverable(deliverable="I am going to do it"),
+            Deliverable(deliverable="I am doint it I swear"),
+        ],
+        mediators=[bob],
+        status="review",
+        creation_date=datetime.datetime(2022, 6, 24, 12, 0, 0),
+    )
+
+    with app.app_context():
+        db.session.add(alice)
+        db.session.add(bob)
+        db.session.add(charlie)
+        db.session.add(project)
+
+        db.session.commit()
+
+        db.session.refresh(alice)
+        db.session.refresh(bob)
+        db.session.refresh(charlie)
+        db.session.refresh(project)
+
+    response = client.post(
+        "/projects/review/project_id",
+        json={
+            "reviewer": "stake_test789",
+            "approval": True,
+            "review": "I approve this project",
+            "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
+            "signature": "<signature>",
+        },
+    )
+
+    print(response.json)
+
+    assert response.status_code == 200
+    assert response.json == {"success": True}
+
+    with app.app_context():
+        project = Project.query.filter(
+            Project.project_identifier == "project_id"
+        ).first()
+
+        assert project.status == "review"
+        assert len(project.reviews) == 1
+
+        review = project.reviews[0]
+
+        assert review.reviewer_id == charlie.id
+
+        assert review.approval == True
+        assert review.review == "I approve this project"
+        assert review.deadline == datetime.datetime(2024, 1, 1, 0, 0)

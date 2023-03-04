@@ -1,8 +1,12 @@
 from flask import request
 from sqlalchemy import and_, or_
+from typing import Union
 
-from model import Project, User, Subject, Deliverable, Funding, db
+from model import Project, User, Subject, Deliverable, Funding, Review, db
 from lib import auth_tools
+
+
+import datetime
 
 
 def get_projects():
@@ -157,3 +161,55 @@ def get_project_user(project_id, stake_address):
         "creator": project.creator_id == user.id,
         "mediator": user in project.mediators,
     }, 200
+
+
+def submit_review(project_id):
+    data = request.json
+
+    reviewer = User.query.filter(User.stake_address == data["reviewer"]).first()
+    if reviewer is None:
+        return {
+            "success": False,
+            "code": "user_not_found",
+            "message": f"User with stake address {data['reviewer']} not found",
+        }, 404
+
+    if auth_tools.user_can_signin(data["signature"], data["reviewer"]) is False:
+        return {
+            "success": False,
+            "code": "invalid_signature",
+            "message": f"Invalid signature",
+        }, 400
+
+    project: Union[Project, None] = Project.query.filter(
+        Project.project_identifier == project_id
+    ).first()
+
+    if project is None:
+        return {
+            "success": False,
+            "code": "project_not_found",
+            "message": f"Project {project_id} not found",
+        }, 404
+
+    if project.status != "review":
+        return {
+            "success": False,
+            "code": "project_not_in_review",
+            "message": f"The project {project_id} is not currently in review",
+        }, 400
+
+    review = Review(
+        reviewer=reviewer,
+        project=project,
+        approval=data["approval"],
+        review=data["review"],
+        deadline=datetime.datetime.utcfromtimestamp(data["deadline"]),
+    )
+
+    project.reviews.append(review)
+
+    db.session.add(project)
+    db.session.commit()
+
+    return {"success": True}, 200

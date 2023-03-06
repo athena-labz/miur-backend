@@ -17,8 +17,8 @@ class Review(db.Model):
     reviewer_id = db.Column(db.Integer, ForeignKey("user.id"), nullable=False)
     reviewer = relationship("User", back_populates="reviews")
 
-    project_id = db.Column(db.Integer, ForeignKey("project.id"), nullable=False)
-    project = relationship("Project", back_populates="reviews")
+    submission_id = db.Column(db.Integer, ForeignKey("submission.id"), nullable=False)
+    submission = relationship("Submission", back_populates="review")
 
     approval = db.Column(db.Boolean, nullable=False)
     review = db.Column(db.String(), nullable=False)

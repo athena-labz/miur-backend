@@ -527,14 +527,14 @@ def test_get_project_user(api):
     }
 
 
-def test_submit_review(api, monkeypatch):
+def test_submit_project(api, monkeypatch):
     client, app = api
 
     sys.path.append("src")
 
     monkeypatch.setattr("api.projects.auth_tools.user_can_signin", lambda *_: True)
 
-    from model import db, Project, User, Subject, Deliverable, Review
+    from model import db, Project, User, Subject, Deliverable, Submission
 
     alice = User(
         email="alice@email.com",
@@ -585,7 +585,101 @@ def test_submit_review(api, monkeypatch):
         db.session.refresh(project)
 
     response = client.post(
-        "/projects/review/project_id",
+        "/projects/submit/project_id",
+        json={
+            "title": "Very Nice Title",
+            "content": "It is thereby proven that Nicholas Cage is a vampire",
+            "signature": "<signature>",
+        },
+    )
+
+    print(response.json)
+
+    assert response.status_code == 200
+    assert response.json == {"success": True}
+
+    with app.app_context():
+        project = Project.query.filter(
+            Project.project_identifier == "project_id"
+        ).first()
+
+        assert len(project.submissions) == 1
+
+        submission = project.submissions[0]
+
+        assert submission.title == "Very Nice Title"
+        assert (
+            submission.content == "It is thereby proven that Nicholas Cage is a vampire"
+        )
+
+
+def test_submit_review(api, monkeypatch):
+    client, app = api
+
+    sys.path.append("src")
+
+    monkeypatch.setattr("api.projects.auth_tools.user_can_signin", lambda *_: True)
+
+    from model import db, Project, User, Subject, Deliverable, Submission, Review
+
+    alice = User(
+        email="alice@email.com",
+        stake_address="stake_test123",
+        payment_address="addr_test123",
+    )
+
+    bob = User(
+        email="bob@email.com",
+        stake_address="stake_test456",
+        payment_address="addr_test456",
+    )
+
+    charlie = User(
+        email="charlie@email.com",
+        stake_address="stake_test789",
+        payment_address="addr_test789",
+    )
+
+    project = Project(
+        project_identifier="project_id",
+        creator=alice,
+        subjects=[Subject(subject_name="Math"), Subject(subject_name="Tourism")],
+        name="Project",
+        short_description="lorem ipsum...",
+        long_description="lorem ipsum dolor sit amet...",
+        days_to_complete=15,
+        deliverables=[
+            Deliverable(deliverable="I am going to do it"),
+            Deliverable(deliverable="I am doint it I swear"),
+        ],
+        mediators=[bob],
+        creation_date=datetime.datetime(2022, 6, 24, 12, 0, 0),
+    )
+
+    submission = Submission(
+        submission_identifier="submission_id",
+        project=project,
+        title="Title",
+        content="content",
+    )
+
+    with app.app_context():
+        db.session.add(alice)
+        db.session.add(bob)
+        db.session.add(charlie)
+        db.session.add(project)
+        db.session.add(submission)
+
+        db.session.commit()
+
+        db.session.refresh(alice)
+        db.session.refresh(bob)
+        db.session.refresh(charlie)
+        db.session.refresh(project)
+        db.session.refresh(submission)
+
+    response = client.post(
+        "/projects/review/submission_id",
         json={
             "reviewer": "stake_test789",
             "approval": True,
@@ -601,15 +695,13 @@ def test_submit_review(api, monkeypatch):
     assert response.json == {"success": True}
 
     with app.app_context():
-        project = Project.query.filter(
-            Project.project_identifier == "project_id"
-        ).first()
+        reviews = Review.query.all()
 
-        assert project.status == "review"
-        assert len(project.reviews) == 1
+        assert len(reviews) == 1
 
-        review = project.reviews[0]
+        review = reviews[0]
 
+        assert review.submission_id == submission.id
         assert review.reviewer_id == charlie.id
 
         assert review.approval == True

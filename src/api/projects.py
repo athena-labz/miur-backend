@@ -2,7 +2,7 @@ from flask import request
 from sqlalchemy import and_, or_
 from typing import Union
 
-from model import Project, User, Subject, Deliverable, Funding, Review, db
+from model import Project, User, Subject, Submission, Deliverable, Funding, Review, db
 from lib import auth_tools
 
 
@@ -163,7 +163,42 @@ def get_project_user(project_id, stake_address):
     }, 200
 
 
-def submit_review(project_id):
+def submit_project(project_id):
+    data = request.json
+
+    project = Project.query.filter(Project.project_identifier == project_id).first()
+    if project is None:
+        return {
+            "success": False,
+            "code": "project_not_found",
+            "message": f"Project with identifier {project_id} not found",
+        }, 404
+
+    if (
+        auth_tools.user_can_signin(data["signature"], project.creator.stake_address)
+        is False
+    ):
+        return {
+            "success": False,
+            "code": "invalid_signature",
+            "message": f"Invalid signature",
+        }, 400
+
+    submission = Submission(
+        project=project,
+        title=data["title"],
+        content=data["content"],
+    )
+
+    project.submissions.append(submission)
+
+    db.session.add(project)
+    db.session.commit()
+
+    return {"success": True}, 200
+
+
+def submit_review(submission_id):
     data = request.json
 
     reviewer = User.query.filter(User.stake_address == data["reviewer"]).first()
@@ -181,35 +216,28 @@ def submit_review(project_id):
             "message": f"Invalid signature",
         }, 400
 
-    project: Union[Project, None] = Project.query.filter(
-        Project.project_identifier == project_id
+    submission: Union[Submission, None] = Submission.query.filter(
+        Submission.submission_identifier == submission_id
     ).first()
 
-    if project is None:
+    if submission is None:
         return {
             "success": False,
-            "code": "project_not_found",
-            "message": f"Project {project_id} not found",
+            "code": "submission_not_found",
+            "message": f"Submission {submission_id} not found",
         }, 404
-
-    if project.status != "review":
-        return {
-            "success": False,
-            "code": "project_not_in_review",
-            "message": f"The project {project_id} is not currently in review",
-        }, 400
 
     review = Review(
         reviewer=reviewer,
-        project=project,
+        submission=submission,
         approval=data["approval"],
         review=data["review"],
         deadline=datetime.datetime.utcfromtimestamp(data["deadline"]),
     )
 
-    project.reviews.append(review)
+    submission.review = review
 
-    db.session.add(project)
+    db.session.add(submission)
     db.session.commit()
 
     return {"success": True}, 200

@@ -40,7 +40,7 @@ class Project(db.Model):
         "User", secondary=mediator_association_table, back_populates="mediated_projects"
     )
     funding = relationship("Funding", back_populates="project")
-    reviews = relationship("Review", back_populates="project")
+    submissions = relationship("Submission", back_populates="project")
 
     status = db.Column(db.String(), default="open", nullable=False)
 

@@ -191,7 +191,46 @@ paths:
         "404":
           description: Project ID or User address not found
 
-  /projects/review/{project_id}:
+  /projects/submit/{project_id}:
+    post:
+      summary: Submits a project
+      operationId: api.projects.submit_project
+      description: Project creator submits his work
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - content
+              properties:
+                title:
+                  type: string
+                  example: Work v1
+                content:
+                  type: string
+                  example: The content of the project including some link
+                signature:
+                  $ref: "#/components/schemas/Signature"
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to submit the project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: True
+                  message:
+                    type: string
+                    example: "Something real bad happened"
+
+  /projects/review/{submission_id}:
     post:
       summary: Reviews a project
       operationId: api.projects.submit_review
@@ -228,7 +267,7 @@ paths:
       responses:
         "200":
           description: |
-            Whether everything went okay while trying to create the project
+            Whether everything went okay while trying to review the project
           content:
             application/json:
               schema:

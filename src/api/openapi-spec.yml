@@ -280,6 +280,41 @@ paths:
                     type: string
                     example: "Something real bad happened"
 
+  /submissions/{project_id}:
+    get:
+      summary: Get submissions from a project
+      operationId: api.projects.get_submissions
+      description: Returns submissions and reviews from a project
+      parameters:
+        - in: path
+          name: project_id
+          description: project id (guid)
+          required: true
+          schema:
+            type: string
+            example: "a7420038-3a6d-48e0-8960-cdf839e46f4e"
+      responses:
+        "200":
+          description: Able to get the submissions successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - submissions
+                  - count
+                properties:
+                  submissions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SubmissionInfo"
+                  count:
+                    type: integer
+                    example: 5
+
+        "404":
+          description: Project ID not found
+
   /register/{stake_address}:
     post:
       summary: Registers a user to the platform
@@ -1034,6 +1069,59 @@ components:
           items:
             type: string
             example: "I am gonna do a very good job, trust me :wink"
+
+    ReviewInfo:
+      type: object
+      required:
+        - review_id
+        - submission_id
+        - reviewer
+        - approval
+        - review
+        - deadline
+      properties:
+        review_id:
+          type: string
+          example: "473ca642-d238-4b93-b7e4-424a76128727"
+        submission_id:
+          type: string
+          example: "473ca642-d238-4b93-b7e4-424a76128727"
+        reviewer:
+          $ref: "#/components/schemas/User"
+        approval:
+          type: boolean
+          example: true
+        review:
+          type: string
+          example: "Pretty good"
+        deadline:
+          type: integer
+          example: 1678305356
+
+    SubmissionInfo:
+      type: object
+      required:
+        - submission_id
+        - project_id
+        - title
+        - content
+        - review
+      properties:
+        submission_id:
+          type: string
+          example: "473ca642-d238-4b93-b7e4-424a76128727"
+        project_id:
+          type: string
+          example: "473ca642-d238-4b93-b7e4-424a76128727"
+        title:
+          type: string
+          example: "Delivery #1"
+        content:
+          type: string
+          example: "Here is the link to the google drive: url.com"
+        review:
+          nullable: true
+          $ref: "#/components/schemas/ReviewInfo"
 
     QuestionInfo:
       type: object

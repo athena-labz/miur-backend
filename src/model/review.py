@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from . import db
@@ -31,9 +32,11 @@ class Review(db.Model):
     def parse(self) -> dict:
         return {
             "review_id": self.review_identifier,
-            "project_id": self.project.project_identifier,
+            "submission_id": self.submission.submission_identifier,
+            "reviewer": self.reviewer.parse(),
             "approval": self.approval,
             "review": self.review,
-            "deadline": self.deadline,
-            "creation_date": self.creation_date,
+            "deadline": int(
+                (self.deadline - datetime.datetime(1970, 1, 1)).total_seconds()
+            ),
         }

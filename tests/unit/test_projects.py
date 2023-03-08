@@ -707,3 +707,98 @@ def test_submit_review(api, monkeypatch):
         assert review.approval == True
         assert review.review == "I approve this project"
         assert review.deadline == datetime.datetime(2024, 1, 1, 0, 0)
+
+
+def test_get_submissions(api):
+    client, app = api
+
+    sys.path.append("src")
+
+    from model import db, Project, User, Subject, Deliverable, Funding, Submission, Review
+
+    alice = User(
+        email="alice@email.com",
+        stake_address="stake_test123",
+        payment_address="addr_test123",
+    )
+
+    bob = User(
+        email="bob@email.com",
+        stake_address="stake_test456",
+        payment_address="addr_test456",
+    )
+
+    charlie = User(
+        email="charlie@email.com",
+        stake_address="stake_test789",
+        payment_address="addr_test789",
+    )
+
+    project = Project(
+        project_identifier="project_id",
+        creator=alice,
+        subjects=[Subject(subject_name="Math"), Subject(subject_name="Tourism")],
+        name="Project",
+        short_description="lorem ipsum...",
+        long_description="lorem ipsum dolor sit amet...",
+        days_to_complete=15,
+        deliverables=[
+            Deliverable(deliverable="I am going to do it"),
+            Deliverable(deliverable="I am doint it I swear"),
+        ],
+        mediators=[bob],
+        creation_date=datetime.datetime(2022, 6, 24, 12, 0, 0),
+    )
+
+    with app.app_context():
+        db.session.add(project)
+
+        expected_submissions = []
+        for i in range(10):
+            submission = Submission(
+                submission_identifier=f"submission_id_{i}",
+                project=project,
+                title=f"Title_{i}",
+                content=f"content_{i}",
+            )
+
+            review = Review(
+                review_identifier=f"review_id_{i}",
+                submission=submission,
+                reviewer=charlie,
+                approval=True,
+                review=f"Impressive work {i}",
+                deadline=datetime.datetime(2024, 1, 1, 0, 0),
+            )
+
+            db.session.add(submission)
+            db.session.add(review)
+
+            expected_submissions.append({
+                "submission_id": f"submission_id_{i}",
+                "project_id": "project_id",
+                "title": f"Title_{i}",
+                "content": f"content_{i}",
+                "review": {
+                    "review_id": f"review_id_{i}",
+                    "submission_id": f"submission_id_{i}",
+                    "reviewer": {
+                        "email": "charlie@email.com",
+                        "payment_address": "addr_test789",
+                        "stake_address": "stake_test789",
+                    },
+                    "approval": True,
+                    "review": f"Impressive work {i}",
+                    "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
+                }
+            })
+
+        db.session.commit()
+
+    response = client.get("/submissions/project_id")
+
+    assert response.status_code == 200
+    assert response.json == {
+        "count": 10,
+        "submissions": expected_submissions,
+    }

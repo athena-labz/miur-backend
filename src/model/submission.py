@@ -28,9 +28,9 @@ class Submission(db.Model):
 
     def parse(self) -> dict:
         return {
-            "submission_id": self.review_identifier,
+            "submission_id": self.submission_identifier,
             "project_id": self.project.project_identifier,
             "title": self.title,
             "content": self.content,
-            "creation_date": self.creation_date,
+            "review": self.review.parse() if self.review is not None else None,
         }

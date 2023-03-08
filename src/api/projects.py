@@ -241,3 +241,18 @@ def submit_review(submission_id):
     db.session.commit()
 
     return {"success": True}, 200
+
+
+def get_submissions(project_id):
+    project = Project.query.filter(Project.project_identifier == project_id).first()
+    if project is None:
+        return {
+            "success": False,
+            "code": "project_not_found",
+            "message": f"Project with identifier {project_id} not found",
+        }, 404
+
+    return {
+        "count": len(project.submissions),
+        "submissions": [submission.parse() for submission in project.submissions],
+    }, 200

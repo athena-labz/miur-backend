@@ -7,6 +7,7 @@ from lib import auth_tools
 
 
 import datetime
+import os
 
 
 def get_projects():
@@ -254,5 +255,49 @@ def get_submissions(project_id):
 
     return {
         "count": len(project.submissions),
+        "submitter": project.creator.parse(),
         "submissions": [submission.parse() for submission in project.submissions],
+        "mediators": [mediator.parse() for mediator in project.mediators],
     }, 200
+
+
+def add_mediator(project_id):
+    data = request.json
+
+    project = Project.query.filter(Project.project_identifier == project_id).first()
+
+    if project is None:
+        return {
+            "success": False,
+            "code": "project_not_found",
+            "message": f"Project with identifier {project_id} not found",
+        }, 404
+
+    mediator = User.query.filter(
+        User.stake_address == data["mediator_stake_address"]
+    ).first()
+
+    if mediator is None:
+        return {
+            "success": False,
+            "code": "user_not_found",
+            "message": f"User with stake address {data['mediator_stake_address']} not found",
+        }, 404
+    
+    environemnt_api_key = os.environ.get("API_KEY")
+    if environemnt_api_key is None:
+        raise ValueError("API_KEY not set")
+    
+    if environemnt_api_key != data["api_key"]:
+        return {
+            "success": False,
+            "code": "invalid_api_key",
+            "message": f"Invalid API key",
+        }, 400
+    
+    project.mediators.append(mediator)
+
+    db.session.add(project)
+    db.session.commit()
+
+    return {"success": True}, 200

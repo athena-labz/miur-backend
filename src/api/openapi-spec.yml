@@ -280,6 +280,44 @@ paths:
                     type: string
                     example: "Something real bad happened"
 
+  /projects/mediators/add/{project_id}:
+    post:
+      summary: Adds a mediator to a project
+      operationId: api.projects.add_mediator
+      description: |
+        Adds a mediator to a project if it has the api key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - api_key
+                - mediator_stake_address
+              properties:
+                api_key:
+                  type: string
+                  example: verysecretkey
+                mediator_stake_address:
+                  type: string
+                  example: stake_test123
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to review the project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: True
+                  message:
+                    type: string
+                    example: "Something real bad happened"
+
   /submissions/{project_id}:
     get:
       summary: Get submissions from a project
@@ -302,12 +340,20 @@ paths:
                 type: object
                 required:
                   - submissions
+                  - submitter
+                  - mediators
                   - count
                 properties:
                   submissions:
                     type: array
                     items:
                       $ref: "#/components/schemas/SubmissionInfo"
+                  submitter:
+                    $ref: "#/components/schemas/User"
+                  mediators:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
                   count:
                     type: integer
                     example: 5
@@ -1103,7 +1149,6 @@ components:
       required:
         - submission_id
         - project_id
-        - submitter
         - title
         - content
         - review

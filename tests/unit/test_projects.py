@@ -778,11 +778,6 @@ def test_get_submissions(api):
                 {
                     "submission_id": f"submission_id_{i}",
                     "project_id": "project_id",
-                    "submitter": {
-                        "email": "alice@email.com",
-                        "payment_address": "addr_test123",
-                        "stake_address": "stake_test123",
-                    },
                     "title": f"Title_{i}",
                     "content": f"content_{i}",
                     "review": {
@@ -808,4 +803,96 @@ def test_get_submissions(api):
     assert response.json == {
         "count": 10,
         "submissions": expected_submissions,
+        "mediators": [
+            {
+                "email": "bob@email.com",
+                "payment_address": "addr_test456",
+                "stake_address": "stake_test456",
+            }
+        ],
+        "submitter": {
+            "email": "alice@email.com",
+            "payment_address": "addr_test123",
+            "stake_address": "stake_test123",
+        },
     }
+
+
+def test_add_mediator(api, monkeypatch):
+    client, app = api
+
+    sys.path.append("src")
+
+    monkeypatch.setattr("api.projects.os.environ", {"API_KEY": "password"})
+
+    from model import db, Project, User, Subject, Deliverable
+
+    alice = User(
+        id=0,
+        email="alice@email.com",
+        stake_address="stake_test123",
+        payment_address="addr_test123",
+    )
+
+    bob = User(
+        id=1,
+        email="bob@email.com",
+        stake_address="stake_test456",
+        payment_address="addr_test456",
+    )
+
+    charlie = User(
+        id=2,
+        email="charlie@email.com",
+        stake_address="stake_test789",
+        payment_address="addr_test789",
+    )
+
+    project = Project(
+        project_identifier="project_id",
+        creator=alice,
+        subjects=[Subject(subject_name="Math"), Subject(subject_name="Tourism")],
+        name="Project",
+        short_description="lorem ipsum...",
+        long_description="lorem ipsum dolor sit amet...",
+        days_to_complete=15,
+        deliverables=[
+            Deliverable(deliverable="I am going to do it"),
+            Deliverable(deliverable="I am doint it I swear"),
+        ],
+        mediators=[bob],
+        creation_date=datetime.datetime(2022, 6, 24, 12, 0, 0),
+    )
+
+    with app.app_context():
+        db.session.add(project)
+        db.session.add(charlie)
+        db.session.commit()
+
+    # Try different api key
+
+    response = client.post(
+        "/projects/mediators/add/project_id",
+        json={"mediator_stake_address": "stake_test789", "api_key": "wrong_password"},
+    )
+
+    assert response.status_code == 400
+
+    response = client.post(
+        "/projects/mediators/add/project_id",
+        json={"mediator_stake_address": "stake_test789", "api_key": "password"},
+    )
+
+    print(response.json)
+
+    assert response.status_code == 200
+    assert response.json == {"success": True}
+
+    with app.app_context():
+        projects = Project.query.all()
+
+        assert len(projects) == 1
+
+        project = projects[0]
+
+        assert [mediator.id for mediator in project.mediators] == [1, 2]

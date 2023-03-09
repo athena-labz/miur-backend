@@ -244,12 +244,16 @@ paths:
               type: object
               required:
                 - approval
+                - disqualified
                 - review
                 - deadline
                 - reviewer
                 - signature
               properties:
                 approval:
+                  type: boolean
+                  example: true
+                disqualified:
                   type: boolean
                   example: true
                 review:

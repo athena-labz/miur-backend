@@ -174,6 +174,13 @@ def submit_project(project_id):
             "code": "project_not_found",
             "message": f"Project with identifier {project_id} not found",
         }, 404
+    
+    if project.disqualified is True:
+        return {
+            "success": False,
+            "code": "project_disqualified",
+            "message": f"Project with identifier {project_id} has been disqualified",
+        }, 400
 
     if (
         auth_tools.user_can_signin(data["signature"], project.creator.stake_address)
@@ -251,6 +258,9 @@ def submit_review(submission_id):
     )
 
     submission.review = review
+
+    if data["disqualified"] is True:
+        submission.project.disqualified = True
 
     db.session.add(submission)
     db.session.commit()

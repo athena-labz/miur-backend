@@ -569,6 +569,7 @@ def test_submit_project(api, monkeypatch):
         mediators=[bob],
         status="review",
         creation_date=datetime.datetime(2022, 6, 24, 12, 0, 0),
+        disqualified=True
     )
 
     with app.app_context():
@@ -583,6 +584,27 @@ def test_submit_project(api, monkeypatch):
         db.session.refresh(bob)
         db.session.refresh(charlie)
         db.session.refresh(project)
+
+    # Should not be able to do submissions if project is disqualified
+
+    response = client.post(
+        "/projects/submit/project_id",
+        json={
+            "title": "Very Nice Title",
+            "content": "It is thereby proven that Nicholas Cage is a vampire",
+            "signature": "<signature>",
+        },
+    )
+
+    print(response.json)
+
+    assert response.status_code == 400
+
+    project.disqualified = False
+
+    with app.app_context():
+        db.session.add(project)
+        db.session.commit()
 
     response = client.post(
         "/projects/submit/project_id",
@@ -685,6 +707,7 @@ def test_submit_review(api, monkeypatch):
         json={
             "reviewer": "stake_test789",
             "approval": True,
+            "disqualified": False,
             "review": "I approve this project",
             "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
             "signature": "<signature>",
@@ -700,6 +723,7 @@ def test_submit_review(api, monkeypatch):
         json={
             "reviewer": "stake_test456",
             "approval": True,
+            "disqualified": False,
             "review": "I approve this project",
             "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
             "signature": "<signature>",
@@ -731,6 +755,7 @@ def test_submit_review(api, monkeypatch):
         json={
             "reviewer": "stake_test456",
             "approval": True,
+            "disqualified": False,
             "review": "I approve this project",
             "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
             "signature": "<signature>",
@@ -740,6 +765,46 @@ def test_submit_review(api, monkeypatch):
     print(response.json)
 
     assert response.status_code == 400
+
+    # If disqualified, should update project accordingly
+
+    submission_2 = Submission(
+        submission_identifier="submission_id_2",
+        project=project,
+        title="Title 2",
+        content="content 2",
+    )
+
+    with app.app_context():
+        db.session.add(submission_2)
+
+        db.session.commit()
+
+        db.session.refresh(submission_2)
+
+    response = client.post(
+        "/projects/review/submission_id_2",
+        json={
+            "reviewer": "stake_test456",
+            "approval": False,
+            "disqualified": True,
+            "review": "I hate this project",
+            "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
+            "signature": "<signature>",
+        },
+    )
+
+    print(response.json)
+
+    assert response.status_code == 200
+    
+    with app.app_context():
+        projects = Project.query.all()
+
+        assert len(projects) == 1
+
+        project = projects[0]
+        assert project.disqualified == True
 
 
 def test_get_submissions(api):

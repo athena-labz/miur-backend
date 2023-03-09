@@ -42,6 +42,7 @@ class Project(db.Model):
     funding = relationship("Funding", back_populates="project")
     submissions = relationship("Submission", back_populates="project")
 
+    disqualified = db.Column(db.Boolean, default=False, nullable=False)
     status = db.Column(db.String(), default="open", nullable=False)
 
     creation_date = db.Column(

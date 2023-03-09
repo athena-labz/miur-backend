@@ -30,6 +30,7 @@ class Submission(db.Model):
         return {
             "submission_id": self.submission_identifier,
             "project_id": self.project.project_identifier,
+            "submitter": self.project.creator.parse(),
             "title": self.title,
             "content": self.content,
             "review": self.review.parse() if self.review is not None else None,

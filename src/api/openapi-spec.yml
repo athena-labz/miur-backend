@@ -1103,6 +1103,7 @@ components:
       required:
         - submission_id
         - project_id
+        - submitter
         - title
         - content
         - review
@@ -1113,6 +1114,8 @@ components:
         project_id:
           type: string
           example: "473ca642-d238-4b93-b7e4-424a76128727"
+        submitter:
+          $ref: "#/components/schemas/User"
         title:
           type: string
           example: "Delivery #1"

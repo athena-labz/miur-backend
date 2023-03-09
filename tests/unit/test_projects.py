@@ -714,7 +714,7 @@ def test_get_submissions(api):
 
     sys.path.append("src")
 
-    from model import db, Project, User, Subject, Deliverable, Funding, Submission, Review
+    from model import db, Project, User, Subject, Deliverable, Submission, Review
 
     alice = User(
         email="alice@email.com",
@@ -774,24 +774,31 @@ def test_get_submissions(api):
             db.session.add(submission)
             db.session.add(review)
 
-            expected_submissions.append({
-                "submission_id": f"submission_id_{i}",
-                "project_id": "project_id",
-                "title": f"Title_{i}",
-                "content": f"content_{i}",
-                "review": {
-                    "review_id": f"review_id_{i}",
+            expected_submissions.append(
+                {
                     "submission_id": f"submission_id_{i}",
-                    "reviewer": {
-                        "email": "charlie@email.com",
-                        "payment_address": "addr_test789",
-                        "stake_address": "stake_test789",
+                    "project_id": "project_id",
+                    "submitter": {
+                        "email": "alice@email.com",
+                        "payment_address": "addr_test123",
+                        "stake_address": "stake_test123",
                     },
-                    "approval": True,
-                    "review": f"Impressive work {i}",
-                    "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
+                    "title": f"Title_{i}",
+                    "content": f"content_{i}",
+                    "review": {
+                        "review_id": f"review_id_{i}",
+                        "submission_id": f"submission_id_{i}",
+                        "reviewer": {
+                            "email": "charlie@email.com",
+                            "payment_address": "addr_test789",
+                            "stake_address": "stake_test789",
+                        },
+                        "approval": True,
+                        "review": f"Impressive work {i}",
+                        "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
+                    },
                 }
-            })
+            )
 
         db.session.commit()
 

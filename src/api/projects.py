@@ -216,7 +216,7 @@ def submit_review(submission_id):
             "code": "invalid_signature",
             "message": f"Invalid signature",
         }, 400
-
+    
     submission: Union[Submission, None] = Submission.query.filter(
         Submission.submission_identifier == submission_id
     ).first()
@@ -227,6 +227,20 @@ def submit_review(submission_id):
             "code": "submission_not_found",
             "message": f"Submission {submission_id} not found",
         }, 404
+    
+    if all([user.id != reviewer.id for user in submission.project.mediators]):
+        return {
+            "success": False,
+            "code": "user_not_mediator",
+            "message": f"User {data['reviewer']} is not a mediator for this project",
+        }, 400
+    
+    if submission.review is not None:
+        return {
+            "success": False,
+            "code": "review_already_exists",
+            "message": f"Review for submission {submission_id} already exists",
+        }, 400
 
     review = Review(
         reviewer=reviewer,

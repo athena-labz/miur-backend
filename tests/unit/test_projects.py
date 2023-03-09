@@ -678,10 +678,27 @@ def test_submit_review(api, monkeypatch):
         db.session.refresh(project)
         db.session.refresh(submission)
 
+    # Try with reviewer who is not the mediator (should not be allowed)
+
     response = client.post(
         "/projects/review/submission_id",
         json={
             "reviewer": "stake_test789",
+            "approval": True,
+            "review": "I approve this project",
+            "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
+            "signature": "<signature>",
+        },
+    )
+
+    print(response.json)
+
+    assert response.status_code == 400
+
+    response = client.post(
+        "/projects/review/submission_id",
+        json={
+            "reviewer": "stake_test456",
             "approval": True,
             "review": "I approve this project",
             "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
@@ -702,11 +719,27 @@ def test_submit_review(api, monkeypatch):
         review = reviews[0]
 
         assert review.submission_id == submission.id
-        assert review.reviewer_id == charlie.id
+        assert review.reviewer_id == bob.id
 
         assert review.approval == True
         assert review.review == "I approve this project"
         assert review.deadline == datetime.datetime(2024, 1, 1, 0, 0)
+
+    # Should not be able to review the same submission twice
+    response = client.post(
+        "/projects/review/submission_id",
+        json={
+            "reviewer": "stake_test456",
+            "approval": True,
+            "review": "I approve this project",
+            "deadline": 1_704_067_200,  # 2024-01-01 00:00:00 GMT
+            "signature": "<signature>",
+        },
+    )
+
+    print(response.json)
+
+    assert response.status_code == 400
 
 
 def test_get_submissions(api):

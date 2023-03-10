@@ -174,7 +174,7 @@ def submit_project(project_id):
             "code": "project_not_found",
             "message": f"Project with identifier {project_id} not found",
         }, 404
-    
+
     if project.disqualified is True:
         return {
             "success": False,
@@ -223,7 +223,7 @@ def submit_review(submission_id):
             "code": "invalid_signature",
             "message": f"Invalid signature",
         }, 400
-    
+
     submission: Union[Submission, None] = Submission.query.filter(
         Submission.submission_identifier == submission_id
     ).first()
@@ -234,14 +234,14 @@ def submit_review(submission_id):
             "code": "submission_not_found",
             "message": f"Submission {submission_id} not found",
         }, 404
-    
+
     if all([user.id != reviewer.id for user in submission.project.mediators]):
         return {
             "success": False,
             "code": "user_not_mediator",
             "message": f"User {data['reviewer']} is not a mediator for this project",
         }, 400
-    
+
     if submission.review is not None:
         return {
             "success": False,
@@ -254,7 +254,9 @@ def submit_review(submission_id):
         submission=submission,
         approval=data["approval"],
         review=data["review"],
-        deadline=datetime.datetime.utcfromtimestamp(data["deadline"]),
+        deadline=datetime.datetime.utcfromtimestamp(data["deadline"])
+        if data["deadline"] is not None
+        else None,
     )
 
     submission.review = review
@@ -307,18 +309,18 @@ def add_mediator(project_id):
             "code": "user_not_found",
             "message": f"User with stake address {data['mediator_stake_address']} not found",
         }, 404
-    
+
     environemnt_api_key = os.environ.get("API_KEY")
     if environemnt_api_key is None:
         raise ValueError("API_KEY not set")
-    
+
     if environemnt_api_key != data["api_key"]:
         return {
             "success": False,
             "code": "invalid_api_key",
             "message": f"Invalid API key",
         }, 400
-    
+
     project.mediators.append(mediator)
 
     db.session.add(project)

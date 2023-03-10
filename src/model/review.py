@@ -23,7 +23,7 @@ class Review(db.Model):
 
     approval = db.Column(db.Boolean, nullable=False)
     review = db.Column(db.String(), nullable=False)
-    deadline = db.Column(db.DateTime(timezone=False), nullable=False)
+    deadline = db.Column(db.DateTime(timezone=False), nullable=True)
 
     creation_date = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
@@ -38,5 +38,5 @@ class Review(db.Model):
             "review": self.review,
             "deadline": int(
                 (self.deadline - datetime.datetime(1970, 1, 1)).total_seconds()
-            ),
+            ) if self.deadline else None,
         }

@@ -261,6 +261,7 @@ paths:
                   example: The project fails to succeed
                 deadline:
                   type: integer
+                  nullable: true
                   description: POSIX Timestamp for deadline in seconds
                   example: 1_677_952_895
                 reviewer:

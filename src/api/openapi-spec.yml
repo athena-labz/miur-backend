@@ -285,6 +285,44 @@ paths:
                     type: string
                     example: "Something real bad happened"
 
+  /projects/mediators/add/all:
+    post:
+      summary: Adds a mediator to all projects
+      operationId: api.projects.add_mediator_to_all_projects
+      description: |
+        Adds a mediator to all projects if it has the api key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - api_key
+                - mediator_stake_address
+              properties:
+                api_key:
+                  type: string
+                  example: verysecretkey
+                mediator_stake_address:
+                  type: string
+                  example: stake_test123
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to add the mediator to all projects
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: True
+                  message:
+                    type: string
+                    example: "Something real bad happened"
+
   /projects/mediators/add/{project_id}:
     post:
       summary: Adds a mediator to a project

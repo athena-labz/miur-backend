@@ -61,47 +61,39 @@ def get_assignment(quiz_assignment_id: str):
     return quiz_assignment.info(), 200
 
 
-def attempt_answer(quiz_id: str):
+def attempt_answer(quiz_assignment_id: str):
     data = request.json
 
-    stake_address = data["stake_address"]
     answer = data["answer"]
     signature = data["signature"]
 
-    quiz: Quiz = Quiz.find(quiz_id)
-    if quiz is None:
-        return {
-            "message": f"Quiz {quiz_id} does not exist",
-            "code": "quiz-not-found",
-        }, 404
-
-    user: User = User.find(stake_address)
-    if user is None:
-        return {
-            "message": f"User {stake_address} does not exist",
-            "code": "user-not-found",
-        }, 404
-
     quiz_assignment: QuizAssignment = QuizAssignment.query.filter(
-        (QuizAssignment.quiz_id == quiz.id) & (QuizAssignment.assignee_id == user.id)
+        QuizAssignment.quiz_assignment_identifier == quiz_assignment_id
     ).first()
 
     if quiz_assignment is None:
         return {
-            "message": f"Quiz Assignment for quiz {quiz_id} and user {stake_address} does not exist",
+            "message": f"Quiz Assignment {quiz_assignment_id} does not exist",
             "code": "quiz-assignment-not-found",
         }, 404
 
-    if not auth_tools.validate_signature(signature, stake_address):
+    if not auth_tools.validate_signature(
+        signature, quiz_assignment.assignee.stake_address
+    ):
         return {
             "success": False,
             "message": "Invalid signature",
             "code": "invalid-signature",
         }, 400
 
-    current_question = quiz.questions[quiz_assignment.current_question]
+    current_question = quiz_assignment.quiz.questions[quiz_assignment.current_question]
 
-    AttemptAnswer.attempt(quiz, user, quiz_assignment.current_question, answer)
+    AttemptAnswer.attempt(
+        quiz_assignment.quiz,
+        quiz_assignment.assignee,
+        quiz_assignment.current_question,
+        answer,
+    )
 
     if answer == current_question["right_answer"]:
         # Right answer scenario
@@ -111,7 +103,7 @@ def attempt_answer(quiz_id: str):
             "remaining_attempts": quiz_assignment.remaining_attempts,
         }
 
-        if quiz_assignment.current_question == len(quiz.questions) - 1:
+        if quiz_assignment.current_question == len(quiz_assignment.quiz.questions) - 1:
             # If this was the last question
 
             quiz_assignment.complete_with_success()
@@ -179,7 +171,7 @@ def activate_powerup(quiz_assignment_id: str, powerup: str):
             "success": False,
             "message": f"Quiz Assignment {quiz_assignment.quiz_assignment_identifier} is not in progress",
             "code": "quiz-assignment-completed",
-        }, 200
+        }, 400
 
     activated_powerup: PowerUp = quiz_assignment.find_powerup(powerup)
     if activated_powerup is None:
@@ -187,7 +179,7 @@ def activate_powerup(quiz_assignment_id: str, powerup: str):
             "success": False,
             "message": f"Quiz Assignment {quiz_assignment.quiz_assignment_identifier} has no powerup {powerup}",
             "code": "powerup-not-found",
-        }, 200
+        }, 400
 
     if (
         activated_powerup.used is True

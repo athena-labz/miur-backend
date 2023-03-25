@@ -8,6 +8,7 @@ from .quiz_assignment import QuizAssignment
 from .attempt_answer import AttemptAnswer
 
 import random
+import copy
 
 
 class PowerUp(db.Model):
@@ -21,7 +22,10 @@ class PowerUp(db.Model):
     quiz_assignment = relationship("QuizAssignment", back_populates="powerups")
 
     name = db.Column(db.String, nullable=False)
+
+    # If a powerup was used, we should save a payload
     used = db.Column(db.Boolean, default=False, nullable=False)
+    payload = db.Column(db.JSON, nullable=True)
 
     question_index_used = db.Column(db.Integer, nullable=True)
 
@@ -29,6 +33,7 @@ class PowerUp(db.Model):
         return {
             "name": self.name,
             "used": self.used,
+            "payload": self.payload,
             "question_index_used": self.question_index_used,
         }
 
@@ -68,23 +73,18 @@ class PowerUp(db.Model):
         return {"percentages": result}
 
     def skip_question(self, question_index: int = None):
-        if not self.used:
-            self.quiz_assignment.move_next_question()
-
-            return {
-                "skipped": True,
-                "last_skipped_question": question_index,
-            }
+        # Returns the right answer for this question index
 
         return {
-            "skipped": False,
-            "last_skipped_question": self.question_index_used,
+            "answer": self.quiz_assignment.quiz.questions[question_index][
+                "right_answer"
+            ],
         }
 
     def eliminate_half(self, question_index: int) -> Dict[str, List[str]]:
         random.seed(self.id)
 
-        questions_copy = self.quiz_assignment.quiz.questions.copy()
+        questions_copy = copy.deepcopy(self.quiz_assignment.quiz.questions)
 
         # Make sure we don't eliminate the right answer
         choices = questions_copy[question_index]["answers"]
@@ -99,11 +99,16 @@ class PowerUp(db.Model):
         remainder = random.sample(choices, len(choices) // 2)
 
         remainder.append(answer_content)
+        # remainder = sorted(remainder)
 
-        # Shuffle the choices
-        random.shuffle(remainder)
+        result = []
+        for choice in self.quiz_assignment.quiz.questions[question_index]["answers"]:
+            if choice in remainder:
+                result.append(choice)
+            else:
+                result.append(None)
 
-        return {"remaining_choices": remainder}
+        return {"remaining_choices": result}
 
     def powerups_map(self) -> Dict[str, Callable[["PowerUp", int], dict]]:
         return {
@@ -121,6 +126,7 @@ class PowerUp(db.Model):
 
         if self.used is False:
             self.used = True
+            self.payload = powerup
 
             db.session.add(self)
             db.session.commit()

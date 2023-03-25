@@ -793,7 +793,7 @@ paths:
                     type: string
                     example: "Quiz Assignment not found"
 
-  /quiz/attempt/{quiz_id}:
+  /quiz/attempt/{quiz_assignment_id}:
     post:
       operationId: "api.quiz.attempt_answer"
       summary: "Attempt to answer a question from a quiz"
@@ -805,13 +805,9 @@ paths:
             schema:
               type: object
               required:
-                - stake_address
                 - answer
                 - signature
               properties:
-                stake_address:
-                  type: string
-                  example: stake_test123
                 answer:
                   type: integer
                   example: 0
@@ -1204,6 +1200,7 @@ components:
       required:
         - name
         - used
+        - payload
         - question_index_used
       properties:
         name:
@@ -1212,6 +1209,9 @@ components:
         used:
           type: boolean
           example: false
+        payload:
+          type: object
+          nullable: true
         question_index_used:
           type: integer
           nullable: true

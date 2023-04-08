@@ -85,6 +85,13 @@ def attempt_answer(quiz_assignment_id: str):
             "message": "Invalid signature",
             "code": "invalid-signature",
         }, 400
+    
+    if quiz_assignment.current_question > quiz_assignment.quiz.current_limit:
+        return {
+            "success": False,
+            "message": "Quiz question is above current limitis not active",
+            "code": "quiz-question-not-active",
+        }, 400
 
     current_question = quiz_assignment.quiz.questions[quiz_assignment.current_question]
 
@@ -151,6 +158,13 @@ def activate_powerup(quiz_assignment_id: str, powerup: str):
             "message": f"Quiz Assignment {quiz_assignment_id} does not exist",
             "code": "quiz-assignment-not-found",
         }, 404
+    
+    if quiz_assignment.current_question > quiz_assignment.quiz.current_limit:
+        return {
+            "success": False,
+            "message": "Quiz question is above current limitis not active",
+            "code": "quiz-question-not-active",
+        }, 400
 
     if not auth_tools.validate_signature(
         signature, quiz_assignment.assignee.stake_address

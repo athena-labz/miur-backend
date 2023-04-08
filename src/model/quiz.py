@@ -39,6 +39,8 @@ class Quiz(db.Model):
 
     questions = db.Column(db.JSON, nullable=False)
 
+    current_limit = db.Column(db.Integer, default=100, nullable=False)
+
     creation_date = db.Column(
         db.DateTime(timezone=False), server_default=func.now(), nullable=False
     )
@@ -64,6 +66,7 @@ class Quiz(db.Model):
             "questions": [
                 Quiz.public_question(question) for question in self.questions
             ],
+            "current_limit": self.current_limit,
             "creation_date": self.creation_date.strftime("%Y/%m/%d %H:%M:%S"),
         }
 

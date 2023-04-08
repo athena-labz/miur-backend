@@ -72,6 +72,7 @@ class QuizAssignment(db.Model):
             "questions": [
                 Quiz.public_question(question) for question in self.quiz.questions
             ],
+            "current_limit": self.quiz.current_limit,
             "powerups": [powerup.info() for powerup in self.powerups],
             "current_question": self.current_question,
             "remaining_attempts": self.remaining_attempts,

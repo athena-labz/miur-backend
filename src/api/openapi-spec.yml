@@ -987,6 +987,61 @@ paths:
                     items:
                       $ref: "#/components/schemas/PowerUpInfo"
 
+  /prod/register/{email}:
+    post:
+      summary: Registers a prod user to the platform
+      operationId: api.prod_user.register
+      description: Adds user to db if email doesn't exist
+      parameters:
+        - in: path
+          name: email
+          description: the email of the user
+          required: true
+          schema:
+            type: string
+            example: "alice@email.com"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  example: v3ry_Str@nGpwd
+      responses:
+        "200":
+          description: |
+            Whether everything went okay while trying to register user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        "400":
+          description: Email already registered or some other error
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - message
+                properties:
+                  code:
+                    type: string
+                    example: "email_already_registered"
+                  message:
+                    type: string
+                    example: "Email already registered"
+
+
 components:
   schemas:
     HealthStatus:

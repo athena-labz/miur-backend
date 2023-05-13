@@ -13,3 +13,4 @@ from .powerup import PowerUp
 from .attempt_answer import AttemptAnswer
 from .review import Review
 from .submission import Submission
+from .prod_user import ProdUser

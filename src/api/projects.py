@@ -287,6 +287,42 @@ def get_submissions(project_id):
     }, 200
 
 
+def add_mediator_to_all_projects():
+    data = request.json
+
+    projects = Project.query.all()
+
+    mediator = User.query.filter(
+        User.stake_address == data["mediator_stake_address"]
+    ).first()
+
+    if mediator is None:
+        return {
+            "success": False,
+            "code": "user_not_found",
+            "message": f"User with stake address {data['mediator_stake_address']} not found",
+        }, 404
+
+    environment_api_key = os.environ.get("API_KEY")
+    if environment_api_key is None:
+        raise ValueError("API_KEY not set")
+
+    if environment_api_key != data["api_key"]:
+        return {
+            "success": False,
+            "code": "invalid_api_key",
+            "message": "Invalid API key",
+        }, 400
+
+    for project in projects:
+        project.mediators.append(mediator)
+        db.session.add(project)
+
+    db.session.commit()
+
+    return {"success": True}, 200
+
+
 def add_mediator(project_id):
     data = request.json
 

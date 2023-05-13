@@ -1,0 +1,4304 @@
+[
+    {
+        "timestamp": "17/11/2022 17:16:34",
+        "name": "Marta Velaj",
+        "question_1": {
+            "question": "Was bedeutet \u201cAbendbrot\u201d? (What does \u201cAbendbrot\u201d mean?)",
+            "options": [
+                "a) Typisch deutsches mittagessen (typical german lunch)",
+                "b) Sonnenuntergang (sunset)",
+                "c) Typisch deutsches abendessen (typical german dinner) ",
+                "d) Glas (glass)"
+            ],
+            "answer": "3",
+            "hint": "Hat mit Essen zu tun (has to do with food)"
+        },
+        "question_2": {
+            "question": "Von wem wird das Oktoberfest er\u00f6ffnet? (Who opens the Oktoberfest?)",
+            "options": [
+                "a) Von den leuten von m\u00fcnchen (by munich people)",
+                "b) Vom b\u00fcrgermeister (by mayor) ",
+                "c) Von den kellnern (from the waiters)",
+                "d) Vom prinzen ludwig (by prince ludwig)"
+            ],
+            "answer": "2",
+            "hint": "Es ist eine Person, die Entscheidungen f\u00fcr die Stadt trifft (is a person who makes decisions for the city)"
+        },
+        "question_3": {
+            "question": "The hotel contract can be:",
+            "options": [
+                "a) To corresponding benefits",
+                "b) Typical",
+                "c) Free",
+                "d) Unilateral"
+            ],
+            "answer": "1",
+            "hint": "It\u2019s a contract so think how many parts there are"
+        },
+        "question_4": {
+            "question": "What is the formula of the linear calculation?",
+            "options": [
+                "a) M=c(1+i)^t",
+                "b) M=c(1+i\u2022n) \u2022 (1+i)^t",
+                "c) M=c(1+i)^n \u2022 (1+i\u2022f) ",
+                "d) M=c\u2022i\u2022t"
+            ],
+            "answer": "3",
+            "hint": "When using the linear method the amount is calculated using the compound capitalization for years  and the simple one for fractions of a year"
+        },
+        "question_5": {
+            "question": "The commercial discount formula is:",
+            "options": [
+                "a) S=c-d\u2022t",
+                "b) S=c\u2022d\u2022t ",
+                "c) S=c(1+d)^t",
+                "d) S=c\u2022t\u2022d"
+            ],
+            "answer": "2",
+            "hint": "The discount is a production of the principal to be paid at maturity calculated in proportion to the principal, the advance time and the discount rate"
+        },
+        "question_6": {
+            "question": "Which of these options is one of the seven wonders of the ancient world?",
+            "options": [
+                "a) Pisa cathedral ",
+                "b) London bridge ",
+                "c) Sagrada familia ",
+                "d) Artemis temple "
+            ],
+            "answer": "4",
+            "hint": " It\u2019s a country overlooking the Mediterranean sea"
+        },
+        "question_7": {
+            "question": "What kind of animals did Queen Elizabeth the II love?",
+            "options": [
+                "a) Dogs and horses ",
+                "b) Cats and dogs",
+                "c) Birds and rabbits ",
+                "d) Horses and hamsters"
+            ],
+            "answer": "1",
+            "hint": "They\u2019re both used for fox haunting"
+        },
+        "question_8": {
+            "question": "She was the goddess of the home and the home hearth:",
+            "options": [
+                "a) Athena",
+                "b) Venus",
+                "c) Medusa",
+                "d) Vesta"
+            ],
+            "answer": "4",
+            "hint": "There is a temple dedicated to her"
+        },
+        "question_9": {
+            "question": "The maincourante is a register that is compiled monthly. ",
+            "answer": "FALSE",
+            "hint": "It concerns the services used by the customer in Hotel"
+        },
+        "question_10": {
+            "question": "The Decumano was the road that ran in an East-West direction",
+            "answer": "TRUE",
+            "hint": "There was another road so think well"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:16:41",
+        "name": "Beatrice Dal Zovo",
+        "question_1": {
+            "question": "for a hotel it is a typical income account ignited at operating costs:",
+            "options": [
+                "a) Capital gains",
+                "b) Hotel service",
+                "c) Invoices to be issued",
+                "d) Purchases ue 74ter"
+            ],
+            "answer": "4",
+            "hint": "concerns purchases of services to be included in a tour package"
+        },
+        "question_2": {
+            "question": "what is the task of the shipowner in maritime transport? ",
+            "options": [
+                "a) Has the decisions during navigation",
+                "b) Employs ships in transport activities",
+                "c) Ass the operation of a ship by equipping it with crew",
+                "d) Rent the boat"
+            ],
+            "answer": "3",
+            "hint": "the shipowner arms the ship"
+        },
+        "question_3": {
+            "question": "traditional dress for bavarian women:",
+            "options": [
+                "a) Tirndl ",
+                "b) Dirndl ",
+                "c) Trachten",
+                "d) Lederhose"
+            ],
+            "answer": "2",
+            "hint": "he has a name that is difficult to pronounce"
+        },
+        "question_4": {
+            "question": "who brings gifts to german children on Christmas?",
+            "options": [
+                "a) Sankt julian",
+                "b) Sankt martino",
+                "c) Spider-man",
+                "d) Sankt nikolaus"
+            ],
+            "answer": "4",
+            "hint": "he\u2019s a saint, pay attention to not get confused with another holiday"
+        },
+        "question_5": {
+            "question": "when was Queen Elizabeth ll born?",
+            "options": [
+                "a) 1926",
+                "b) 1925",
+                "c) 1928",
+                "d) 1924"
+            ],
+            "answer": "1",
+            "hint": "even number"
+        },
+        "question_6": {
+            "question": "what kind of construction system did the romans use?\n",
+            "options": [
+                "a) Bilythic ",
+                "b) Trilythic",
+                "c) A bridge",
+                "d) Qudristatic system"
+            ],
+            "answer": "2",
+            "hint": "it ends with lythic"
+        },
+        "question_7": {
+            "question": "the cloacks are:\n",
+            "options": [
+                "a) City walls",
+                "b) A type of architectural construction",
+                "c) Sewers",
+                "d) Public square"
+            ],
+            "answer": "3",
+            "hint": "something useful for all citizens"
+        },
+        "question_8": {
+            "question": "Jk is for:",
+            "options": [
+                "a) Annual nominal rate convertible k times",
+                "b) Nominal rate convertible k times",
+                "c) Periodal rate convertible k times",
+                "d) Unconvertible nominal rate"
+            ],
+            "answer": "1",
+            "hint": "read the answer carefully with the K"
+        },
+        "question_9": {
+            "question": "in the compound discount the present value is found with this formula V=C/(1+t)^i\n",
+            "answer": "FALSE",
+            "hint": "pay attention at the letters"
+        },
+        "question_10": {
+            "question": "is the chaperone the person who organises the tours?",
+            "answer": "FALSE",
+            "hint": "think about the role of chaperone"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:17:34",
+        "name": "Mauro Chirulli",
+        "question_1": {
+            "question": "It is an authority responsible for certifying, supervising and controlling air transportation.",
+            "options": [
+                "a) Iata",
+                "b) Cgt",
+                "c) Enac",
+                "d) Wwf"
+            ],
+            "answer": "3",
+            "hint": "is a national institution"
+        },
+        "question_2": {
+            "question": "What does The term TO in the tourism sector indicate:",
+            "options": [
+                "a) European tourism",
+                "b) Tour operator",
+                "c) Travel agency",
+                "d) Time"
+            ],
+            "answer": "2",
+            "hint": "is a person"
+        },
+        "question_3": {
+            "question": "V=C-S in this formula what does V denote in financial mathematics?",
+            "options": [
+                "a) Face value",
+                "b) Present value",
+                "c) Vertex",
+                "d) Equal value"
+            ],
+            "answer": "2",
+            "hint": "remember, it is equivalent to the difference between the capital at maturity and the\ndiscounted amount."
+        },
+        "question_4": {
+            "question": "The interest rate and time must :",
+            "options": [
+                "a) Be different",
+                "b) Have no comma",
+                "c) Always be linked",
+                "d) Be expressed as a percentage"
+            ],
+            "answer": "3",
+            "hint": "e.g. if the interest rate is annual, the time must be expressed in years."
+        },
+        "question_5": {
+            "question": "when did Thomas Cook first take tourist to Belgium, Germany France?",
+            "options": [
+                "a) 1888",
+                "b) 1872",
+                "c) 1855 ",
+                "d) 1832"
+            ],
+            "answer": "3",
+            "hint": "pay attention to word \"first\""
+        },
+        "question_6": {
+            "question": "What is Queen Elizabeth's II favorite dog breed?",
+            "options": [
+                "a) Golden retriever",
+                "b) Corgis",
+                "c) Dobermann",
+                "d) Border collie"
+            ],
+            "answer": "2",
+            "hint": "It is a small dog"
+        },
+        "question_7": {
+            "question": "What is the chicken?",
+            "options": [
+                "a) A city",
+                "b) A mountain",
+                "c) An animal",
+                "d) A car"
+            ],
+            "answer": "3",
+            "hint": "it is also a food"
+        },
+        "question_8": {
+            "question": "Who was the creator of homogeneous artistic language in Rome?",
+            "options": [
+                "a) Julius caesar",
+                "b) Nerone",
+                "c) Octavian augustus",
+                "d) Totti"
+            ],
+            "answer": "3",
+            "hint": "he was the first Roman emperor from 27 b.C to 14 AD."
+        },
+        "question_9": {
+            "question": "Is it true that the Tuscanic order has Etruscan derivation?",
+            "answer": "TRUE",
+            "hint": "Remember the Etruscans lived in italy"
+        },
+        "question_10": {
+            "question": "1)Berlinern wall was built on July 13, 1961",
+            "answer": "FALSE",
+            "hint": "pay attention to the month"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:20:51",
+        "name": "Giorgia Zin",
+        "question_1": {
+            "question": "Where Queen Elizabeth the II married",
+            "options": [
+                "a) In the abbey of san nicola ",
+                "b) At windsor castle ",
+                "c) At westminster abbey ",
+                "d) In the cathedral of saint paul"
+            ],
+            "answer": "3",
+            "hint": "It\u2019s a place very important in Queen\u2019s life"
+        },
+        "question_2": {
+            "question": "Where is Lady Diana buried",
+            "options": [
+                "a) In windsor castle",
+                "b) At westminster abbey",
+                "c) In althorp house ",
+                "d) In balmoral castle "
+            ],
+            "answer": "3",
+            "hint": "It\u2019s a place where she spent her childhood "
+        },
+        "question_3": {
+            "question": "In financial mathematics i4 indicates ",
+            "options": [
+                "a) The quarterly rate ",
+                "b) Nominal annual rate convertible bi-monthly  ",
+                "c) The bi-monthly rate ",
+                "d) Nominal annual rate convertible quarterly "
+            ],
+            "answer": "1",
+            "hint": "Remember to refer to the periods of one year "
+        },
+        "question_4": {
+            "question": "In the commercial discount the discount rate is indicated with ",
+            "options": [
+                "a) S",
+                "b) C",
+                "c) D",
+                "d) V"
+            ],
+            "answer": "3",
+            "hint": "Remember the commercial discount "
+        },
+        "question_5": {
+            "question": "The rate of IVA on hotel stays ",
+            "options": [
+                "a) Is not calculated ",
+                "b) Is 15%",
+                "c) Is 10%",
+                "d) Is 22%"
+            ],
+            "answer": "3",
+            "hint": "Considers that tourism is considered a primary need"
+        },
+        "question_6": {
+            "question": "The temple of Zeus is located in ",
+            "options": [
+                "a) Rome",
+                "b) Naples",
+                "c) Athens",
+                "d) Olympia"
+            ],
+            "answer": "3",
+            "hint": " Remember that Zeus was a God "
+        },
+        "question_7": {
+            "question": "What was the most decorated architectural order of columns",
+            "options": [
+                "a) Ionic order ",
+                "b) No one was decorated ",
+                "c) Corinthian order ",
+                "d) Doric order "
+            ],
+            "answer": "3",
+            "hint": "Remember the Greek columns "
+        },
+        "question_8": {
+            "question": "Wann findet das Oktoberfest statt (When is the oktoberfest held)",
+            "options": [
+                "a) November-dezember (november-december)",
+                "b) Oktober-november (october-november)",
+                "c) September-oktober (september-october)",
+                "d) M\u00e4rz-april (marz-april)"
+            ],
+            "answer": "3",
+            "hint": "Lass dich nicht vom Namen t\u00e4uschen (Don\u2019t let the name fool you)"
+        },
+        "question_9": {
+            "question": "Tax on trips outside EU is always 22%",
+            "answer": "FALSE",
+            "hint": " Pay attention to the destination "
+        },
+        "question_10": {
+            "question": "War Ost-Berlin die Hauptstadt der DDR (Est-Berlin was the capital of DDR)",
+            "answer": "TRUE",
+            "hint": "Erinnere dich daran,wie Berlin geteilt war (Remember how it was divided Berlin) "
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:21:44",
+        "name": "Oscar Vogt",
+        "question_1": {
+            "question": "What means the expression \"having pig\"?",
+            "options": [
+                "a) Be dirty  ",
+                "b) Have bad luck  ",
+                "c) Have luck  ",
+                "d) Be hungry"
+            ],
+            "answer": 2,
+            "hint": "four-leaf clover"
+        },
+        "question_2": {
+            "question": "How many parties was in the German Democratic Republic?",
+            "options": [
+                "a) One party ",
+                "b) Three parties ",
+                "c) Four parties ",
+                "d) Two parties"
+            ],
+            "answer": 0,
+            "hint": "1100 - 1099 ="
+        },
+        "question_3": {
+            "question": "the east side gallery is an international memorial of",
+            "options": [
+                "a) German soldiers ",
+                "b) Slavery ",
+                "c) The ddr ",
+                "d) Freedom"
+            ],
+            "answer": 3,
+            "hint": "chilling"
+        },
+        "question_4": {
+            "question": "the Nike of Samothrace is exposed",
+            "options": [
+                "a) At the natinal gallery of art ",
+                "b) At the british museum ",
+                "c) At the galleria degli uffizi ",
+                "d) At the louvre"
+            ],
+            "answer": 3,
+            "hint": "is in France"
+        },
+        "question_5": {
+            "question": "what happened in 1707?",
+            "options": [
+                "a) The parliament of scotland and the parliament of england came together to form the parliament of great britain",
+                "b) Industrial revolution   ",
+                "c) In italy the capital florence is replaced by rome  ",
+                "d) Martin luther died"
+            ],
+            "answer": 0,
+            "hint": "it's an important event"
+        },
+        "question_6": {
+            "question": "Wich city is home of Arsenal?",
+            "options": [
+                "a) Manchester ",
+                "b) Bristol",
+                "c) London",
+                "d) Birmingham"
+            ],
+            "answer": 2,
+            "hint": "The same city as Chealsea"
+        },
+        "question_7": {
+            "question": "what is simple interest?",
+            "options": [
+                "a) The interest earned when a principal is invested for a period of time",
+                "b) Interest accumulates with the principal  ",
+                "c) The value of the annuity calculated into the future ",
+                "d) The future amounts of money in today's dollars"
+            ],
+            "answer": 0,
+            "hint": "indovina un po'"
+        },
+        "question_8": {
+            "question": "The formula for finding the amount in the compound capitalisation scheme is",
+            "options": [
+                "a) m = c x i x t",
+                "b) m = i (2 + c)",
+                "c) m = c (1 + i)t",
+                "d) m = c (1 + i)",
+                "e) m = c (i + t "
+            ],
+            "answer": 2,
+            "hint": "pensaci bene"
+        },
+        "question_9": {
+            "question": "Double-entry is a method of accounting writing, consisting of recording business transactions on two bank accounts",
+            "answer": "TRUE",
+            "hint": "it's the opposite of false"
+        },
+        "question_10": {
+            "question": "INPS is an income tax of natural persons",
+            "answer": "FALSE",
+            "hint": "Never gonna give you up, never gonna let you down, never gonna run around and desert you."
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:22:26",
+        "name": "Elisa Bandera",
+        "question_1": {
+            "question": "The demand for tourism is elastic because:",
+            "options": [
+                "a) Varies according to the quantity and quality of the lodgings in a place",
+                "b) Varies according to the price of the goods and the tourist\u2019s income",
+                "c) Varies according to the season",
+                "d) Varies according to the professionalism of employees and the conditions of",
+                "e) The lodgings"
+            ],
+            "answer": "2",
+            "hint": "it includes two reasons"
+        },
+        "question_2": {
+            "question": "With the lease:",
+            "options": [
+                "a) The landlord gives a good to rent to the lessee ",
+                "b) The landlord sells a piece of land to the lessee, where he\u2019ll build his company",
+                "c) The lessee sells a piece of land to the landlord, where he\u2019ll build his company",
+                "d) The lessee gives a good to rent to the landlord"
+            ],
+            "answer": "1",
+            "hint": "pay attention to the names of the people"
+        },
+        "question_3": {
+            "question": "What is a Brezel?",
+            "options": [
+                "a) It\u2019s a caramelized apple",
+                "b) It\u2019s a sesame bread",
+                "c) It\u2019s a baked product, which is hug-formed and it\u2019s sprinkled with salt ",
+                "d) It\u2019s a salty krapfen sprinkled with pepper and rosemary"
+            ],
+            "answer": "3",
+            "hint": "it isn\u2019t a sweet food"
+        },
+        "question_4": {
+            "question": "How many states are there in Germany?",
+            "options": [
+                "a) 41",
+                "b) 26",
+                "c) 4",
+                "d) 16 "
+            ],
+            "answer": "4",
+            "hint": "it's a even number"
+        },
+        "question_5": {
+            "question": "The rational discount is calculated:",
+            "options": [
+                "a) On present value and a short-timed period",
+                "b) On nominal value and a short-timed period",
+                "c) On nominal value and a long-timed period",
+                "d) On discount rate",
+                "e) On present value and a long-timed period"
+            ],
+            "answer": "1",
+            "hint": " it\u2019s not calculated on a long-timed period"
+        },
+        "question_6": {
+            "question": "The compound capitalization regime, the amount is calculated with the following\nformula:",
+            "options": [
+                "a) I= m(1+it)",
+                "b) M= c(1+i)^t ",
+                "c) M= c(1+t)^i",
+                "d) C= m(1+i)^t",
+                "e) M= c(1+it)"
+            ],
+            "answer": "2",
+            "hint": "pay attention to the letters"
+        },
+        "question_7": {
+            "question": "When was the Statue of Liberty built and by whom?",
+            "options": [
+                "a) 1886, by gustave eiffel and frederic-auguste bartholdi ",
+                "b) 1901, by francesc de paula villar and homer g.balcom",
+                "c) 1857, by william f.lamb shreve and gustave eiffel",
+                "d) 1899, by leon moisseiff and john augustus roebling"
+            ],
+            "answer": "1",
+            "hint": " it was built in 19th century"
+        },
+        "question_8": {
+            "question": "Joaquin Agrasot painted:",
+            "options": [
+                "a) A rest during the bullfight",
+                "b) Los elefantes",
+                "c) Metamorfosis de narciso",
+                "d) Salvator mundi"
+            ],
+            "answer": "1",
+            "hint": " two of these paintings are painted by Salvador Dal\u00ec"
+        },
+        "question_9": {
+            "question": "Nike of Samothrace is found at Louvre",
+            "answer": "TRUE",
+            "hint": "think of the possible museum where the paint could be"
+        },
+        "question_10": {
+            "question": "During the Renaissance people used to travel to escape from diseases",
+            "answer": "FALSE",
+            "hint": "think deeply of the reason why people used to travel for"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:23:38",
+        "name": "Jelena Guglielmo",
+        "question_1": {
+            "question": "BDR means: ",
+            "options": [
+                "a) Federal democratic republic",
+                "b) Bavaria republic of germany ",
+                "c) Federal republic of germany",
+                "d) Berlin republic of germany "
+            ],
+            "answer": "3",
+            "hint": "Do not get confused with the DDR"
+        },
+        "question_2": {
+            "question": "The Trabant was:",
+            "options": [
+                "a) A bike",
+                "b) A town hall",
+                "c) A station ",
+                "d) A german car"
+            ],
+            "answer": "4",
+            "hint": "It is typical of the cold war"
+        },
+        "question_3": {
+            "question": "Financial math is NOT for:",
+            "options": [
+                "a) Comparing the capitals over time",
+                "b) Comparing the proportions",
+                "c) Making an equation between capitals",
+                "d) Calculating the amount to be paid to the bank"
+            ],
+            "answer": "1",
+            "hint": "More than one answer is correct "
+        },
+        "question_4": {
+            "question": "In the commercial discount C means:",
+            "options": [
+                "a) Principal and interest",
+                "b) Present value",
+                "c) Nominal value ",
+                "d) Interest rate"
+            ],
+            "answer": "3",
+            "hint": "It is not a conditional discount, like the one in the invoice"
+        },
+        "question_5": {
+            "question": "Eizabeth II became queen at the age of:",
+            "options": [
+                "a) 15",
+                "b) 40",
+                "c) 31",
+                "d) 25"
+            ],
+            "answer": "4",
+            "hint": "She was young"
+        },
+        "question_6": {
+            "question": "The acronym UNWTO means:",
+            "options": [
+                "a) United nations world tourism organisation",
+                "b) United world tourism organisation ",
+                "c) United religion world organisation",
+                "d) United ue tourism organisation "
+            ],
+            "answer": "1",
+            "hint": "It concerns all states of the World "
+        },
+        "question_7": {
+            "question": "The Calidarium is:",
+            "options": [
+                "a) Dwelling",
+                "b) A room heated in the roman baths",
+                "c) A series of arches",
+                "d) The space around houses and tombs"
+            ],
+            "answer": "2",
+            "hint": "It's about the heat"
+        },
+        "question_8": {
+            "question": "The Vesta was:",
+            "options": [
+                "a) The goodness of the home",
+                "b) The owner of the home",
+                "c) A statue",
+                "d) A house"
+            ],
+            "answer": "1",
+            "hint": "She is a deity"
+        },
+        "question_9": {
+            "question": "The Tour Ogranizer provides a travel catalog",
+            "answer": "TRUE",
+            "hint": "Be careful not to get confused with the Tour Operator"
+        },
+        "question_10": {
+            "question": "In the sale of goods subject to a 22% IVA rate, the flat-rate transports costs are subject to 22% IVA ",
+            "answer": "FALSE",
+            "hint": "The invoice is at a rate"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:23:41",
+        "name": "Camilla Schillaci",
+        "question_1": {
+            "question": "What can be on DEPOSIT, FORFAIT or RESERVE?",
+            "options": [
+                "a) Self invoice of tour operator",
+                "b) Voucher",
+                "c) Account balance",
+                "d) Promissory note"
+            ],
+            "answer": "2",
+            "hint": "Allows you to use the services contained"
+        },
+        "question_2": {
+            "question": "What allows the tourist to get to know the city and its surroundings?",
+            "options": [
+                "a) Access services",
+                "b) Complex services",
+                "c) Reception services",
+                "d) Transfer"
+            ],
+            "answer": "1",
+            "hint": "They are distinguished in \"Guided tours\" and \"Excursion\""
+        },
+        "question_3": {
+            "question": "Who help people identify the perfect holiday location?",
+            "options": [
+                "a) Lift operator",
+                "b) Travel agent",
+                "c) Ice deliverer",
+                "d) Gong farmer"
+            ],
+            "answer": "2",
+            "hint": "It's an endangered job"
+        },
+        "question_4": {
+            "question": "Who was Queen Elizabeth's husband?",
+            "options": [
+                "a) Philip",
+                "b) Charles",
+                "c) Andrew",
+                "d) Luke"
+            ],
+            "answer": "1",
+            "hint": "They was the longest-lived descendant of Queen Victoria"
+        },
+        "question_5": {
+            "question": "Where is the bulge of the column?",
+            "options": [
+                "a) Entasis",
+                "b) Entablature",
+                "c) Pedestal",
+                "d) Pediment"
+            ],
+            "answer": "1",
+            "hint": "Serves to correct optical deformations"
+        },
+        "question_6": {
+            "question": "Which is an architectural element of the doric order frieze of greek and Roman architecture?",
+            "options": [
+                "a) Timpano",
+                "b) Metope",
+                "c) Echino",
+                "d) Stem"
+            ],
+            "answer": "2",
+            "hint": "Is placed alternating with the trygliphs"
+        },
+        "question_7": {
+            "question": "When did the Berlin Wall fall?",
+            "options": [
+                "a) In 1989",
+                "b) In 1898",
+                "c) In 1990",
+                "d) In 1988"
+            ],
+            "answer": "1",
+            "hint": "It fell a year before german reunification"
+        },
+        "question_8": {
+            "question": "How long did the Berlin Wall divide the city?",
+            "options": [
+                "a) 28 years",
+                "b) 25 years",
+                "c) 24 years",
+                "d) 27 years"
+            ],
+            "answer": "1",
+            "hint": "Is a multiple of 7"
+        },
+        "question_9": {
+            "question": "An equation with an unknown (x) is said to be logarithmic if the unknown is present in the argument of one or more logarithms:",
+            "answer": "TRUE",
+            "hint": "The author of the quiz didn't write any hints, so no hint for you :)"
+        },
+        "question_10": {
+            "question": "An equation is defined as a fraction if it is composed of at least one algebraic fraction:",
+            "answer": "TRUE",
+            "hint": "The unknown \"X\" appears in the denominator"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:25:34",
+        "name": "Chiara Aliberti",
+        "question_1": {
+            "question": "Wann wurde die Berliner Mauer gebaut? \nWhen was the Berlin Wall built?",
+            "options": [
+                "a) Am 13 august 1990",
+                "b) Am 13 august 1961",
+                "c) Am 13 november 1961",
+                "d) Am 9 november 1989"
+            ],
+            "answer": "2",
+            "hint": "Sie wurde 1961 gebaut.\nIt was built in 1961."
+        },
+        "question_2": {
+            "question": "What is the exponential calculation formula?",
+            "options": [
+                "a) m = c(1+i)^t",
+                "b) m = c(1+i)^t (1+if)",
+                "c) i = cit",
+                "d) m = c(1+it)"
+            ],
+            "answer": "1",
+            "hint": "When using the exponential formula the number of years must be added to the number of months and days."
+        },
+        "question_3": {
+            "question": "In the simple capitalization time is\u2026",
+            "options": [
+                "a) I = m-c",
+                "b) I = m-c",
+                "c) T = m/ci",
+                "d) T = i/ci"
+            ],
+            "answer": "4",
+            "hint": "You can get it from the simple interest formula (I=Cit)"
+        },
+        "question_4": {
+            "question": "Prepare the arrival list\u2026",
+            "options": [
+                "a) Housekeeper",
+                "b) Front office",
+                "c) Tour operator",
+                "d) Chief of a train"
+            ],
+            "answer": "2",
+            "hint": "The arrival list contains the list of customers who are expected to arrive during the day."
+        },
+        "question_5": {
+            "question": "How long does a ride on the London Eye take?",
+            "options": [
+                "a) 3 hours",
+                "b) 1 hour and 20 minutes",
+                "c) 30 minutes",
+                "d) 10 minutes"
+            ],
+            "answer": "3",
+            "hint": "Remember that tourists must have time to admire the view."
+        },
+        "question_6": {
+            "question": "When was the Tower Bridge inaugurated?",
+            "options": [
+                "a) In 2000",
+                "b) In 1894",
+                "c) In 1970",
+                "d) In 1820"
+            ],
+            "answer": "2",
+            "hint": " The Tower Bridge was inaugurated a few years later the First World War began."
+        },
+        "question_7": {
+            "question": "What is the most famous Venus of the Paleolithic called?",
+            "options": [
+                "a) Of willendorf",
+                "b) Of botticelli",
+                "c) Of iron man",
+                "d) Of gallagher"
+            ],
+            "answer": "1",
+            "hint": "\nIt is painted in red ocher."
+        },
+        "question_8": {
+            "question": "Who painted the \u201cgirl with the turban\u201d?",
+            "options": [
+                "a) Rembrandt",
+                "b) Johannes vermeer",
+                "c) Batman",
+                "d) Van gogh"
+            ],
+            "answer": "2",
+            "hint": "The painting is also known as \u201cthe girl with a pearl earring\u201d."
+        },
+        "question_9": {
+            "question": " Gibt es Heineken Bier auf dem Oktoberfest? \n Can you find Heineken beer at Oktoberfest?",
+            "answer": "FALSE",
+            "hint": "Auf dem Oktoberfest d\u200b\u200b\u00fcrfen nur M\u00fcnchner Traditionsbrauereien ihr Bier verkaufen.\nOnly traditional Munich breweries can sell their beer at Oktoberfest."
+        },
+        "question_10": {
+            "question": "Booking is the first phase of the customer cycle. ",
+            "answer": "TRUE",
+            "hint": "Think about the steps you take when you go to the hotel."
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:25:45",
+        "name": "Iris Bonetti",
+        "question_1": {
+            "question": "What is the inner most part of the Temple?",
+            "options": [
+                "a) Pronaos",
+                "b) Crepidoma",
+                "c) Cell",
+                "d) Peristasis"
+            ],
+            "answer": "3",
+            "hint": "It contains the sacred statue of deity"
+        },
+        "question_2": {
+            "question": "What is the name of an archaic cattle market?",
+            "options": [
+                "a) Odeon",
+                "b) Forum boarium",
+                "c) Colosseum",
+                "d) Imperial forum"
+            ],
+            "answer": "2",
+            "hint": "It is also one of the water brands"
+        },
+        "question_3": {
+            "question": "In how many zones was German divided after the end of the 2nd world war?",
+            "options": [
+                "a) Six",
+                "b) Three",
+                "c) Four",
+                "d) Two"
+            ],
+            "answer": "3",
+            "hint": "2x2"
+        },
+        "question_4": {
+            "question": "Which Saint is celebrated with a procession of lanterns?",
+            "options": [
+                "a) Saint martin",
+                "b) Saint nicola",
+                "c) Santa klaus",
+                "d) Saint silvester"
+            ],
+            "answer": "1",
+            "hint": "He is the Saint of Tours"
+        },
+        "question_5": {
+            "question": "How long did the Grand Tour last?",
+            "options": [
+                "a) Between one and three years",
+                "b) Fifteen days",
+                "c) Between six and ten months",
+                "d) One week"
+            ],
+            "answer": "1",
+            "hint": "Grand Tour included many European cities"
+        },
+        "question_6": {
+            "question": "When King George die?",
+            "options": [
+                "a) 1950",
+                "b) 1953",
+                "c) 1954",
+                "d) 1952"
+            ],
+            "answer": "4",
+            "hint": "Queen Elizabeth the II was crowned on 2nd of june 1953"
+        },
+        "question_7": {
+            "question": "To whom should deliver the roomframework?",
+            "options": [
+                "a) Housekeeper",
+                "b) Receptionist",
+                "c) Chef",
+                "d) Concierge"
+            ],
+            "answer": "1",
+            "hint": "The roomframework is a document with which the cleaning of the room is organized"
+        },
+        "question_8": {
+            "question": "Which is the interest's form?",
+            "options": [
+                "a) C(1+t)^n",
+                "b) C x i x t",
+                "c) C(1+it)",
+                "d) C+c x i x t"
+            ],
+            "answer": "2",
+            "hint": "The interest is the sum to be paid to get landed money"
+        },
+        "question_9": {
+            "question": "The change of cultural heritage as of December 31st is different from that of January 1st",
+            "answer": "FALSE",
+            "hint": "It is increased or decreased by the income for the year"
+        },
+        "question_10": {
+            "question": "The inequalities x>2 and -2x<-4 are equivalent",
+            "answer": "FALSE",
+            "hint": "Remember that an inequality must be tested"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:28:44",
+        "name": "Daniele Puricelli",
+        "question_1": {
+            "question": "They're also called promises of payment:",
+            "options": [
+                "a) The bank receips",
+                "b) The invoices",
+                "c) The cashier checks",
+                "d) The promissory notes"
+            ],
+            "answer": "4",
+            "hint": " In Italy they're also called \"tratte\" or \"pagher\u00f2\""
+        },
+        "question_2": {
+            "question": "How many countries border Germany?\n",
+            "options": [
+                "a) 7",
+                "b) 8",
+                "c) 9",
+                "d) 10"
+            ],
+            "answer": "3",
+            "hint": "The solution is an odd number divisible by 3"
+        },
+        "question_3": {
+            "question": "Which one of these countries is not a german-speaking country?\n",
+            "options": [
+                "a) Liechtenstein",
+                "b) Switzerland",
+                "c) Austria",
+                "d) Luxemburg"
+            ],
+            "answer": "4",
+            "hint": "The capital and the state in the solution have the same name"
+        },
+        "question_4": {
+            "question": "Which element is unnecessary to calculate the commercial discount?\n",
+            "options": [
+                "a) Montante",
+                "b) Nominal value",
+                "c) Actual value",
+                "d) Discount rate"
+            ],
+            "answer": "1",
+            "hint": "The solution is the element that can only be used in the simple or compound capitalization"
+        },
+        "question_5": {
+            "question": "Which country of the USA is in the west?\n",
+            "options": [
+                "a) Texas",
+                "b) Florida",
+                "c) California",
+                "d) Colorado"
+            ],
+            "answer": "3",
+            "hint": "It's the country that has the Golden Gate Bridge, in San Francisco, and Hollywood in Los Angeles"
+        },
+        "question_6": {
+            "question": "\nWhich country has Cardif as capital?\n",
+            "options": [
+                "a) Scotland",
+                "b) Wales",
+                "c) Ireland",
+                "d) Northern ireland"
+            ],
+            "answer": "2",
+            "hint": "Gareth Bale is a football player that was born and plays for that country in the world cup"
+        },
+        "question_7": {
+            "question": "Who were the people that made exibitions and fights in the arenas, during the Roman empire?",
+            "options": [
+                "a) Soldiers",
+                "b) Gladiators",
+                "c) Politicians",
+                "d) Common people"
+            ],
+            "answer": "2",
+            "hint": "The solutions is the title of a famous film that is about the history of the Roman empire"
+        },
+        "question_8": {
+            "question": "How was it called the place that had tubs with cold and hot water, saunas and gyms?",
+            "options": [
+                "a) Temple",
+                "b) Insula",
+                "c) Terms ",
+                "d) Amphitheater"
+            ],
+            "answer": "3",
+            "hint": "In Italy they are famous the ones of Caracalla, in Rome"
+        },
+        "question_9": {
+            "question": "For the travel agencies it\u2019s not obligatory to fill  the SCIA\n",
+            "answer": "FALSE",
+            "hint": "SCIA in italian means Segnalazione Certificata d'Inizio Attivit\u00e0"
+        },
+        "question_10": {
+            "question": "The equation y =mx q is used for a straight line that passes through the origin (0)",
+            "answer": "TRUE",
+            "hint": "Tip: q means the point of intersection in the y axis "
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:28:57",
+        "name": "Christian Mistretta",
+        "question_1": {
+            "question": "What is the daily book?",
+            "options": [
+                "a) It is a chronological writing in which management operations are recorded in order of execution date.",
+                "b) It is a systematic writing, in which management operations are grouped by object, using accounts",
+                "c) It is a writing in which management operations are recorded in order of date of execution.",
+                "d) It is a document that lists all the accounts used by an undertaking to recognise management operations"
+            ],
+            "answer": "1",
+            "hint": "The creator of the quiz gave no hints :)"
+        },
+        "question_2": {
+            "question": "Who was the father of Elizabeth II?",
+            "options": [
+                "a) King edward vii",
+                "b) King george vi",
+                "c) King philip",
+                "d) King william"
+            ],
+            "answer": "2",
+            "hint": "The film \u201cthe king\u2019s speech\u201d was about him CAPITALIZE MOVIES"
+        },
+        "question_3": {
+            "question": "How many countries does the United Kingdom consist of?",
+            "options": [
+                "a) 5",
+                "b) 2",
+                "c) 4",
+                "d) 3"
+            ],
+            "answer": "3",
+            "hint": "More than 3"
+        },
+        "question_4": {
+            "question": "Who painted the Mona Lisa?",
+            "options": [
+                "a) Van gogh",
+                "b) Giotto",
+                "c) Da vinci",
+                "d) Dal\u00ed"
+            ],
+            "answer": "3",
+            "hint": "The artist is italian "
+        },
+        "question_5": {
+            "question": "What is the biggest cathedral in Italy?",
+            "options": [
+                "a) Milan\u2019s cathedral",
+                "b) Lecce dom",
+                "c) Florence dom",
+                "d) Verona dom"
+            ],
+            "answer": "1",
+            "hint": " It\u2019s located in northen Italy"
+        },
+        "question_6": {
+            "question": "In the compound capitalisation scheme, the interest rate shall be calculated as follows",
+            "options": [
+                "a) (1+ik)^k",
+                "b) (1+i)^k-1",
+                "c) (ik)^k-1",
+                "d) (1+ik)^k-1"
+            ],
+            "answer": "4",
+            "hint": "Pay attention to 1"
+        },
+        "question_7": {
+            "question": "The commercial discount is calculated",
+            "options": [
+                "a) On nominal value and long term",
+                "b) On present value and in the long term",
+                "c) On present and short-term value",
+                "d) On nominal value and short term"
+            ],
+            "answer": "4",
+            "hint": "it\u2019s calculated on short term"
+        },
+        "question_8": {
+            "question": "What is the Est Side Gallery?",
+            "options": [
+                "a) Remains of the berlin wall",
+                "b) Museum",
+                "c) German band",
+                "d) Gallery for artists"
+            ],
+            "answer": "1",
+            "hint": "The creator of the quiz gave no hints :)"
+        },
+        "question_9": {
+            "question": "The Berlin Wall was 3.7 metres high.",
+            "answer": "FALSE",
+            "hint": "The wall is 3 metres taller"
+        },
+        "question_10": {
+            "question": "In the double match method the rules are 4. ",
+            "answer": "TRUE",
+            "hint": "The rules are more than 2"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:30:43",
+        "name": "Giorgia De Maddalena ",
+        "question_1": {
+            "question": "Warum wurde die Berliner Mauer gebaut?( Why was the Berlin Wall built?)",
+            "options": [
+                "a) Um den exodus der bev\u00f6lkerung von der deutschen demokratischen republik zur bundesrepublik deutschland zu stoppen. (to stop the exodus of the population from the german democratic republic to the federal republic of germany.)",
+                "b) Um deutschland in zwei staaten zu teilen. (to divide germany into two states.)",
+                "c) Um die stadt zu schm\u00fccken. (to decorate the city.)",
+                "d) Aus religi\u00f6sen gr\u00fcnden.(for religious reasons.)"
+            ],
+            "answer": "1",
+            "hint": "In Westdeutschland war es sch\u04e7ner. (It was nicer in West Germany)."
+        },
+        "question_2": {
+            "question": "In Deutschland beginnt der 11 November um 11:11 Uhr\u2026. ( In Germany, November 11 starts at 11:11 am....)",
+            "options": [
+                "a) Weihnachten (christmas)",
+                "b) Ostern (easter)",
+                "c) Der pfingst (pentecost)",
+                "d) Der karneval (the carnival)"
+            ],
+            "answer": "4",
+            "hint": "Bei uns wird es am Ende des Winters gefeiert. (We celebrate it at the end of winter.)"
+        },
+        "question_3": {
+            "question": "What characterizes the eighteenth century in tourism?",
+            "options": [
+                "a) Grand tour",
+                "b) Business",
+                "c) Trade ",
+                "d) The thermal baths "
+            ],
+            "answer": "1",
+            "hint": "It was only possible for rich, young men. "
+        },
+        "question_4": {
+            "question": "What went wrong in the life of Queen Elizabeth II in 1992?",
+            "options": [
+                "a) One of her children\u2019s marriages broke up and a fire destroyed part of her home in windsor castle. ",
+                "b) Some of her children\u2019s marriages broke up and a fire destroyed part of her home in windsor castle.",
+                "c) One of her dogs died.",
+                "d) Two of her horses run away."
+            ],
+            "answer": "2",
+            "hint": "More than one event went wrong."
+        },
+        "question_5": {
+            "question": "The planning is\u2026",
+            "options": [
+                "a) An optional register in which reservations are recorded and allows you to immediately check the availability of rooms in a given period.",
+                "b) A mandatory register in which information regarding the structure is transcribed and to check the availability of the rooms in a given period.",
+                "c) An optional register in which information regarding the structure is transcribed and to check the availability of the rooms in a given period. ",
+                "d) A list that is compiled by the front office and delivered every morning to the housekeeper, so that she proceeds to arrange the rooms. "
+            ],
+            "answer": "1",
+            "hint": "Customer\u2019s first approach to the accommodation facility."
+        },
+        "question_6": {
+            "question": "For hotel services it is mandatory to issue \u2026",
+            "options": [
+                "a) A tax document",
+                "b) Ota ",
+                "c) Of the deposit",
+                "d) Satisfaction questionnaires"
+            ],
+            "answer": "1",
+            "hint": " It concerns VAT."
+        },
+        "question_7": {
+            "question": "What are the \u201cmenhir''?",
+            "options": [
+                "a) Small , vertical, wide and long stones, which together form the cromlech. ",
+                "b) Large single, vertical, narrow and long stones, which together form the cromlech.",
+                "c) Stone tablets",
+                "d) Three joined stones, forming the trilithic system."
+            ],
+            "answer": "2",
+            "hint": " They were too massive for one person to move."
+        },
+        "question_8": {
+            "question": "When the Greek civilization was born, it was divided into three periods, what is one of these?",
+            "options": [
+                "a) Classic",
+                "b) Geometric",
+                "c) Indo-european",
+                "d) Medieval"
+            ],
+            "answer": "1",
+            "hint": "Think about literature. "
+        },
+        "question_9": {
+            "question": "The J6 script indicates a nominal annual rate convertible half yearly.",
+            "answer": "FALSE",
+            "hint": "With J6 the year is divided into 6 parts."
+        },
+        "question_10": {
+            "question": "In the actualization it is determined capital in an earlier time.",
+            "answer": "TRUE",
+            "hint": "In a past time."
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:32:31",
+        "name": "Manuel Vedani",
+        "question_1": {
+            "question": "How many liters of beer get drunk every year for the Oktoberfest?",
+            "options": [
+                "a) 8 million",
+                "b) 3 million",
+                "c) 6 million",
+                "d) 5 million"
+            ],
+            "answer": "3",
+            "hint": "Every year 8 million people go to the Oktoberfest"
+        },
+        "question_2": {
+            "question": "What's the name of the Munich stadium?",
+            "options": [
+                "a) Allianz arena",
+                "b) Allianz stadium",
+                "c) Signal iduna park",
+                "d) Wembley stadium"
+            ],
+            "answer": "1",
+            "hint": "There is Allianz in the answer"
+        },
+        "question_3": {
+            "question": "When was Queen Elizabeth II crowned?",
+            "options": [
+                "a) 1953",
+                "b) 1943",
+                "c) 1952",
+                "d) 1936"
+            ],
+            "answer": "1",
+            "hint": "Over 1950"
+        },
+        "question_4": {
+            "question": "Which people have introduced the tradition of Halloween?",
+            "options": [
+                "a) Celts",
+                "b) Romans",
+                "c) Scottish",
+                "d) Welsh"
+            ],
+            "answer": "1",
+            "hint": "There is a c in the answer"
+        },
+        "question_5": {
+            "question": "Which ancient people introduced Doric, Ionic and Corinthian order?",
+            "options": [
+                "a) Romans",
+                "b) Turks",
+                "c) Greeks",
+                "d) French"
+            ],
+            "answer": "3",
+            "hint": "There is a e in the answer"
+        },
+        "question_6": {
+            "question": "What Roman dwelling is similar to modern condominium?",
+            "options": [
+                "a) Domus",
+                "b) Villa",
+                "c) Insulate",
+                "d) Mansion"
+            ],
+            "answer": "3",
+            "hint": "Is not villa or any similar word"
+        },
+        "question_7": {
+            "question": "After concluding the contract with the customer, the ADV release a ticket and a ..... , a document certifying the services to be provided and the payments made by the customer.",
+            "options": [
+                "a) Check",
+                "b) Voucher",
+                "c) Maincourante",
+                "d) Bill"
+            ],
+            "answer": "2",
+            "hint": "There is a u in the answer"
+        },
+        "question_8": {
+            "question": "How many days there are in a business year?",
+            "options": [
+                "a) 364",
+                "b) 360",
+                "c) 366",
+                "d) 365"
+            ],
+            "answer": "2",
+            "hint": "Under 365"
+        },
+        "question_9": {
+            "question": "The index number expresses the variation of a phenomenon in the time.",
+            "answer": "TRUE",
+            "hint": "The word index should be able to let you know the answer"
+        },
+        "question_10": {
+            "question": "The compound interest regime consists in the periodic capitalization of simple interest.",
+            "answer": "TRUE",
+            "hint": "Periodic capitalization"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:32:38",
+        "name": "Sara Pesavento",
+        "question_1": {
+            "question": "Who is a visitor? ",
+            "options": [
+                "a) A traveler taking a trip to a destination inside his/her usual environment, for less than a year and for any main purpose.",
+                "b) A traveler taking a trip to a destination outside his/her usual environment, for less than a year and for any main purpose.",
+                "c) A person traveling out of their country  of residence.",
+                "d) A traveler taking a trip to a destination outside his/her usual environment, for more than a year and for relaxing reasons."
+            ],
+            "answer": "2",
+            "hint": " more than a year is considered a citizen of that country\n"
+        },
+        "question_2": {
+            "question": "Wie lange existierte der Berliner Mauer?( How long has the Berlin wall existed?)",
+            "options": [
+                "a) Von 1950 bis 1990(from 1950 to 1990)",
+                "b) Von 1948 bis 1978(from 1948 to 1978)",
+                "c)  von 1961 bis 1989(from 1961 to 1989)",
+                "d) Die  berliner mauer existiert noch( the berlin wall still exists)"
+            ],
+            "answer": "3",
+            "hint": "die  Mauer wurde f\u00fcr 28 Jahre gebaut  /  the wall was built for 28 years"
+        },
+        "question_3": {
+            "question": " When did Queen Elizabeth II get engaged?\n",
+            "options": [
+                "a) In 1947",
+                "b) In 1953",
+                "c) In 1949",
+                "d) In 1990  "
+            ],
+            "answer": "1",
+            "hint": " she was 21 \n"
+        },
+        "question_4": {
+            "question": "Was hei\u00dft typische m\u00e4nnliche Kleidung ?(What is called the typical male dress?)\n",
+            "options": [
+                "a) Die dirndl",
+                "b) Die tracht",
+                "c) Die brezn ",
+                "d) Die lederhose"
+            ],
+            "answer": "4",
+            "hint": " das Dirndl hat einen Rock  /   the Dirndl has a skirt\n\n"
+        },
+        "question_5": {
+            "question": "What is the name of the temple room that contains the statue of the divinity?",
+            "options": [
+                "a) Cell",
+                "b) Pronaos",
+                "c) Naos",
+                "d) Colosseum"
+            ],
+            "answer": "1",
+            "hint": " is the house of prisoners\n"
+        },
+        "question_6": {
+            "question": "What were the architectural orders in Roman times?\n",
+            "options": [
+                "a) Tuscan order and composite order",
+                "b) Only the doric order",
+                "c) Doric order,  ionic order, corinthian order, tuscan order and composite order",
+                "d) Doric order, ionic order, corinthian order "
+            ],
+            "answer": "3",
+            "hint": " characterized the columns\n"
+        },
+        "question_7": {
+            "question": "What is the Maincourante? ",
+            "options": [
+                "a) A register in which every day are charged the daily rate and all the hotel service used by the costumer",
+                "b) A register in which every month are charged the monthly rate and all the hotel service used by the costumer",
+                "c) A register in which every day are charged the confirmatory deposit and all the hotel service used by the costumer",
+                "d) A daily register, prepared by front office added, it is used to see how many guests there are in the structure"
+            ],
+            "answer": "1",
+            "hint": "is a document drawn up by a hotel"
+        },
+        "question_8": {
+            "question": " What is the third phase of the client's cycle? Qual \u2019\u00e8 la terza fase del ciclo clienti ?\n",
+            "options": [
+                "a)  check-in",
+                "b)  live-in",
+                "c)  booking",
+                "d) Check-out"
+            ],
+            "answer": "2",
+            "hint": "it concerns the relationship between customers and accommodation facilities"
+        },
+        "question_9": {
+            "question": "In the compound capitalisation scheme, by the exponential method, the amount is calculated with: M = C(1+i)t?",
+            "answer": "TRUE",
+            "hint": "the linear formula is  Mt= C(1+i)^n(1+if)"
+        },
+        "question_10": {
+            "question": "With the expression J2 we mean the annual convertible rate bimonthly? ",
+            "answer": "FALSE",
+            "hint": " with J2 the year is divided in two parts"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:36:28",
+        "name": "Giuseppe La Tona",
+        "question_1": {
+            "question": "what is a Radler?",
+            "options": [
+                "a) Hot tea",
+                "b) Beer + lemonade",
+                "c) Water and lemon",
+                "d) Orange juice"
+            ],
+            "answer": "2",
+            "hint": "there is lemon"
+        },
+        "question_2": {
+            "question": "how many people go to Oktoberfest?",
+            "options": [
+                "a) 6 million",
+                "b) 7 million",
+                "c) 4 million",
+                "d) 10 million"
+            ],
+            "answer": "1",
+            "hint": "under 10 million"
+        },
+        "question_3": {
+            "question": "what is the caldarium?",
+            "options": [
+                "a) A roman book",
+                "b) A metal oven",
+                "c) A tool for farming",
+                "d) A part of the thermal baths intended for steam baths"
+            ],
+            "answer": "4",
+            "hint": "it isn't a tool"
+        },
+        "question_4": {
+            "question": "what is the temple?",
+            "options": [
+                "a) A church",
+                "b) An battle arena",
+                "c) Building consecrated to the worship of deities",
+                "d) A building to study"
+            ],
+            "answer": "3",
+            "hint": "there was no fighting"
+        },
+        "question_5": {
+            "question": "where was queen elizabeth the 2^ crowned?",
+            "options": [
+                "a) Backingam palace",
+                "b) Westminister abbey",
+                "c) Big ben",
+                "d) London garden"
+            ],
+            "answer": "2",
+            "hint": "in a structure"
+        },
+        "question_6": {
+            "question": "which of the following a halloween tradition in the U.S.?",
+            "options": [
+                "a) Playing flute with a group",
+                "b) Running a race",
+                "c) Bobbing for apples",
+                "d) Throwing eggs at people"
+            ],
+            "answer": "3",
+            "hint": "is has to do with food"
+        },
+        "question_7": {
+            "question": "how is the present value calculated?",
+            "options": [
+                "a) By subtracting the discount form the face value",
+                "b) Dividing the face value by the discount",
+                "c) By multiplying the face value by the discount",
+                "d) By adding the discount to the face value"
+            ],
+            "answer": "1",
+            "hint": "you don't have to add but take away"
+        },
+        "question_8": {
+            "question": "the capital is equal to the simple interest if",
+            "options": [
+                "a) I x t>1",
+                "b) I x t<=1",
+                "c) I x t >=1",
+                "d) I x t = 1"
+            ],
+            "answer": "3",
+            "hint": "think carefully"
+        },
+        "question_9": {
+            "question": "are the suppliers part of the stakeholders?",
+            "answer": "TRUE",
+            "hint": "they are people who are interested in the company"
+        },
+        "question_10": {
+            "question": "in the double account does registering an account mean making a credit entry?",
+            "answer": "FALSE",
+            "hint": "just make a registering"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:36:41",
+        "name": "Matteo Bravo",
+        "question_1": {
+            "question": "When was the wall of Berlin was built?",
+            "options": [
+                "a) In 1961",
+                "b) In 1945",
+                "c) In 1990",
+                "d) In 1981"
+            ],
+            "answer": "1",
+            "hint": "important event in the 60s"
+        },
+        "question_2": {
+            "question": "When did DDR and BRD get reunite? ",
+            "options": [
+                "a) In 1990",
+                "b) In 1991",
+                "c) In 1961",
+                "d) In 1945"
+            ],
+            "answer": "2",
+            "hint": "in the 1990's"
+        },
+        "question_3": {
+            "question": "What's the capital of Brazil?",
+            "options": [
+                "a) Is rio de janeiro",
+                "b) Is brazilia",
+                "c) Is sao paolo",
+                "d) Is manaus"
+            ],
+            "answer": "2",
+            "hint": "it's similar to brazil"
+        },
+        "question_4": {
+            "question": "Which of these artists is notnspanish?",
+            "options": [
+                "a) Pablo picasso",
+                "b) Salvador dal\u00ec",
+                "c) Frida calo",
+                "d) Francisco joya"
+            ],
+            "answer": "3",
+            "hint": "it's Messican"
+        },
+        "question_5": {
+            "question": "What's the formula to calculate the area of the triangle?",
+            "options": [
+                "a) Bxh:2",
+                "b) Hx2:b",
+                "c) Bxh",
+                "d) 2xh"
+            ],
+            "answer": "1",
+            "hint": "it's bxh:2"
+        },
+        "question_6": {
+            "question": "What does I mean in financial maths",
+            "options": [
+                "a) Interest rate",
+                "b) Interest",
+                "c) Beginning of capitalization period",
+                "d) Beginning of the period of the interest calculation"
+            ],
+            "answer": "2",
+            "hint": "it's the number 2"
+        },
+        "question_7": {
+            "question": "Where is desplyed the Gioconda?",
+            "options": [
+                "a) National gallery",
+                "b) D'orsay museum",
+                "c) El prado museum",
+                "d) Louvre"
+            ],
+            "answer": "4",
+            "hint": "It's in france"
+        },
+        "question_8": {
+            "question": "One of this artists is not an impressionist?",
+            "options": [
+                "a) Monet",
+                "b) Manet",
+                "c) Picasso",
+                "d) Cezanne"
+            ],
+            "answer": "3",
+            "hint": "it's similar to asso"
+        },
+        "question_9": {
+            "question": "The issues can be postponed",
+            "answer": "TRUE",
+            "hint": "You can pay in different ways"
+        },
+        "question_10": {
+            "question": "The cost of the purchase of raw materials is a positive economical variation",
+            "answer": "FALSE",
+            "hint": "it's false"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:36:43",
+        "name": "Matteo Pirri",
+        "question_1": {
+            "question": "When did the Second World War end?",
+            "options": [
+                "a) 9 november 1918",
+                "b) 3 october 1932",
+                "c) 8 may 1945",
+                "d) 13 august 1940"
+            ],
+            "answer": "3",
+            "hint": "it's end in spring"
+        },
+        "question_2": {
+            "question": "What does \"einen kater haben\" mean?",
+            "options": [
+                "a) To be hungry",
+                "b) To be angry",
+                "c) To have an hangover ",
+                "d) To have a cat"
+            ],
+            "answer": "3",
+            "hint": "You say it when you drink a lot"
+        },
+        "question_3": {
+            "question": "The nominal value is\n",
+            "options": [
+                "a)  greater than the current value",
+                "b)  less than the current value",
+                "c)  less than the discount",
+                "d) Equal to the current value"
+            ],
+            "answer": "2",
+            "hint": "It can't be less than the discount"
+        },
+        "question_4": {
+            "question": "The simple interest is:\n",
+            "options": [
+                "a) The amount added to the capital",
+                "b)  the amount multiplied by the capital",
+                "c) The reduced amount of capital",
+                "d)  the amount divided by the capital"
+            ],
+            "answer": "1",
+            "hint": "Remember the formulas"
+        },
+        "question_5": {
+            "question": "Where was Queen Elizabeth born?\n",
+            "options": [
+                "a) In manchester",
+                "b) In birmingham",
+                "c) In london",
+                "d) In scotland"
+            ],
+            "answer": "3",
+            "hint": "It's where she lived"
+        },
+        "question_6": {
+            "question": "Where does the Halloween phrase \u201ctrick or treat\u201d come from?",
+            "options": [
+                "a) The romans",
+                "b) The protagonist of a thriller film",
+                "c) The kids who committed vandalism",
+                "d) Irish immigrants"
+            ],
+            "answer": "3",
+            "hint": "Think of who says it every year"
+        },
+        "question_7": {
+            "question": "What were the domus?",
+            "options": [
+                "a) Some plants",
+                "b)  private houses",
+                "c)  some churches",
+                "d)  some slaves"
+            ],
+            "answer": "2",
+            "hint": "They were built"
+        },
+        "question_8": {
+            "question": "How wide is the center of the Pantheon?\n",
+            "options": [
+                "a)  10m",
+                "b)  12m",
+                "c)  7m",
+                "d)  9m"
+            ],
+            "answer": "4",
+            "hint": "It's an odd number"
+        },
+        "question_9": {
+            "question": "The patrimony is the whole of elements and liabilities of a company at a certain moment",
+            "answer": "TRUE",
+            "hint": "It's all that comprises the company"
+        },
+        "question_10": {
+            "question": "The invoice issued for hotel services has  22% of iva\n",
+            "answer": "FALSE",
+            "hint": "Think about the correct percentage"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:38:30",
+        "name": "Alessia Papa",
+        "question_1": {
+            "question": "What is the VAT percentage of a hotel?",
+            "options": [
+                "a) 20%",
+                "b) 5%",
+                "c) 10%",
+                "d) 22%"
+            ],
+            "answer": "3",
+            "hint": "the sum  minus 47."
+        },
+        "question_2": {
+            "question": "What is a \"bill of exchange\"?",
+            "options": [
+                "a) Order of payment",
+                "b) Payment promise",
+                "c) A document in which three subjects must appear",
+                "d) A document in which two subjects must appear"
+            ],
+            "answer": "1",
+            "hint": "is issued by the creditor"
+        },
+        "question_3": {
+            "question": "What's the compound interest formula?",
+            "options": [
+                "a) C x (1+i) ^t",
+                "b) (1+ik) ^k",
+                "c) (1+i) -1",
+                "d) C x i x t"
+            ],
+            "answer": "1",
+            "hint": "the longest formula"
+        },
+        "question_4": {
+            "question": "What's the formula for a lineal model?",
+            "options": [
+                "a) (1+i) -1",
+                "b) C x (1+i)^n x (1+i x f)",
+                "c) (1+ ik)^k -1",
+                "d) C x i x t"
+            ],
+            "answer": "2",
+            "hint": "the longest formula"
+        },
+        "question_5": {
+            "question": "What does \"SHRINE\" mean?",
+            "options": [
+                "a) Light",
+                "b) Monument",
+                "c) Lamp",
+                "d) Marble"
+            ],
+            "answer": "2",
+            "hint": "monument of the dead"
+        },
+        "question_6": {
+            "question": "Who accompanied the young men on the Grand Tour?",
+            "options": [
+                "a) Older lady",
+                "b) Chaperone",
+                "c) Guardian",
+                "d) Knights"
+            ],
+            "answer": "3",
+            "hint": "the bronze medal is obtained"
+        },
+        "question_7": {
+            "question": "What is a \"RADLER\"?",
+            "options": [
+                "a) Beer and lemon ",
+                "b) Beer and orange",
+                "c) Salad with olives",
+                "d) Ham sandwich "
+            ],
+            "answer": "1",
+            "hint": "it's sour but you can eat it "
+        },
+        "question_8": {
+            "question": "What is the longest river in Germany?",
+            "options": [
+                "a) Danube",
+                "b) Reno",
+                "c) Moselle",
+                "d) Elbe"
+            ],
+            "answer": "1",
+            "hint": "when you win a race you arrive..."
+        },
+        "question_9": {
+            "question": "The \"PULPITUM\" is a stage",
+            "answer": "TRUE",
+            "hint": "you can find it in every theatre"
+        },
+        "question_10": {
+            "question": "The \"CELL\" is the inside of a temple",
+            "answer": "TRUE",
+            "hint": "belongs to the temple"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:40:37",
+        "name": "Noemi Molinari",
+        "question_1": {
+            "question": "Since when has there been a single German state again?",
+            "options": [
+                "a) In 3 oktober 1990",
+                "b) In 4 mai 1961",
+                "c) In 13 august 1961",
+                "d) In 9 november 1989"
+            ],
+            "answer": "1",
+            "hint": "It is the year in wich BDR and DDR came to an end."
+        },
+        "question_2": {
+            "question": "What is the typical and most loved Berlin dish?",
+            "options": [
+                "a) Quiche",
+                "b) Escargot",
+                "c) Foiegras",
+                "d) Currywurst"
+            ],
+            "answer": "4",
+            "hint": "It is considered street food"
+        },
+        "question_3": {
+            "question": "What is \"i2\"?",
+            "options": [
+                "a) Half-yearly",
+                "b) Bimonthly interest rate",
+                "c) Nominal annual convertible bimonthly",
+                "d) Six-monthly convertible nominal annual rate"
+            ],
+            "answer": "1",
+            "hint": "ik= jk/k"
+        },
+        "question_4": {
+            "question": "When was Queen Elizabeth's II crowned?",
+            "options": [
+                "a) In 1952",
+                "b) In 1947",
+                "c) In 1926",
+                "d) On second of june 1953"
+            ],
+            "answer": "4",
+            "hint": "King George died in 1952"
+        },
+        "question_5": {
+            "question": "What is the stage called?",
+            "options": [
+                "a) Paraste",
+                "b) Pulpitum",
+                "c) Sto\u00e0",
+                "d) Impluvium"
+            ],
+            "answer": "2",
+            "hint": "Is not a building"
+        },
+        "question_6": {
+            "question": "Who was Prince Philip married to?",
+            "options": [
+                "a) Elisabeth",
+                "b) Victoria",
+                "c) Michelle",
+                "d) Megan"
+            ],
+            "answer": "1",
+            "hint": "She was a relative"
+        },
+        "question_7": {
+            "question": "How does manage operations analyze the simple country method?",
+            "options": [
+                "a) In two aspects",
+                "b) In four aspects",
+                "c) In one aspect",
+                "d) In six aspects"
+            ],
+            "answer": "3",
+            "hint": "The double country method shall analyse the management operations in two aspects."
+        },
+        "question_8": {
+            "question": "How  Kandiskij's paintings are considered",
+            "options": [
+                "a) Are considered an example of the fusion of sound and visual perception",
+                "b) Are considered an example of the fusion of dance and visual perception",
+                "c) Are considered an example of the fusion of dance and sound",
+                "d) Are considered an example of the fusion of sound, of dance and visual perception"
+            ],
+            "answer": "1",
+            "hint": "Arte sinestesico"
+        },
+        "question_9": {
+            "question": "The formulation for the mounting in the compound capitalisation scheme is \" Cx(1+it)?",
+            "answer": "FALSE",
+            "hint": "Remember that interst isn't directly proportional to capital."
+        },
+        "question_10": {
+            "question": "The maincurante is a register required by law.",
+            "answer": "TRUE",
+            "hint": "Is the register in wich the daily rate is charged and each paid service used by the customer"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:42:40",
+        "name": "ilaria baranzini",
+        "question_1": {
+            "question": "Certified e-mail has the same value as the ",
+            "options": [
+                "a)  invoice",
+                "b)  list to show up",
+                "c)  notification form in ",
+                "d)  registered letter "
+            ],
+            "answer": "4",
+            "hint": "certificed e-mail is the \"posta elettronica certificata\""
+        },
+        "question_2": {
+            "question": "What ar the mandatory stages of the Grand Tour",
+            "options": [
+                "a) Rome napls venice",
+                "b) Rome venice florence",
+                "c) Germany greece france ",
+                "d) Sicily naples rome"
+            ],
+            "answer": "2",
+            "hint": "The Grand Tour was a long journey in continental Europe"
+        },
+        "question_3": {
+            "question": "How to calculate the amount in the simple capitalization ",
+            "options": [
+                "a) M=cx(1+i)",
+                "b) M= cx(1+ixt)",
+                "c) M= cxi",
+                "d) None of the three "
+            ],
+            "answer": "3",
+            "hint": "Amount is the total sum that the costomer must return"
+        },
+        "question_4": {
+            "question": "What is the \"Cloche\"",
+            "options": [
+                "a) Work of architecture ",
+                "b) Monument",
+                "c) Sewers carrying the waste ",
+                "d) None of the three "
+            ],
+            "answer": "3",
+            "hint": "The creator of the quiz gave no hints :)"
+        },
+        "question_5": {
+            "question": "The circus was used for",
+            "options": [
+                "a) Games",
+                "b) Horse race ",
+                "c) Fights",
+                "d) All the three"
+            ],
+            "answer": "3",
+            "hint": "The creator of the quiz gave no hints :)"
+        },
+        "question_6": {
+            "question": "What ford i     mean?\n                    4\n",
+            "options": [
+                "a) First half growth rate",
+                "b) The two year rate ",
+                "c) The annual rate ",
+                "d) The quarterly rate "
+            ],
+            "answer": "4",
+            "hint": "The creator of the quiz gave no hints :)"
+        },
+        "question_7": {
+            "question": "On which holidays do you eat gingerbread in particular?",
+            "options": [
+                "a) At christmas ",
+                "b) At easter",
+                "c) Epiphany",
+                "d) At the oktoberfest"
+            ],
+            "answer": "4",
+            "hint": "heart of gingerbread"
+        },
+        "question_8": {
+            "question": "how long is the ddr?",
+            "options": [
+                "a) Until 1991",
+                "b) Until1997",
+                "c) Until1980",
+                "d) Until 1990"
+            ],
+            "answer": "4",
+            "hint": "the ddr exists during the berlin wall"
+        },
+        "question_9": {
+            "question": "The tourist accomodation shall retain the istat c/59 model fort at least five years ",
+            "answer": "FALSE",
+            "hint": "the istat c/59 model is a system for detecting the movement of customers in accomodation establishments "
+        },
+        "question_10": {
+            "question": "business traveler can't be considered a tourist ",
+            "answer": "FALSE",
+            "hint": "business tourist is \"turismo di affari\""
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:44:07",
+        "name": "IBTISSAM ADAOUI ",
+        "question_1": {
+            "question": "in the commision invoice is issued:",
+            "options": [
+                "a) In the name and on behalf of the agency ",
+                "b) In the name and on behalf of the hotel",
+                "c) In the name and on behalf of the to",
+                "d) In the name and on behalf of the customer "
+            ],
+            "answer": "1",
+            "hint": "it's issued by the person who sell to you the tickets"
+        },
+        "question_2": {
+            "question": "in the voucher there appear:",
+            "options": [
+                "a) 5 person",
+                "b) 4 person",
+                "c) 3 person ",
+                "d) 7 person"
+            ],
+            "answer": "2",
+            "hint": "the person who buy,who sell and.."
+        },
+        "question_3": {
+            "question": "Romans and Greeks travelled to :\n\n",
+            "options": [
+                "a) Expand their empires",
+                "b) Relax",
+                "c) Meet their relative",
+                "d) Buy expensive things"
+            ],
+            "answer": "1",
+            "hint": "what did the romans usually travel for?"
+        },
+        "question_4": {
+            "question": "The Grand Tour  lasted between:",
+            "options": [
+                "a) 3-4 years",
+                "b) 6-9 months",
+                "c) 1-3 years",
+                "d) 10-12 months"
+            ],
+            "answer": "3",
+            "hint": "it's like the exchange student at today"
+        },
+        "question_5": {
+            "question": "The Pantheon was a:\n",
+            "options": [
+                "a) Arch",
+                "b) Lintes",
+                "c) Temple",
+                "d) Church"
+            ],
+            "answer": "3",
+            "hint": "ususaly it was situate in Athens"
+        },
+        "question_6": {
+            "question": "The \"Villa\" was located in:",
+            "options": [
+                "a) Countryside",
+                "b) City",
+                "c) Out of the continent",
+                "d) In athens "
+            ],
+            "answer": "1",
+            "hint": "out of the city"
+        },
+        "question_7": {
+            "question": "the symboy I ,means:",
+            "options": [
+                "a) Interest",
+                "b) Capital",
+                "c) Discount",
+                "d) Value"
+            ],
+            "answer": "1",
+            "hint": "it's the same in italian"
+        },
+        "question_8": {
+            "question": "Sc = :",
+            "options": [
+                "a) Cdt",
+                "b) Ctd",
+                "c) V",
+                "d) I"
+            ],
+            "answer": "1",
+            "hint": "trade discount"
+        },
+        "question_9": {
+            "question": "Bedeutet DDR Deutsche Demokratische Republik?\u2026\n8The DDR means,Deutsche Demokratische Republik?)\n",
+            "answer": "TRUE",
+            "hint": "is the same as the acronym"
+        },
+        "question_10": {
+            "question": "Usually for Oktoberfest, beer is drunk in 2 liter glasses?\n",
+            "answer": "FALSE",
+            "hint": "less"
+        }
+    },
+    {
+        "timestamp": "17/11/2022 17:45:18",
+        "name": "Mirko Buzzi",
+        "question_1": {
+            "question": "What is debt VAT?",
+            "options": [
+                "a) The sales levy that the retailer must separate from the sales amount",
+                "b) What the supplier must give you",
+                "c) The one payd on purchases wich is calculated by applying the rate to the amount of the purchases ",
+                "d) A fee to be payed to the supplier"
+            ],
+            "answer": "1",
+            "hint": "the right answer is either 1 or 3"
+        },
+        "question_2": {
+            "question": "Who is the taxable person for VAT?",
+            "options": [
+                "a) The customer",
+                "b) The seller",
+                "c) The state",
+                "d) None of the babove"
+            ],
+            "answer": "3",
+            "hint": "you live in it"
+        },
+        "question_3": {
+            "question": "before being queen, what did Elizabeth II do?",
+            "options": [
+                "a) Civil protection",
+                "b) Policewoman",
+                "c) Teacher",
+                "d) Army doctor"
+            ],
+            "answer": "4",
+            "hint": "she helped people"
+        },
+        "question_4": {
+            "question": "Where and when was Elizabeth II born",
+            "options": [
+                "a) Liverpool,1923",
+                "b) London, 1930",
+                "c) London, 1926",
+                "d) Manchester, 1926"
+            ],
+            "answer": "3",
+            "hint": "she was born in london"
+        },
+        "question_5": {
+            "question": "wich is the hightest mountain in Germany?",
+            "options": [
+                "a) Hoch wanner",
+                "b) Lautascher dreitorspitze",
+                "c) Watzmann",
+                "d) Zugspitze"
+            ],
+            "answer": "3",
+            "hint": "the right answer is either 1 or 4"
+        },
+        "question_6": {
+            "question": "what does wanderlust mean?",
+            "options": [
+                "a) Want to travel",
+                "b) Want to eat",
+                "c) Must do homeworks",
+                "d) Must go to school"
+            ],
+            "answer": "1",
+            "hint": "it's about wanting"
+        },
+        "question_7": {
+            "question": "what does fixed capital mean?",
+            "options": [
+                "a) Seized capital",
+                "b) One you can't use to avoid going negative",
+                "c) A company's cash reserve",
+                "d) Capital of a firm invested in fixed assets"
+            ],
+            "answer": "4",
+            "hint": "the right answer is either 3 or 4"
+        },
+        "question_8": {
+            "question": "how do i calculate the area of a rectangle?",
+            "options": [
+                "a) Bxh",
+                "b) Bxb",
+                "c) B+h",
+                "d) Bxh:2"
+            ],
+            "answer": "1",
+            "hint": "it concerns h"
+        },
+        "question_9": {
+            "question": "in roman temples the capitel could be doric tuscan ionic and corinthian",
+            "answer": "TRUE",
+            "hint": "can be in 4 styles"
+        },
+        "question_10": {
+            "question": "the roman forum is where there are ONLY politicians can go",
+            "answer": "FALSE",
+            "hint": "ALSO politicians can go there "
+        }
+    },
+    {
+        "timestamp": "18/11/2022 16:36:48",
+        "name": "Nicole Del Canto",
+        "question_1": {
+            "question": "Who is associated with the discovery of the cannochial?",
+            "options": [
+                "a) Macchiavelli",
+                "b) Galileo galilei",
+                "c) Da lentini",
+                "d) Petrarca"
+            ],
+            "answer": "2",
+            "hint": "it's not the first"
+        },
+        "question_2": {
+            "question": "What kind of variable do you declare \"name\" with?",
+            "options": [
+                "a) Char",
+                "b) Float ",
+                "c) Int",
+                "d) String "
+            ],
+            "answer": "4",
+            "hint": "it's not the second"
+        },
+        "question_3": {
+            "question": "How is the for loop spelled correctly?",
+            "options": [
+                "a) For(i=0;i<ele;i++)",
+                "b) For(i<ele;i++;i=0) ",
+                "c) For(i++;i<ele;i=0)   ",
+                "d) For (i++;=0;i<ele)"
+            ],
+            "answer": "1",
+            "hint": "it's not the third"
+        },
+        "question_4": {
+            "question": "The bimonthly rate in financial mathematics corresponds to\u2026? ",
+            "options": [
+                "a) I3",
+                "b) I4",
+                "c) I12",
+                "d) I6"
+            ],
+            "answer": "4",
+            "hint": "it's not the first"
+        },
+        "question_5": {
+            "question": "In financial mathematics by capitalization we mean...?",
+            "options": [
+                "a) Carry the money forward  ",
+                "b) Bring the time back  ",
+                "c)  bring both forward and back  ",
+                "d)  everything remains unchanged"
+            ],
+            "answer": "1",
+            "hint": "Money, not the time"
+        },
+        "question_6": {
+            "question": "On what date does the Enlightenment spread in France?",
+            "options": [
+                "a) 1300",
+                "b) 1500",
+                "c) 1700",
+                "d) 1720"
+            ],
+            "answer": "4",
+            "hint": "precise date"
+        },
+        "question_7": {
+            "question": "Who discovers America?",
+            "options": [
+                "a) Voltaire ",
+                "b) Diderot  ",
+                "c) Montesquieu  ",
+                "d) Cristoforo colombo"
+            ],
+            "answer": "4",
+            "hint": "it's italian"
+        },
+        "question_8": {
+            "question": "What is the name of the first crusader fought?",
+            "options": [
+                "a) Of the pieces  ",
+                "b) Of the reconquest  ",
+                "c) Of the sins  ",
+                "d) Of the military"
+            ],
+            "answer": "3",
+            "hint": "They were poor people"
+        },
+        "question_9": {
+            "question": "Did Da Lentini invent the sonnet? ",
+            "answer": "TRUE",
+            "hint": "it was invented in the mid-twentieth century"
+        },
+        "question_10": {
+            "question": "Bank x c/c in double match is VEN, turned on to operating costs? ",
+            "answer": "FALSE",
+            "hint": "it's not a cost"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 16:37:06",
+        "name": "Claudia Valzelli",
+        "question_1": {
+            "question": "When was the Enlightenment born?",
+            "options": [
+                "a)  second half of the 18th century",
+                "b)  about 1720",
+                "c)  about 1740",
+                "d)  about 1620"
+            ],
+            "answer": "2",
+            "hint": "XVIII century"
+        },
+        "question_2": {
+            "question": " What theory does Galileo support?\n",
+            "options": [
+                "a) Heliocentrism",
+                "b) Ptolemaic",
+                "c) Geocentrism",
+                "d) Ptolemaic system"
+            ],
+            "answer": "1",
+            "hint": "Copernico theory"
+        },
+        "question_3": {
+            "question": " What is the income statement?",
+            "options": [
+                "a)  financial document that helps us understand how much wealth has been produced",
+                "b)  accounting document that helps us understand how much wealth has been produced",
+                "c)  collects incoming and outgoing values",
+                "d)  collects debts and credits"
+            ],
+            "answer": "2",
+            "hint": "Accounting is maintained"
+        },
+        "question_4": {
+            "question": " How are double-entry bank interest income recorded?\n \u2022 \"bank x c / c\" and \"holder c / withholdings suffered\" in VFA debit and \"bank interest income\" in VEP credit\n \u2022 \"bank x c / c\" in debit VFA \"holder c / withholdings suffered\" in debit VEN and \"bank interest receivable\" in credit VFP\n \u2022 \"bank x c / c\" in debit VEN \"holder c / withholdings suffered\" in debit VFA and \"bank interest receivable\" in credit VFP\n \u2022 \"bank x current account\" in credit VFP \"holder with deductions suffered\" in credit VFP and \"bank interest income\" in debit VFA\n",
+            "options": [
+                "a)  ",
+                "b)  \"bank x c / c\" and \"holder c / withholdings suffered\" in vfa debit and \"bank interest income\" in vep credit",
+                "c)  \"bank x c / c\" in debit vfa \"holder c / withholdings suffered\" in debit ven and \"bank interest receivable\" in credit vfp",
+                "d)  \"bank x c / c\" in debit ven \"holder c / withholdings suffered\" in debit vfa and \"bank interest receivable\" in credit vfp",
+                "e)  \"bank x current account\" in credit vfp \"holder with deductions suffered\" in credit vfp and \"bank interest income\" in debit vfa"
+            ],
+            "answer": "1",
+            "hint": "Bank interest income is an economic varation"
+        },
+        "question_5": {
+            "question": " How is the simple amount calculated?\n ",
+            "options": [
+                "a)  m = c-i",
+                "b)  m = c / i",
+                "c)  m = c + i",
+                "d)  m = cxi"
+            ],
+            "answer": "3",
+            "hint": "sum"
+        },
+        "question_6": {
+            "question": " How do you declare the variables (var) of a vector in C ++?\n ",
+            "options": [
+                "a) Var [i]",
+                "b) Var",
+                "c) Var [max]",
+                "d) Var = o"
+            ],
+            "answer": "3",
+            "hint": "Parentheses are used"
+        },
+        "question_7": {
+            "question": "What is an algorithm?\n ",
+            "options": [
+                "a) A program to elaborate",
+                "b) First phase of the implementation of a program",
+                "c) Type of calculation",
+                "d) Name used to indicate the creation of a program"
+            ],
+            "answer": "2",
+            "hint": "It's not all programming"
+        },
+        "question_8": {
+            "question": " The Keynesian theory holds that\u2026?\n",
+            "options": [
+                "a) Offer generates demand",
+                "b) Demand generates offer",
+                "c) The state must generate the offer",
+                "d) Supply and demand are the same"
+            ],
+            "answer": "2",
+            "hint": "The offer is generated"
+        },
+        "question_9": {
+            "question": "Can the company be sold without selling the company?\n",
+            "answer": "FALSE",
+            "hint": "The company is in element of representation"
+        },
+        "question_10": {
+            "question": "Does the contract have to be in writing?\n",
+            "answer": "FALSE",
+            "hint": "Depends on the type of contract"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 16:39:56",
+        "name": "asia valmaggia",
+        "question_1": {
+            "question": "What is meant by leasing ?\n",
+            "options": [
+                "a)  1. is a contract by which a bank or leasing company purchases or has built a capital asset on the instructions of the lessee and then makes it available to the lessee; at the end of the contract the lessee can purchase the asset.",
+                "b) 2. is a contract by which a bank or leasing company sells a capital asset at the indication of the lessee, then making it available to the lessee",
+                "c) 3. is a contract by which a bank or leasing company purchases a business ",
+                "d) 4. is a debt for the bank "
+            ],
+            "answer": "0",
+            "hint": "that's not answer number 3"
+        },
+        "question_2": {
+            "question": "With which account do you take over the lease ?\n",
+            "options": [
+                "a) 1 .debts for security deposit",
+                "b) 2. receivables for security deposit",
+                "c) 3. rents of  leasing",
+                "d) 4. receivables for lease"
+            ],
+            "answer": "1",
+            "hint": "that's not answer number 4"
+        },
+        "question_3": {
+            "question": "Who is Marzia in the 1st canto of Purgatory ?",
+            "options": [
+                "a) 1 an old friend of dante's",
+                "b) 2 a woman recognized for her beauty",
+                "c) 3 the wife of catone",
+                "d) 4 a friend of virgilo"
+            ],
+            "answer": "2",
+            "hint": "it's not the number 1 answer"
+        },
+        "question_4": {
+            "question": "What are the distinguishing marks of an enterprise ?",
+            "options": [
+                "a) 1 sign, trademark, employees",
+                "b) 2 trademark, profit, name",
+                "c) 3 firm, sign, trademark",
+                "d) 4 employees, firm, profit"
+            ],
+            "answer": "2",
+            "hint": "it's not the number 1 answer"
+        },
+        "question_5": {
+            "question": "what is meant by a database?",
+            "options": [
+                "a) 1 collection of unrelated data used to study",
+                "b) 2 data collection divided into two collections to simplify the work for those who use it",
+                "c) 3 used to modify programs on the computer",
+                "d) 4 collection of logically related data, used to model a reality"
+            ],
+            "answer": "3",
+            "hint": "it's not answer number 2"
+        },
+        "question_6": {
+            "question": "who was Gulio mazzarino ?",
+            "options": [
+                "a) 1 was a spanish cardinal, politician, and diplomat, active mainly in france, where he served as principal",
+                "b) Minister under the reign of louis xiv",
+                "c) 2 was an italian military, politician and diplomat, active mainly in france, where he served as principal",
+                "d) Minister under the reign of louis xv",
+                "e) 3 was an italian cardinal, politician and diplomat, active mainly in france, where he served as principal",
+                "f) Minister under the reign of louis xiv",
+                "g) 4 was a poet of the 1600s who lived in france"
+            ],
+            "answer": "3",
+            "hint": "it's not the number 1 answer"
+        },
+        "question_7": {
+            "question": "Knowing that we have a capital of 2200 euro, an interest rate of 4%, and an amount of 4030 euro\nhow do we find the time?",
+            "options": [
+                "a) 1. by first finding the interest by doing  euro 4030+2200 euro, and then finding the time by doing the interest",
+                "b) *0.04/2200",
+                "c) 2 by first finding the interest by doing 4030euro-2200euro, and then finding the time by doing the",
+                "d) Interest/(2200*4)",
+                "e) 3 by first finding the interest by doing 4030euro-2200euro, and then finding the time by doing the",
+                "f) Interest/(2200*0.04)",
+                "g) 4 by doing 20200*0.04/4030"
+            ],
+            "answer": "3",
+            "hint": "it's not the number 1 answer"
+        },
+        "question_8": {
+            "question": "Which of these formulas for finding national income is correct?",
+            "options": [
+                "a) 1 y= c-i-g-(x+m)",
+                "b) 2 y= c+i*g-x+m",
+                "c) 3 y= c+i+g+(x/m)",
+                "d) 4 y= c+i+g+(x-m)"
+            ],
+            "answer": "4",
+            "hint": "it's not answer number 2"
+        },
+        "question_9": {
+            "question": "DBMS is a set of software tools that is capable of handling structured data.",
+            "answer": "TRUE",
+            "hint": "DBMS is a set..."
+        },
+        "question_10": {
+            "question": "can the degree of originality of a brand be strong or weak ?",
+            "answer": "TRUE",
+            "hint": "originality"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 16:41:49",
+        "name": "Alessia Nicolini",
+        "question_1": {
+            "question": "Given an amount of 21/20 of the capital employed for 2 years, what percentage compound rate is used?",
+            "options": [
+                "a)  i = 2.47%",
+                "b)  i = 0.025%",
+                "c)  i = 3%",
+                "d)  i = 1.47%"
+            ],
+            "answer": "1",
+            "hint": "the t-stem is used "
+        },
+        "question_2": {
+            "question": "Which languages do you use in DBMS?",
+            "options": [
+                "a) Ddl",
+                "b) Dml and dcl",
+                "c) Dml",
+                "d) Dcl and ddl"
+            ],
+            "answer": "4",
+            "hint": "they are two languages"
+        },
+        "question_3": {
+            "question": "The distribution of income among members of a community (individuals and households), whatever its source, is called\u2026\u2026\u2026..distribution:",
+            "options": [
+                "a) Functional",
+                "b) Personal",
+                "c) Sectoral",
+                "d) Territorial"
+            ],
+            "answer": "2",
+            "hint": "we talk about people"
+        },
+        "question_4": {
+            "question": "Who is the keeper of Dante's purgatory?",
+            "options": [
+                "a) Charon",
+                "b) Box",
+                "c) Cato",
+                "d) Carrot"
+            ],
+            "answer": "3",
+            "hint": "attention is not the friend but the keeper of purgatory"
+        },
+        "question_5": {
+            "question": "How is an undocumented transportation recorded with the sale of goods?",
+            "options": [
+                "a) Transport costs",
+                "b) Transport",
+                "c) The amount is entered in the goods account / sales",
+                "d) Reimbursement of sales costs"
+            ],
+            "answer": "4",
+            "hint": "it does not register as a transport"
+        },
+        "question_6": {
+            "question": "What is a DBMS?",
+            "options": [
+                "a) It is a hardware system that manages structured data",
+                "b) It is a software that on the basis of user requests only queries a database",
+                "c) It is a set of software tools that, based on the user's specifications, can manage structured data",
+                "d) It is a hardware system capable of storing large amounts of data"
+            ],
+            "answer": "3",
+            "hint": "it is a software"
+        },
+        "question_7": {
+            "question": "What was the name of old Hamlet's son?",
+            "options": [
+                "a) Hamlet",
+                "b) Strong arm",
+                "c) Polonium",
+                "d) Claudio"
+            ],
+            "answer": "1",
+            "hint": "it is a very famous name"
+        },
+        "question_8": {
+            "question": "How are withholding taxes recorded in double entry system?",
+            "options": [
+                "a) Payables for withholdings to be paid",
+                "b) Social security institutions",
+                "c) Social security contributions",
+                "d) Withholdings suffered"
+            ],
+            "answer": "2",
+            "hint": "is registered with social security..."
+        },
+        "question_9": {
+            "question": "In  the four-year rotation the land was cultivated with leguminous plants?",
+            "answer": "TRUE",
+            "hint": "recently discovered plants were grown"
+        },
+        "question_10": {
+            "question": "Does the lender have the power of limited representation?",
+            "answer": "FALSE",
+            "hint": "the institore acts in the name and on behalf of the entrepreneur"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 16:46:03",
+        "name": "Florean Luca",
+        "question_1": {
+            "question": "what language is used by the external level of DBMS?",
+            "options": [
+                "a) Dba",
+                "b) Dcl",
+                "c) Dml",
+                "d) Dmcl"
+            ],
+            "answer": "1",
+            "hint": "It\u2019s not the second and not even the fourth"
+        },
+        "question_2": {
+            "question": "what's the correct definition of information system?",
+            "options": [
+                "a) It is the set of computer tools used for the automatic processing of information.",
+                "b) It is the elementar description of an event.",
+                "c) It is the increase of knowledge that can be acquired from data.",
+                "d) The complex of resources and procedures for managing information."
+            ],
+            "answer": "4",
+            "hint": "It\u2019s not the second "
+        },
+        "question_3": {
+            "question": "in england the republic was proclaimed in?",
+            "options": [
+                "a) 1653",
+                "b) 1645",
+                "c) 1749",
+                "d) 1649"
+            ],
+            "answer": "4",
+            "hint": "It\u2019s not the second"
+        },
+        "question_4": {
+            "question": "what does the intentional meaning refer to?",
+            "options": [
+                "a) To the values that a scheme can take",
+                "b) To the set of values assumed by a scheme",
+                "c) To the information content of the data",
+                "d) Interpretation of the date."
+            ],
+            "answer": "3",
+            "hint": "it is not the interpretation"
+        },
+        "question_5": {
+            "question": "the persistence of DBMS data is also linked to the?",
+            "options": [
+                "a) Consistency",
+                "b) Efficiency",
+                "c) Integrity",
+                "d) Safety"
+            ],
+            "answer": "1",
+            "hint": "read the question better"
+        },
+        "question_6": {
+            "question": "what is the correct formula for calculating interest?",
+            "options": [
+                "a) Capital *interest rate *time /100",
+                "b) Capital* interest rate*100/time",
+                "c) Capital*interest rate/22",
+                "d) Capital*22/100"
+            ],
+            "answer": "1",
+            "hint": "The number 22 is useless"
+        },
+        "question_7": {
+            "question": "what kind of variation is the credit increase?",
+            "options": [
+                "a) Ven",
+                "b) Vfp",
+                "c) Vfa",
+                "d) Vep"
+            ],
+            "answer": "3",
+            "hint": "..."
+        },
+        "question_8": {
+            "question": "who was the first king to die by beheading?",
+            "options": [
+                "a) Carlo ii",
+                "b) Carlo i",
+                "c) Luigi i",
+                "d) Cesare i"
+            ],
+            "answer": "2",
+            "hint": "died in 1649"
+        },
+        "question_9": {
+            "question": "the commercial discount is directly proportional to the time?",
+            "answer": "TRUE",
+            "hint": "So is the interest rate "
+        },
+        "question_10": {
+            "question": "do you use business year in financial mathematics?",
+            "answer": "TRUE",
+            "hint": "The creator of the quiz gave no hints :)"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 16:46:24",
+        "name": "Alessia Penzo",
+        "question_1": {
+            "question": "A company purchased equipment for \u20ac 16,750.25 including VAT.  What is the exact amount of VAT?",
+            "options": [
+                "a) \u20ac 3020,54",
+                "b) \u20ac 3685,06 ",
+                "c) \u20ac 1675,03",
+                "d) \u20ac 750,25"
+            ],
+            "answer": "1",
+            "hint": "Solve it using the proportion above 100"
+        },
+        "question_2": {
+            "question": " Select the right definition of a small entrepreneur :",
+            "options": [
+                "a) A small entrepreneur is someone who carries out an activity of cultivation of a land or a forest, animal husbandry or other related activity.",
+                "b) A small entrepreneur is someone who carries out an organized business activity mainly with his own work and possibly with his family members.",
+                "c) A small entrepreneur is someone who carries out an industrial activity aimed at the production of goods or services.",
+                "d) A small entrepreneur is someone who carries out an organized business activity mainly with his own work and who is subject to the discipline of the commercial entrepreneur."
+            ],
+            "answer": "2",
+            "hint": "The small business owner can be helped by someone in his work"
+        },
+        "question_3": {
+            "question": " Why does Shakespeare set Romeo and Juliet in Verona?",
+            "options": [
+                "a) Because he had moved to verona",
+                "b) Because he liked the city",
+                "c) Because in the republic of venice there was less censorship",
+                "d) Because it is inspired by events already written"
+            ],
+            "answer": "4",
+            "hint": "Shakespeare has never been to Verona"
+        },
+        "question_4": {
+            "question": "What language allows you to query the database?",
+            "options": [
+                "a) Dml",
+                "b) Ddl",
+                "c) Dcl",
+                "d) Dca"
+            ],
+            "answer": "1",
+            "hint": "data manipulation language"
+        },
+        "question_5": {
+            "question": "Given the trimestrial rate of 2.75%, it determines the equivalent quarterly rate under compound capitalization:",
+            "options": [
+                "a) 4.02%",
+                "b) 11.46%",
+                "c) 3.68%",
+                "d) 0.91%"
+            ],
+            "answer": "3",
+            "hint": "The result is not greater than 4%"
+        },
+        "question_6": {
+            "question": "When are bank interest expense paid?",
+            "options": [
+                "a) At the 16th of the following month",
+                "b) At december 31st",
+                "c) At 1st of the following month",
+                "d) At march 1st"
+            ],
+            "answer": "4",
+            "hint": " They are paid on a specific date"
+        },
+        "question_7": {
+            "question": "What is metadata?",
+            "options": [
+                "a) It is the elementary description of an event",
+                "b) It is the information that describes the objects of the database",
+                "c) It is the key to interpreting the data, that is, the meaning attributed to the data to obtain the complete information from it",
+                "d) The data stored in the physical layer"
+            ],
+            "answer": "2",
+            "hint": "Metadata describes something"
+        },
+        "question_8": {
+            "question": "The national income equation is as follows:",
+            "options": [
+                "a) Rn=c+i+sp+esp+imp",
+                "b) Y=c-i-g-(x+m)",
+                "c) Rn=pil(c+i+g)",
+                "d) Y=c+i+g+(x-m)"
+            ],
+            "answer": "4",
+            "hint": "It is not just a sum"
+        },
+        "question_9": {
+            "question": "L'Encyclop\u00e9die (The Reasoned Dictionary of Sciences, Arts and Crafts) is edited by D'Alembert and Diderot?",
+            "answer": "TRUE",
+            "hint": "The Encyclop\u00e9die is French"
+        },
+        "question_10": {
+            "question": "Are the three protagonists of the dialogue on the two greatest systems of Galileo Galilei's world called Sagredo, Simplicio and Salvo?",
+            "answer": "FALSE",
+            "hint": "Pay attention to the last name"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 16:49:50",
+        "name": "Chiara Coppola",
+        "question_1": {
+            "question": "What is an algorithm?",
+            "options": [
+                "a) Calculation procedure used to solve a problem.",
+                "b) It is not for solving problems.",
+                "c) Conceptual model of data.",
+                "d) Graphic representation of the operations to be performed.",
+                "e)  "
+            ],
+            "answer": "1",
+            "hint": "It's not the third"
+        },
+        "question_2": {
+            "question": "What is meant by a formal contract?",
+            "options": [
+                "a) They do not require a specific written form.",
+                "b) They require a written form, because otherwise they are not valid.",
+                "c) Contract required by law.",
+                "d) Contract not required by law."
+            ],
+            "answer": "2",
+            "hint": "It's not the first"
+        },
+        "question_3": {
+            "question": "What is capitalization?",
+            "options": [
+                "a) Move the money back.",
+                "b) It is expressed as a percentage for a given period of time and indicates how much of the loaned amount must be paid.",
+                "c) Move the money forward.",
+                "d) Is the total amount of contributions paid during one's career."
+            ],
+            "answer": "3",
+            "hint": "It's not the first"
+        },
+        "question_4": {
+            "question": "Aristotle's poetics has three rules, what are they?",
+            "options": [
+                "a) Time, place and action.",
+                "b)  time, space and language.",
+                "c) Place,time and space.",
+                "d)  action,place and language."
+            ],
+            "answer": "1",
+            "hint": "The three rules do not include space"
+        },
+        "question_5": {
+            "question": "The tragedy is written in?",
+            "options": [
+                "a) In verse with a rafined language.",
+                "b)  in prose with refined language.",
+                "c)  in prose and in vernacular.",
+                "d)  in verse and in vernacular."
+            ],
+            "answer": "1",
+            "hint": "Tragedy is not written in prose"
+        },
+        "question_6": {
+            "question": "The current account is?",
+            "options": [
+                "a)  instrument with which most relations with the bank are regulated ",
+                "b)  instrument with which the accounting is regulated",
+                "c) Instrument with which the double entry is settled",
+                "d)  none of these"
+            ],
+            "answer": "1",
+            "hint": "It's not the fourth"
+        },
+        "question_7": {
+            "question": "What is the credit line?",
+            "options": [
+                "a)  is the maximum amount that a bank undertakes to sell to the customer requesting a loan ",
+                "b) Is the minimum amount that a bank undertakes to sell to the customer requesting a loan ",
+                "c) With this instrument you can endorse a bill of exchange",
+                "d) It is a debt"
+            ],
+            "answer": "1",
+            "hint": "It's not a debt"
+        },
+        "question_8": {
+            "question": "What is an information system? ",
+            "options": [
+                "a) The set of resources and activities aimed at managing information in an organization ",
+                "b) It's a program",
+                "c) It is a combination of data",
+                "d) It's an app"
+            ],
+            "answer": "1",
+            "hint": "It's not an app"
+        },
+        "question_9": {
+            "question": "Must the activity of an entrepreneur be professional, economic, organizational and productive?",
+            "answer": "TRUE",
+            "hint": "Earn money"
+        },
+        "question_10": {
+            "question": "the time formula in compound capitalization\nt= log(m/c) / log(1+i) ?",
+            "answer": "TRUE",
+            "hint": "There are no subtractions"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 16:50:38",
+        "name": "gabriele panosetti",
+        "question_1": {
+            "question": "how to calculate the equivalent rate having the periodic rate",
+            "options": [
+                "a) I=(1+ik)k",
+                "b) I=(1-k)",
+                "c) I=-1(i+k)",
+                "d) I=+1(i+k)"
+            ],
+            "answer": "1",
+            "hint": "one of the incorrect answers is 3"
+        },
+        "question_2": {
+            "question": "in compound capitalization how the amount is calculated",
+            "options": [
+                "a) M=(1-t)+1",
+                "b) M=(1+t)-1",
+                "c) M=c(1*i)t",
+                "d) M=i-1(t)"
+            ],
+            "answer": "3",
+            "hint": "it's not answer number 4"
+        },
+        "question_3": {
+            "question": "in simple capitalization how capital is calculated",
+            "options": [
+                "a) C=1-t/m",
+                "b) C=m/(1+it)",
+                "c) C=m/(1+t)",
+                "d) C=t/m"
+            ],
+            "answer": "2",
+            "hint": "it's not the answare 4"
+        },
+        "question_4": {
+            "question": "in baseball it is considered a point when",
+            "options": [
+                "a) The batter hits the ball",
+                "b) The batter touches a base",
+                "c) The batter runs out",
+                "d) The batter catches the ball in hand"
+            ],
+            "answer": "2",
+            "hint": "it's not the answear 3"
+        },
+        "question_5": {
+            "question": "in c++ in case of a string what is the essential writing",
+            "options": [
+                "a) <cout>",
+                "b) #<else>",
+                "c) #<if>",
+                "d) # include <string>"
+            ],
+            "answer": "4",
+            "hint": "it's not the answear 3"
+        },
+        "question_6": {
+            "question": "in c++ how do you end the program",
+            "options": [
+                "a) #return",
+                "b) Return 0;",
+                "c) Return 0",
+                "d) Return@"
+            ],
+            "answer": "2",
+            "hint": "watch out for the comma"
+        },
+        "question_7": {
+            "question": "how long is a business year",
+            "options": [
+                "a) 280",
+                "b) 456",
+                "c) 346",
+                "d) 360"
+            ],
+            "answer": "4",
+            "hint": "it's not the answear 3\n"
+        },
+        "question_8": {
+            "question": "in the remuneration of employees in double-entry as social security contributions are noted\n",
+            "options": [
+                "a) Ven social security contributions, vfp social security institutions.",
+                "b) Ven social security institutions , social charges vfp.",
+                "c) Vfp social security charges, social security institutions ven.",
+                "d) Debts for withholding taxes to be paid vfp, passive rounding ven,"
+            ],
+            "answer": "1",
+            "hint": "it's not the answear 3"
+        },
+        "question_9": {
+            "question": "in baseball you score with a touch down",
+            "answer": "FALSE",
+            "hint": "it s not football"
+        },
+        "question_10": {
+            "question": "coco's great-great-grandfather is ernesto de la cruz",
+            "answer": "FALSE",
+            "hint": "watch the film"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 17:01:41",
+        "name": "Valentina Isernia",
+        "question_1": {
+            "question": "What is the rent?",
+            "options": [
+                "a) It is a contract with the same characteristics as a lease;",
+                "b) It is a non-profit contract between the two parties; ",
+                "c)  it is the lease of a productive thing, therefore of an asset subject to an economic activity;",
+                "d) It is a contract between two parties where one party grants the enjoyment of a thing to the other party without any consideration;"
+            ],
+            "answer": "3",
+            "hint": "the rent is a specific type of lease"
+        },
+        "question_2": {
+            "question": "What are arrays?",
+            "options": [
+                "a) Hey are a set of variables all of different types identified by a single name;",
+                "b) They are a set of variables all of the same type identified by a unique name;",
+                "c) They are variables of different types identified by a large number of names;",
+                "d) Is variable that can contain  more variables of the same type;"
+            ],
+            "answer": "4",
+            "hint": "array is a structured variable"
+        },
+        "question_3": {
+            "question": "For how long, it is necessary to use, at compound interest, a capital of \u20ac8890 at the annual rate of 3.4% to have an amount of \u20ac10613.55?",
+            "options": [
+                "a) 5 years, 3 months and 18 days ;",
+                "b) 5 years, 3 months and 17 days;",
+                "c) 3 years, 7 months and 5 days;",
+                "d) 5 years, 3 months and 22 days;"
+            ],
+            "answer": "1",
+            "hint": "t=(log M/C)/(log 1+i)"
+        },
+        "question_4": {
+            "question": "To settle a debt of \u20ac20,000 due in 9 years, he paid \u20ac13,500 today, taking advantage of the compound discount. What is the rate applied?",
+            "options": [
+                "a) 4,48%;",
+                "b) 4,46%;",
+                "c) 4,40%",
+                "d) 4,47%;"
+            ],
+            "answer": "2",
+            "hint": "to find the interest rate, raise the root of M/C and then -1"
+        },
+        "question_5": {
+            "question": "What does national income measure?",
+            "options": [
+                "a) Measures the value of all final goods and services a country produces in a year;",
+                "b) Measures the social and environmental well-being of a country in one year;",
+                "c)  it measures both the flow of goods and services available and the flow of income received by the subjects in one year;",
+                "d) It measures both the flow of final goods and services produced and the flow of income received by the subjects in one year;"
+            ],
+            "answer": "3",
+            "hint": "national income measures something more than gross domestic product"
+        },
+        "question_6": {
+            "question": "What is the account used in sales to define documented expenses on the invoice?",
+            "options": [
+                "a) Customer credits;",
+                "b) Payables to suppliers;",
+                "c) Reimbursement of sales costs;",
+                "d)  customers account upfront costs;"
+            ],
+            "answer": "4",
+            "hint": "documented expenses are expenses where VAT is also present"
+        },
+        "question_7": {
+            "question": "What is the code to load the elements into the array?",
+            "options": [
+                "a)  cin<<num[i];",
+                "b) Cin>>num[i];",
+                "c) Cin<<num[max];",
+                "d) Cin<<num[i]",
+                "e)  "
+            ],
+            "answer": "1",
+            "hint": "pay attention to punctuation"
+        },
+        "question_8": {
+            "question": "what are capital losses?",
+            "options": [
+                "a) Is the positive difference between costs and revenues;",
+                "b) Is the positive difference between sales revenue and net book value;",
+                "c) Is the negative difference between sales revenue and net book value;",
+                "d) Is the negative difference between the net book value and the sales revenue;"
+            ],
+            "answer": "3",
+            "hint": "do not confuse capital losses with capital gains"
+        },
+        "question_9": {
+            "question": "Charles VI decided to reform the system of succession to the Austrian throne. with a pragmatic sanction that allowed the indivisibility of domains and the permission to ascend to the throne also for daughters",
+            "answer": "TRUE",
+            "hint": "the country we are talking about is Austria"
+        },
+        "question_10": {
+            "question": "Galileo Galilei was a man of faith but he supported ideas that could contrast the sacred texts for this reason he supported the Ptolemaic system\n\n",
+            "answer": "FALSE",
+            "hint": "think about what he wrote in his works"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 17:03:39",
+        "name": "Cristian Bortoli",
+        "question_1": {
+            "question": "With a  capital of 10462 euro, invested for 5 years, 8 months and 5 days at the interest rate of 3.5%,what is the final upright?",
+            "options": [
+                "a) 10534,05 euro",
+                "b) 12542,05 euro ",
+                "c) 11540,50 euro ",
+                "d) 13600,00 euro "
+            ],
+            "answer": "1",
+            "hint": "the first option isn't correct"
+        },
+        "question_2": {
+            "question": "William Shakespeare, was one of the most important playwright in England in the 16th Century, where was he born?",
+            "options": [
+                "a) London ",
+                "b) Stratford ",
+                "c) Manchester ",
+                "d) Northampton "
+            ],
+            "answer": "1",
+            "hint": "The correct answer is a not very populated city "
+        },
+        "question_3": {
+            "question": "Which one of these c++ scriptures is correct?",
+            "options": [
+                "a) #include iostream",
+                "b) #include iostream/using namespace std;",
+                "c) #include <iostream>/using namespace std;",
+                "d) include <iostream>/using namespace std;"
+            ],
+            "answer": "2",
+            "hint": "in the correct answer there are # and <>"
+        },
+        "question_4": {
+            "question": "Choose the correct definition of enlightenment?",
+            "options": [
+                "a) A particular political party which was highly supported at the beginning of the 16th century ",
+                "b) Religion that believed in the illuminati gods ",
+                "c) Political,social,cultural and philosophical movement that developed in europe in the 18th century ",
+                "d) Specific mindset for all the people who lived in the growing england "
+            ],
+            "answer": "2",
+            "hint": "It wasn't a Religion or a way to think "
+        },
+        "question_5": {
+            "question": "Choose the correct formula used for the composition of the application ",
+            "options": [
+                "a) d=c+i+g+(x-m)",
+                "b) d=(x-g)+c+i",
+                "c) d=i+g+(m*x)",
+                "d) d=c+i+m+(x-g)"
+            ],
+            "answer": "0",
+            "hint": "the second option isn't correct"
+        },
+        "question_6": {
+            "question": "The interests expense are paid ",
+            "options": [
+                "a) 1st march",
+                "b) 26 december ",
+                "c) 31st december ",
+                "d) 1st january "
+            ],
+            "answer": "0",
+            "hint": "The correct answer isn't in January "
+        },
+        "question_7": {
+            "question": "With which double-entry scriptures are registered bills of exchange for collection if they are unpaid?",
+            "options": [
+                "a) Active bills,bills of exchange at the collection,bank x c/c,collection costs ",
+                "b) Unpaid bills,bills of exchange ",
+                "c) Unpaid bills,bills of exchange at discount ",
+                "d) Active bills of exchange,exchange  them at discount "
+            ],
+            "answer": "0",
+            "hint": "In the correct answer there are more than 2 scriptures "
+        },
+        "question_8": {
+            "question": "What means ICT in English ?",
+            "options": [
+                "a) Information connection trend ",
+                "b) Integration communications technology ",
+                "c) Information communications technology",
+                "d) Information connected technology "
+            ],
+            "answer": "2",
+            "hint": "The first answer isn't correct"
+        },
+        "question_9": {
+            "question": "The accounting entries are accounted in the journal and inventory book ",
+            "answer": "TRUE",
+            "hint": "The accounting entries are registered in more than 1 book "
+        },
+        "question_10": {
+            "question": "Commercial entrepreneur is the one who carries out a family agricultural activity ",
+            "answer": "FALSE",
+            "hint": "Reflect on what is a agricultural activity "
+        }
+    },
+    {
+        "timestamp": "18/11/2022 17:04:42",
+        "name": "Andrea Di Marco",
+        "question_1": {
+            "question": "To pay off a debt due in 90 days, pay the sum of \u20ac3,500 today with an interest rate of 5.15%, what is the amount of capital borrowed?",
+            "options": [
+                "a) 3540.22",
+                "b) 0.0512",
+                "c) 3545.0625",
+                "d) 27,512.3"
+            ],
+            "answer": "3",
+            "hint": "we are in a simple discounting"
+        },
+        "question_2": {
+            "question": "Which of the following formulas for finding time in compound capitalization is incorrect?",
+            "options": [
+                "a) Log (m/c)/log (1+i)",
+                "b) Log (m*c)/(1+i)",
+                "c) C*i*t",
+                "d) (m/c)/(i*4)"
+            ],
+            "answer": "1",
+            "hint": "the correct answer has the logarithm"
+        },
+        "question_3": {
+            "question": "Functional distribution measures income from whom?",
+            "options": [
+                "a) From the various productive sectors",
+                "b) From various social classes",
+                "c) By various subjects",
+                "d) From the various production factors"
+            ],
+            "answer": "4",
+            "hint": "it's not about social class\n"
+        },
+        "question_4": {
+            "question": "Galileo Galileo, in August 1609 where and what did he present?",
+            "options": [
+                "a) In the senate of venice, the telescope",
+                "b) To the senate of venice, the balance",
+                "c) In the senate of padua, the clock",
+                "d) At the university of florence, the galilean system"
+            ],
+            "answer": "1",
+            "hint": "it was better than the Dutch one"
+        },
+        "question_5": {
+            "question": "The \"collection costs\" account in PD is an account:",
+            "options": [
+                "a) Active financial",
+                "b) Economic access to multi-year costs",
+                "c) Passive financial",
+                "d) Economic access to operating costs"
+            ],
+            "answer": "4",
+            "hint": "it is an income statement"
+        },
+        "question_6": {
+            "question": "The rent paid to the leasing company",
+            "options": [
+                "a) It's an operating cost",
+                "b) Is recognized in the rental account",
+                "c) It is a multi-year cost",
+                "d) It is not detected in pd"
+            ],
+            "answer": "2",
+            "hint": "it has nothing to do with multi-year costs"
+        },
+        "question_7": {
+            "question": "Which of the following statements is incorrect",
+            "options": [
+                "a) For(i=0;i<ele;i++)",
+                "b) Cout<<\"enter nationality<<endl",
+                "c) #include <iostream>",
+                "d) If(a>b)"
+            ],
+            "answer": "2",
+            "hint": "be careful with punctuation"
+        },
+        "question_8": {
+            "question": "The essential requirements of the contract are",
+            "options": [
+                "a) Agreement between the parties, cause of object and legality.",
+                "b) Agreement between the parties, cause, object and form.",
+                "c) Form and object.",
+                "d) Consensual, public written form and cause"
+            ],
+            "answer": "2",
+            "hint": "Agreement between the parties is essential"
+        },
+        "question_9": {
+            "question": "During the War of the Spanish Succession (1701-1714) Charles's successor || it was Amedeo | of spain",
+            "answer": "FALSE",
+            "hint": "we are in 1701"
+        },
+        "question_10": {
+            "question": "The Array makes available a series of cells, in which the values \u200b\u200bto be stored can find place, therefore the vector is very useful because it can store all the values \u200b\u200bof a sequence",
+            "answer": "TRUE",
+            "hint": "the vector is very useful because it can store all the values \u200b\u200bof a sequence"
+        }
+    },
+    {
+        "timestamp": "18/11/2022 22:02:24",
+        "name": "samantha garcia anco",
+        "question_1": {
+            "question": "The total assets of the debit account v/suppliers express:",
+            "options": [
+                "a) The cost for purchases made",
+                "b) Payments made",
+                "c) The amount of invoices to be paid",
+                "d) The amount of invoices to be received"
+            ],
+            "answer": "3",
+            "hint": "A debt is a sum of money that you have to pay at the end of the predetermined deadline"
+        },
+        "question_2": {
+            "question": "The credits of the V/Customer credit account expresses the total amount:",
+            "options": [
+                "a) Of invoices issued",
+                "b) Of  sales revenues",
+                "c) Of invoice still to be collected",
+                "d) Of invoices to be paid "
+            ],
+            "answer": "3",
+            "hint": "The credit is a sum of money that the creditor must collect by he end of the predetermined deadline"
+        },
+        "question_3": {
+            "question": "What is deindustrialization?",
+            "options": [
+                "a) It is the process of decrease in the importance of service and industry in",
+                "b) The economy and the increase in the importance of the tertiary sector in",
+                "c) The production;",
+                "d) It is a term that refers to the move away from the primary sector to the secondary sector;",
+                "e) Is the process of decrease in the importance of industry and manufacturing in the economy and the increase in the importance in the tertiary sector of production;",
+                "f) Is the process that is influencing the developing countries."
+            ],
+            "answer": "3",
+            "hint": "the deindustralisation is the move away from the industralisation to the service sector"
+        },
+        "question_4": {
+            "question": "What is microcredit?",
+            "options": [
+                "a) Is the extension of big amount of money to unemployed people and others that lives in poverty;",
+                "b) Is the extension of microloans to people who find impossible to obtain a loan because they don't meet any of the traditional requirements for credit and lives in poverty; ",
+                "c) Is the extension of microloans to people that meet traditional requiments for credit;",
+                "d) Is the extension small amount of money to people that find impossible to have a loans because they meet traditional requiments for credit;"
+            ],
+            "answer": "2",
+            "hint": "a traditional requiments for credits are for example: collateral and employment."
+        },
+        "question_5": {
+            "question": "an enterprises is:",
+            "options": [
+                "a) A series of right connected between them for a personal purpose;",
+                "b) Is an economic activity organized for the purpose of production or the exchange of goods and service;",
+                "c) An activity that fulfill series of deeds that aren\u2019t connected between them;",
+                "d) Is an activity that cannot have more than one entrepreneur;"
+            ],
+            "answer": "2",
+            "hint": "enterprices is aimed at achieving an economic purpose, of both public and private interest"
+        },
+        "question_6": {
+            "question": "The commercial brand:",
+            "options": [
+                "a) Replaces the manufacturer\u2019s one;",
+                "b) Identifies the manufacturer\u2019s one;",
+                "c) An be placed next to the manufacturer\u2019s one;",
+                "d) Doesn't identify the reseller\u2019s one."
+            ],
+            "answer": "3",
+            "hint": "it cannot hide or replace the manufacturer\u2019s one."
+        },
+        "question_7": {
+            "question": "The functional distribution measures the income received:",
+            "options": [
+                "a) From various production sectors;",
+                "b) From various social classes;",
+                "c) From various subjects;",
+                "d) From the various factors of production;"
+            ],
+            "answer": "4",
+            "hint": "it analyzes the distribution of RN between wages, profits, rents and interests directed at specific people."
+        },
+        "question_8": {
+            "question": "Owners receive the differential annuity on the basis of:",
+            "options": [
+                "a) Soil fertility;",
+                "b) The location of the soil;",
+                "c) The actual performance of the soil;",
+                "d) To the resources of the subsoil;"
+            ],
+            "answer": "1",
+            "hint": "david riccardo saw that all soils have different productivity so he theorized the law of diminishing returns"
+        },
+        "question_9": {
+            "question": "An\u00a0interpretation\u00a0key\u00a0is\u00a0required\u00a0to\u00a0obtain\u00a0information",
+            "answer": "TRUE",
+            "hint": "to arrive at the information the data must be analyzed."
+        },
+        "question_10": {
+            "question": "Redundancy is the repetition of data",
+            "answer": "TRUE",
+            "hint": "\nredundancy happened before the database was introduced, so before that happened most data was stored more than once."
+        }
+    },
+    {
+        "timestamp": "19/11/2022 04:51:56",
+        "name": "Francesco Lucchina ",
+        "question_1": {
+            "question": "                                                                                                                       t\n  What are you going to calculate with this type of formula? \u2192  C(1+i)\n",
+            "options": [
+                "a) 1 principal and interest in compound capitalisation",
+                "b)  2 interest in simple capitalization",
+                "c)  3 interest in compound capitalization",
+                "d)  4 principal and interest  in simple capitalisation"
+            ],
+            "answer": "1",
+            "hint": "Remember the difference between simple and compound capitalization"
+        },
+        "question_2": {
+            "question": " Which of these is a loan transaction?\n",
+            "options": [
+                "a) 1 bills for discount ",
+                "b) 2  bank grants ",
+                "c) 3  collection of riba sbf ",
+                "d) 4  invoice discounting "
+            ],
+            "answer": "2",
+            "hint": "Answer number 3 is wrong"
+        },
+        "question_3": {
+            "question": "What does it mean that a database must be intact?\n",
+            "options": [
+                "a) 1  must prevent damage",
+                "b) 2  must log in different types of users",
+                "c) 3  must ensure that data consistency is not lost",
+                "d) 4  must have unlimited time"
+            ],
+            "answer": "3",
+            "hint": "Keep in mind that without Data Consistency, a database losts its purpose"
+        },
+        "question_4": {
+            "question": "What is metadata?\n",
+            "options": [
+                "a) 1  information describing database objects",
+                "b) 2  data composed of other data",
+                "c) 3  data that is stored in the physical layer",
+                "d) 4  repeated data within the database"
+            ],
+            "answer": "1",
+            "hint": "They are not data that is stored in the physical layer"
+        },
+        "question_5": {
+            "question": " The trademark has a duration of how many years?",
+            "options": [
+                "a) 1        5 years ",
+                "b) 2        2 years ",
+                "c) 2       15 years ",
+                "d) 4       10 years "
+            ],
+            "answer": "4",
+            "hint": "Is between 2 and 10 years"
+        },
+        "question_6": {
+            "question": "The trademark can be can be three-dimensional, when:\n",
+            "options": [
+                "a) 1  it composed of a name, a word",
+                "b) 2  it is composed  of linguistic and figurative elements",
+                "c) 3  it consists of the characteristic shape of the product or its casing",
+                "d) 4  it is formed by an image, drawing or a symbol"
+            ],
+            "answer": "3",
+            "hint": "Has specific characterists"
+        },
+        "question_7": {
+            "question": "What does national income measure?",
+            "options": [
+                "a) 1  both the flow of final goods and services produced and the flow of income received by the subjects  ",
+                "b) 2  both the flow of final goods and services available and the flow of income received by the subjects",
+                "c) 3  only the flow of final goods and services available",
+                "d) 4  only the flow of income received by the subjects"
+            ],
+            "answer": "2",
+            "hint": "The answer is not 1"
+        },
+        "question_8": {
+            "question": "What does real GDP (PIL)  measure?",
+            "options": [
+                "a) 1  the quantity of goods and services produced is multiplied by the prices for that year",
+                "b) 2  the increase in the production of goods and services compared to the previous year",
+                "c) 3  the quantity of goods and services produced multiplied by the prices of a base year",
+                "d) 4  the quantity of goods and services actually available in a year "
+            ],
+            "answer": "3",
+            "hint": "It is about the quantity of goods and services and not their increase"
+        },
+        "question_9": {
+            "question": "Can this formula be used to calculate the simple discount?  \u2192 C-V    ",
+            "answer": "TRUE",
+            "hint": "The difference between nominal value and present value"
+        },
+        "question_10": {
+            "question": "The interest payable  subject to withholding tax? ",
+            "answer": "FALSE",
+            "hint": "Passive interest."
+        }
+    },
+    {
+        "timestamp": "19/11/2022 05:37:46",
+        "name": "matteo tatti\n",
+        "question_1": {
+            "question": "what is \"dolo\"?",
+            "options": [
+                "a) Is the conscious will to cause harm to another person.",
+                "b) Is the breach of a contract.",
+                "c) Is the unconscious will to cause harm to another person.",
+                "d) Is the termination of a contract."
+            ],
+            "answer": "1",
+            "hint": "is one of the top three"
+        },
+        "question_2": {
+            "question": "what is \"deflatore del pil\"?",
+            "options": [
+                "a) It is a procedure that allows you to remove taxes from pil",
+                "b) It is a procedure that allows you to remove inflation from pil",
+                "c) It is a procedure that allows you to remove the national income from pil",
+                "d) It is a procedure that allows you to remove exports from pil"
+            ],
+            "answer": "2",
+            "hint": "it's a short answer"
+        },
+        "question_3": {
+            "question": "what is the definition of globalization?",
+            "options": [
+                "a) It is the economic development of poor countries.",
+                "b) It is a political agreement between multiple nations.",
+                "c) It is the spread of major languages in other countries.",
+                "d) It is the global diffusion of trends, ideas and problems thanks to the new means of communication."
+            ],
+            "answer": "4",
+            "hint": "\nthe correct answer has nothing to do with politcs."
+        },
+        "question_4": {
+            "question": "where was prussia located?",
+            "options": [
+                "a) Russia, belarus.",
+                "b) Latvia, lithuania. ",
+                "c) Ukraine, hungary.",
+                "d) Poland, germany."
+            ],
+            "answer": "4",
+            "hint": "prussia bordered on the sea."
+        },
+        "question_5": {
+            "question": "how do i convert the time(t) from years to quarters?",
+            "options": [
+                "a) T:4.",
+                "b) T+4.",
+                "c) T:3.",
+                "d) Tx3."
+            ],
+            "answer": "3",
+            "hint": "it is not an addition."
+        },
+        "question_6": {
+            "question": "what happens if an advance on invoices is successful?",
+            "options": [
+                "a) Only 80% of the value is credited.",
+                "b) The remaining 20%is credited.",
+                "c) The remaining 20% is credited but with passive interest.",
+                "d) Nothing is credited."
+            ],
+            "answer": "2",
+            "hint": "the answer has a number."
+        },
+        "question_7": {
+            "question": "how do i register a bank check in \"partita doppia\"?",
+            "options": [
+                "a) Bank x c/c.",
+                "b) Check.",
+                "c) Bank check.",
+                "d)  debts to suppliers."
+            ],
+            "answer": "2",
+            "hint": "the correct answer has one or more c."
+        },
+        "question_8": {
+            "question": "is there a difference between \"pre condizionale\" and \"post condizionale\"?",
+            "options": [
+                "a) Yes, the first has the condition at the beginning of the loop, while the second has the condition at the and.",
+                "b) Yes, the first has the condition at the and of the loop, while the second has the condition at the beginning.",
+                "c) No.",
+                "d) Yes, the first has no conditions."
+            ],
+            "answer": "1",
+            "hint": "all the loops we have used have at least one condition."
+        },
+        "question_9": {
+            "question": "the white fibers have speed as a characteristic.",
+            "answer": "FALSE",
+            "hint": "the europeans have more than africans."
+        },
+        "question_10": {
+            "question": "cocoa arrived in europe from asia.",
+            "answer": "FALSE",
+            "hint": "the period in question is 1600."
+        }
+    },
+    {
+        "timestamp": "19/11/2022 19:38:49",
+        "name": "Giorgio Loi",
+        "question_1": {
+            "question": "What's the purpose of a DMBS?",
+            "options": [
+                "a) 1 - a dbms allows the user to define, create and maintain the database.",
+                "b) 2 - a dbms allows the user to insert, delete, and update data in a database.",
+                "c) 3 - a dbms allows the user to create and modify the structure of database objects in a database.",
+                "d) 4 - a dbms allows the user to get rid of wrong and outdated data."
+            ],
+            "answer": "1",
+            "hint": "DBMS stands for Data Base Management System."
+        },
+        "question_2": {
+            "question": "Which of these programs is a DMBS.",
+            "options": [
+                "a) 1 - videolan vlc.",
+                "b) 2 - bloodshed dev c++.",
+                "c) 3 - microsoft access.",
+                "d) 4 - adobe acrobat dc."
+            ],
+            "answer": "3",
+            "hint": "Mind the difference between Database Management System (DBMS) and Integrated Development Environment (IDE)."
+        },
+        "question_3": {
+            "question": "What's the purpose of the \"Compile & Run\" key in Bloodshed Dev C++?",
+            "options": [
+                "a) 1 - the \"compile & run\" key shows only the syntax errors contained in the code.",
+                "b) 2 - the \"compile & run\" key saves the project file in a folder chosen by the user.",
+                "c) 3 - the \"compile & run\" key starts the debugging of the executable.",
+                "d) 4 - the \"compile & run\" key compiles the project file and runs the executable."
+            ],
+            "answer": "4",
+            "hint": "Compiling a project file gives you the Executable (.exe) file of the program you wrote."
+        },
+        "question_4": {
+            "question": "Which was the Form of Government in France in the 17th century (1600)?",
+            "options": [
+                "a) 1 - republic.",
+                "b) 2 - democracy.",
+                "c) 3 - absolute monarchy.",
+                "d) 4 - liberal monarchy."
+            ],
+            "answer": "3",
+            "hint": "Be careful not to confuse France with England."
+        },
+        "question_5": {
+            "question": "What happened in Europe by the end of 1600?",
+            "options": [
+                "a) 1 - the world war ii started.",
+                "b) 2 - there was a demographic increase.",
+                "c) 3 - galileo galilei was born.",
+                "d) 4 - the first helicopter was invented."
+            ],
+            "answer": "2",
+            "hint": "By the end of 1700 the European population was 145000000."
+        },
+        "question_6": {
+            "question": "Who was Galileo Galilei?",
+            "options": [
+                "a) 1 - he was an italian astronomer, physicist and engineer.",
+                "b) 2 - he was a german alchemist.",
+                "c) 3 - he was an italian terrorist.",
+                "d) 4 - he was a chinese researcher."
+            ],
+            "answer": "1",
+            "hint": "Galileo Galilei invented the telescope."
+        },
+        "question_7": {
+            "question": "What's the purpose of the Millennium Development Goals?",
+            "options": [
+                "a) 1 - help the planet to reduce the impact on the environment.",
+                "b) 2 - help the bank of england to reduce their interest rate.",
+                "c) 3 - help underdeveloped countries to reduce poverty.",
+                "d) 4 - help poor people to start their own activities."
+            ],
+            "answer": "3",
+            "hint": "One of these goals is: \"Cancel debts owed by poor countries\"."
+        },
+        "question_8": {
+            "question": "Where is extreme poverty very common?",
+            "options": [
+                "a) 1 - italy, africa, asia, india.",
+                "b) 2 - america, russia, india, albania.",
+                "c) 3 - sub-saharian africa, southeast asia, central america.",
+                "d) 4 - china, japan, ukraine, india."
+            ],
+            "answer": "3",
+            "hint": "Keep in mind that Italy has a GDP of 35.551,28 USD."
+        },
+        "question_9": {
+            "question": "An executable file (.exe) is a computer file that contains an encoded sequence of instructions that the system can execute.",
+            "answer": "TRUE",
+            "hint": "Every program that runs under the Windows OS has an .exe file extension."
+        },
+        "question_10": {
+            "question": "A .docx file can only contain photos.",
+            "answer": "FALSE",
+            "hint": ".docx file extension is used by Microsoft Word."
+        }
+    },
+    {
+        "timestamp": "19/11/2022 20:10:37",
+        "name": "Franzetti Matteo ",
+        "question_1": {
+            "question": "What does Goodwill consist of?",
+            "options": [
+                "a) 1 economic activity intended for production ",
+                "b) 2 ability of a company to produce profits",
+                "c) 3 business name of an entrepreneur",
+                "d) 4 a productive sector"
+            ],
+            "answer": "2",
+            "hint": "it's about the foundation of a company"
+        },
+        "question_2": {
+            "question": "What\u2019s macroeconomic analysis of the market based on?",
+            "options": [
+                "a) 1 individual supply and demand",
+                "b) 2 reduced supply and demand",
+                "c) 3 aggregate supply and demand",
+                "d) 4 entrepreneurial supply and demand"
+            ],
+            "answer": "3",
+            "hint": "Not the answer 1"
+        },
+        "question_3": {
+            "question": "What is the name of the guardian of the Purgatory?",
+            "options": [
+                "a) 1 catone ",
+                "b) 2 caronte",
+                "c) 3 viriglio",
+                "d) 4 julius caesar"
+            ],
+            "answer": "1",
+            "hint": "Was a Roman"
+        },
+        "question_4": {
+            "question": "What is the formula for finding time (t) in simple capitalization?",
+            "options": [
+                "a) 1 t=i/ct",
+                "b) 2 t=i/ci",
+                "c) 3 t=i/it",
+                "d) 4 t=i/mt"
+            ],
+            "answer": "2",
+            "hint": "You don't need (M)"
+        },
+        "question_5": {
+            "question": "What\u2019s Galileo\u2019s work based on his own observation with the telescope?",
+            "options": [
+                "a) 1 \"saggiatore\"",
+                "b) 2 \"discorsi delle nuove scienze\"",
+                "c) 3 \"sidereus nuncius\"",
+                "d) 4 \"i promessi sposi\""
+            ],
+            "answer": "3",
+            "hint": "It dates back to 1610"
+        },
+        "question_6": {
+            "question": "What is the \u201cMasonry\u201d?",
+            "options": [
+                "a) 1 secret association based on universal brotherhood and secular moral perfection",
+                "b) 2 \"enlightened\" christian doctrine",
+                "c) 3 name of a french colony",
+                "d) 4 form of government "
+            ],
+            "answer": "1",
+            "hint": "Born in England"
+        },
+        "question_7": {
+            "question": "What is the \u201cmycrocredit\u201d?",
+            "options": [
+                "a) 1 set of all financial services granted by a state to its citizens",
+                "b) 2 social status of the inhabitants of the most economically backward countries",
+                "c) 3 propensity of the bourgeois class to enrich the state coffers",
+                "d) 4 economic development instrument based on the provision of small sums of money to poor people"
+            ],
+            "answer": "4",
+            "hint": "An example, the \"Grameen bank\""
+        },
+        "question_8": {
+            "question": "What is a database?",
+            "options": [
+                "a) 1 programming language",
+                "b) 2 collection of related data, used to model a reality",
+                "c) 3 set of transactions made by a merchant in a year x",
+                "d) 4 a collection of programming language used by a web designer"
+            ],
+            "answer": "2",
+            "hint": "it's like a \"large archive\""
+        },
+        "question_9": {
+            "question": "Are freelancers always considered entrepreneurs?",
+            "answer": "FALSE",
+            "hint": "A freelancer is a people who creates the activity by himself"
+        },
+        "question_10": {
+            "question": "Was the baroque period characterized by awareness of the centrality and importance of the man?",
+            "answer": "FALSE",
+            "hint": "In the baroque period there is a change of the point of view"
+        }
+    },
+    {
+        "timestamp": "20/11/2022 16:59:40",
+        "name": "Juri Cassiani",
+        "question_1": {
+            "question": "In the civil code there's an article that identifies the entrepreneur, which it?",
+            "options": [
+                "a) Art.2080",
+                "b) Art.2081",
+                "c) Art.2082",
+                "d) Art.2088"
+            ],
+            "answer": "3",
+            "hint": "exclude article 2080 and 2088"
+        },
+        "question_2": {
+            "question": "At the origin of a company, original documents are formed, including \"authorization documents\". What are they represented by?",
+            "options": [
+                "a) Invoices received and issued",
+                "b) Clients' orders",
+                "c) Bills of exchange and cheques",
+                "d) Payment and collection orders"
+            ],
+            "answer": "4",
+            "hint": "Dwell on the orders"
+        },
+        "question_3": {
+            "question": "What are the 2 methods to calculate the overall income at the end of the life of a buisness?",
+            "options": [
+                "a) Analytical and synthetic method",
+                "b) Flexible and synthetic method",
+                "c) Analytic and flexible method",
+                "d) Systematic and synthetic method",
+                "e) Analytical and systematic method"
+            ],
+            "answer": "1",
+            "hint": "Exlude the flexibility"
+        },
+        "question_4": {
+            "question": "How many years have passed between the discovery of America  and the birth of William Shakespeare?",
+            "options": [
+                "a) 70",
+                "b) 71",
+                "c) 72",
+                "d) 73"
+            ],
+            "answer": "3",
+            "hint": "America was discovered in 1492"
+        },
+        "question_5": {
+            "question": "What is the definition of GNP(PNL)?",
+            "options": [
+                "a) Is the value of all goods and services owned by residents of a country in a given period ",
+                "b) Is the value of the finished goods and services of a nation in a given period",
+                "c) Is the sum of all the incomes of a state in a given period of time",
+                "d) Is the difference of all the incomes of a state in a given period of time"
+            ],
+            "answer": "1",
+            "hint": "Goods and services are considered"
+        },
+        "question_6": {
+            "question": "If we are in capitalization compound,and we have a capital of 3500 euros, the quarterly rate of 3,33%, and interest composed of 677,20 euros;  what is it the time;",
+            "options": [
+                "a) 2 years, 2 months and 25 days",
+                "b) 2 years, 3 months and 25 days",
+                "c) 1 year, 4 months and 6 days",
+                "d) 1 year, 4 months and 5 days",
+                "e) 3 years, 6 months and 5 days",
+                "f) 3 years 6 months and 6 days"
+            ],
+            "answer": "3",
+            "hint": "In the right answer the months are between 4 and 6"
+        },
+        "question_7": {
+            "question": "In the late 1500s and early 1600s, Queen Elizabeth I died in England. Who was her successor in the kingdom of England?",
+            "options": [
+                "a) Elizabeth ii",
+                "b) Carlo i",
+                "c) Luigi i",
+                "d) Giacomo i"
+            ],
+            "answer": "4",
+            "hint": "He is the last rapresentative of the Tudor dynasty"
+        },
+        "question_8": {
+            "question": "What it is the definition of equivalent rates?",
+            "options": [
+                "a) Have for reference an equal percentage of interest.",
+                "b) Are a continuos flow of income from the possession of an asset",
+                "c) If their values are at the same time and equal.",
+                "d) If applied to the same capital and for the same time, produce equal amounts."
+            ],
+            "answer": "4",
+            "hint": "The correct answer is at the end"
+        },
+        "question_9": {
+            "question": "Jean-Baptiste Say was a economist. True or false",
+            "answer": "TRUE",
+            "hint": "He realized the Say law"
+        },
+        "question_10": {
+            "question": "In computer science the type \"char\" is used to indicate one or more characteres. True or false",
+            "answer": "FALSE",
+            "hint": "1"
+        }
+    },
+    {
+        "timestamp": "21/11/2022 00:36:41",
+        "name": "Emanuele Fietta",
+        "question_1": {
+            "question": "if C=principal and I= interest then the amount (M) will be equal to what",
+            "options": [
+                "a) 1) m=c+i",
+                "b) 2) m=c-i",
+                "c) 3) m=c*i",
+                "d) 4) m= c/i "
+            ],
+            "answer": "1",
+            "hint": "it's not number 4"
+        },
+        "question_2": {
+            "question": " How long is a business year? \n",
+            "options": [
+                "a) 1)365 days",
+                "b) 2)361 days",
+                "c) 3)360 days",
+                "d) 4) 280 days"
+            ],
+            "answer": "2",
+            "hint": "it's not number 4"
+        },
+        "question_3": {
+            "question": " Entrepreneur's accounting records must be kept:",
+            "options": [
+                "a) 1)for ten years from the date of the first registration",
+                "b) 2)for ten years from the date of the last registration",
+                "c) 3) for five years from the date of the first registration",
+                "d) 4) for two years from the date of the first registration"
+            ],
+            "answer": "0",
+            "hint": "it's not number 4"
+        },
+        "question_4": {
+            "question": " The business of the entrepreneur is not:",
+            "options": [
+                "a) 1)professional",
+                "b) 2)free",
+                "c) 3)economic",
+                "d) 4)directed to the exchange"
+            ],
+            "answer": "1",
+            "hint": "it's not number 1"
+        },
+        "question_5": {
+            "question": "Galileo Galilei was born:",
+            "options": [
+                "a)  1)in pisa in 1570",
+                "b) 2) in pisa in 1564",
+                "c) 3) in padua in 1613",
+                "d) 4) in padua in 1564"
+            ],
+            "answer": "1",
+            "hint": "it's not number 3"
+        },
+        "question_6": {
+            "question": "What object did Galileo Galilei invent among these?",
+            "options": [
+                "a) 1) the tower of pisa",
+                "b) 2) television",
+                "c) 3) the hydrostatic balance",
+                "d) 4) the funnel"
+            ],
+            "answer": "2",
+            "hint": "it's not number 4"
+        },
+        "question_7": {
+            "question": "what is meant by software?",
+            "options": [
+                "a) 1) the set of programs essential for the functioning of the computer",
+                "b) 2) the set of results of an elaboration",
+                "c) 3) the set of programs of a computer",
+                "d) 4) the set of non-modifiable physical components."
+            ],
+            "answer": "0",
+            "hint": "it's not number 4"
+        },
+        "question_8": {
+            "question": "8. The active balance of the current account must be registered by the company:",
+            "options": [
+                "a) 1)in credit of the bank account c/c",
+                "b) 2) debit of the account cash in hand",
+                "c) 3)in debit of the bank account c/c",
+                "d) 4) in credit of the cash on hand account"
+            ],
+            "answer": "0",
+            "hint": "it's not number 4"
+        },
+        "question_9": {
+            "question": "Did Galileo Galilei invent the telescope?",
+            "answer": "FALSE",
+            "hint": "It's a tricky question"
+        },
+        "question_10": {
+            "question": "Does the acronym ICT mean information connect technology?",
+            "answer": "FALSE",
+            "hint": "Think about the C"
+        }
+    },
+    {
+        "timestamp": "21/11/2022 18:13:25",
+        "name": "Andrea Dabacchi",
+        "question_1": {
+            "question": "who established the absolute monarchy in France?",
+            "options": [
+                "a) Luigi xiv",
+                "b) Luigi xv",
+                "c) Mazzarino",
+                "d) Alessandro i"
+            ],
+            "answer": "2",
+            "hint": "ascendes the trones young"
+        },
+        "question_2": {
+            "question": "Galileo Galilei was condemned because  of one of his texts, whic one?",
+            "options": [
+                "a) Siderius nuncius",
+                "b) Il saggiatore",
+                "c) Dialogue concerning the two chief world system",
+                "d) Debate concerning the two chief world system"
+            ],
+            "answer": "3",
+            "hint": "it is written in italian"
+        },
+        "question_3": {
+            "question": "in double-entry a purchase of goods what kind of variation is?",
+            "options": [
+                "a) Active financial change",
+                "b) Passive financial change",
+                "c) Positive economic change",
+                "d) Negative economic change "
+            ],
+            "answer": "4",
+            "hint": "goes into the give column"
+        },
+        "question_4": {
+            "question": "in financial mathematics if i have to bring capital forward is?",
+            "options": [
+                "a) Capitalization",
+                "b) Actualization",
+                "c) Shift",
+                "d) Credit"
+            ],
+            "answer": "1",
+            "hint": "the answer contains an A and a C"
+        },
+        "question_5": {
+            "question": "in Basketballs the foul for steps when it happens?\n",
+            "options": [
+                "a) After one steps",
+                "b) After two steps ",
+                "c) Sfter three steps",
+                "d) There is no such foul"
+            ],
+            "answer": "3",
+            "hint": "more than one"
+        },
+        "question_6": {
+            "question": "What is the maximum number of football substitutions in regular time?",
+            "options": [
+                "a) 3",
+                "b) 4",
+                "c) 5",
+                "d) 7"
+            ],
+            "answer": "3",
+            "hint": " more than before"
+        },
+        "question_7": {
+            "question": "in double-entry what is the denomination for a purchase of goods?",
+            "options": [
+                "a) C/purchase",
+                "b) Goods c/purchase",
+                "c) Purchased goods",
+                "d) Goods to purchase"
+            ],
+            "answer": "2",
+            "hint": "Read better"
+        },
+        "question_8": {
+            "question": "the enlightenment",
+            "options": [
+                "a) Was born in italy",
+                "b) Was born in france",
+                "c) Was born in spain",
+                "d) Was born in serbia"
+            ],
+            "answer": "2",
+            "hint": "Revolution "
+        },
+        "question_9": {
+            "question": "A database is used to store data within archives",
+            "answer": "TRUE",
+            "hint": "DATA-BASE"
+        },
+        "question_10": {
+            "question": "in the lease a regular installment is paid\n",
+            "answer": "TRUE",
+            "hint": "Rent"
+        }
+    }
+]

@@ -99,14 +99,11 @@ class PowerUp(db.Model):
         remainder = random.sample(choices, len(choices) // 2)
 
         remainder.append(answer_content)
-        # remainder = sorted(remainder)
 
         result = []
         for choice in self.quiz_assignment.quiz.questions[question_index]["answers"]:
             if choice in remainder:
                 result.append(choice)
-            else:
-                result.append(None)
 
         return {"remaining_choices": result}
 

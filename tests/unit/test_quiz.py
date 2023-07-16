@@ -129,6 +129,7 @@ def test_get_quiz(api, monkeypatch):
                 "answers": ["Brasilia", "Rio de Janeiro"],
             }
         ],
+        'current_limit': 100,
         "creation_date": "2012/12/12 12:12:12",
     }
 
@@ -198,7 +199,7 @@ def test_attempt_answer(api, monkeypatch):
         db.session.commit()
 
         res = client.post(
-            f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
+            f"/quiz/attempt/{quiz_assignment.quiz_assignment_identifier}",
             json={
                 "stake_address": quiz_assignment.assignee.stake_address,
                 "answer": 0,
@@ -225,7 +226,7 @@ def test_attempt_answer(api, monkeypatch):
         assert attempts[0].right_answer == True
 
         res = client.post(
-            f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
+            f"/quiz/attempt/{quiz_assignment.quiz_assignment_identifier}",
             json={
                 "stake_address": quiz_assignment.assignee.stake_address,
                 "answer": 0,  # Wrong answer
@@ -252,7 +253,7 @@ def test_attempt_answer(api, monkeypatch):
         assert attempts[1].right_answer == False
 
         res = client.post(
-            f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
+            f"/quiz/attempt/{quiz_assignment.quiz_assignment_identifier}",
             json={
                 "stake_address": quiz_assignment.assignee.stake_address,
                 "answer": 2,
@@ -269,7 +270,7 @@ def test_attempt_answer(api, monkeypatch):
         }
 
         res = client.post(
-            f"/quiz/attempt/{quiz_assignment.quiz.quiz_identifier}",
+            f"/quiz/attempt/{quiz_assignment.quiz_assignment_identifier}",
             json={
                 "stake_address": quiz_assignment.assignee.stake_address,
                 "answer": 2,
@@ -293,7 +294,7 @@ def test_attempt_answer(api, monkeypatch):
 
         for i in range(1, 3):
             res = client.post(
-                f"/quiz/attempt/{quiz_assignment_2.quiz.quiz_identifier}",
+                f"/quiz/attempt/{quiz_assignment_2.quiz_assignment_identifier}",
                 json={
                     "stake_address": quiz_assignment_2.assignee.stake_address,
                     "answer": 1,  # Wrong answer
@@ -310,7 +311,7 @@ def test_attempt_answer(api, monkeypatch):
             }
 
         res = client.post(
-            f"/quiz/attempt/{quiz_assignment_2.quiz.quiz_identifier}",
+            f"/quiz/attempt/{quiz_assignment_2.quiz_assignment_identifier}",
             json={
                 "stake_address": quiz_assignment_2.assignee.stake_address,
                 "answer": 1,  # Wrong answer
@@ -382,10 +383,30 @@ def test_activate_powerup(api, monkeypatch):
             "success": True,
             "powerup_payload": {"hint": "Think about it's name"},
             "powerups": [
-                {"name": "get_hints", "used": True, "question_index_used": 0},
-                {"name": "get_percentages", "used": False, "question_index_used": None},
-                {"name": "skip_question", "used": False, "question_index_used": None},
-                {"name": "eliminate_half", "used": False, "question_index_used": None},
+                {
+                    "name": "get_hints",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"hint": "Think about it's name"},
+                },
+                {
+                    "name": "get_percentages",
+                    "used": False,
+                    "question_index_used": None,
+                    "payload": None,
+                },
+                {
+                    "name": "skip_question",
+                    "used": False,
+                    "question_index_used": None,
+                    "payload": None,
+                },
+                {
+                    "name": "eliminate_half",
+                    "used": False,
+                    "question_index_used": None,
+                    "payload": None,
+                },
             ],
         }
 
@@ -417,42 +438,36 @@ def test_activate_powerup(api, monkeypatch):
 
         expected_response = {
             "success": True,
-            "powerup_payload": {
-                "skipped": True,
-                "last_skipped_question": 0,
-            },
+            "powerup_payload": {"answer": 0},
             "powerups": [
-                {"name": "get_hints", "used": True, "question_index_used": 0},
-                {"name": "get_percentages", "used": False, "question_index_used": None},
-                {"name": "skip_question", "used": True, "question_index_used": 0},
-                {"name": "eliminate_half", "used": False, "question_index_used": None},
+                {
+                    "name": "get_hints",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"hint": "Think about it's name"},
+                },
+                {
+                    "name": "get_percentages",
+                    "used": False,
+                    "question_index_used": None,
+                    "payload": None,
+                },
+                {
+                    "name": "skip_question",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"answer": 0},
+                },
+                {
+                    "name": "eliminate_half",
+                    "used": False,
+                    "question_index_used": None,
+                    "payload": None,
+                },
             ],
         }
 
         assert res.status_code == 200
-        assert res.json == expected_response
-
-        # Make sure current question is updated
-
-        assert quiz_assignment.current_question == 1
-
-        # Make sure we cannot skip question again
-
-        res = client.post(
-            f"/quiz/powerup/{quiz_assignment.quiz_assignment_identifier}/activate/skip_question",
-            json={
-                "stake_address": quiz_assignment.assignee.stake_address,
-                "signature": "signature",
-            },
-        )
-
-        expected_response = {
-            "success": False,
-            "message": "Powerup already used and in different question",
-            "code": "powerup_already_used",
-        }
-
-        assert res.status_code == 400
         assert res.json == expected_response
 
         # Try to eliminate half
@@ -467,14 +482,32 @@ def test_activate_powerup(api, monkeypatch):
 
         expected_response = {
             "success": True,
-            "powerup_payload": {
-                "remaining_choices": ["Yes", "Never"],
-            },
+            "powerup_payload": {"remaining_choices": ["Brasilia"]},
             "powerups": [
-                {"name": "get_hints", "used": True, "question_index_used": 0},
-                {"name": "get_percentages", "used": False, "question_index_used": None},
-                {"name": "skip_question", "used": True, "question_index_used": 0},
-                {"name": "eliminate_half", "used": True, "question_index_used": 1},
+                {
+                    "name": "get_hints",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"hint": "Think about it's name"},
+                },
+                {
+                    "name": "get_percentages",
+                    "used": False,
+                    "question_index_used": None,
+                    "payload": None,
+                },
+                {
+                    "name": "skip_question",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"answer": 0},
+                },
+                {
+                    "name": "eliminate_half",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"remaining_choices": ["Brasilia"]},
+                },
             ],
         }
 
@@ -497,7 +530,11 @@ def test_activate_powerup(api, monkeypatch):
 
         # Try to get percentages
 
-        # First, insert some mock answers
+        # First go to next question
+        quiz_assignment.current_question = 1
+        db.session.add(quiz_assignment)
+
+        # Second, insert some mock answers
 
         # 10%, 20%, 30%, 40%
         answers = [0, 1, 3, 2, 3, 1, 2, 2, 3, 3]
@@ -529,10 +566,32 @@ def test_activate_powerup(api, monkeypatch):
                 "percentages": [0.1, 0.2, 0.3, 0.4],
             },
             "powerups": [
-                {"name": "get_hints", "used": True, "question_index_used": 0},
-                {"name": "get_percentages", "used": True, "question_index_used": 1},
-                {"name": "skip_question", "used": True, "question_index_used": 0},
-                {"name": "eliminate_half", "used": True, "question_index_used": 1},
+                {
+                    "name": "get_hints",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"hint": "Think about it's name"},
+                },
+                {
+                    "name": "get_percentages",
+                    "used": True,
+                    "question_index_used": 1,
+                    "payload": {
+                        "percentages": [0.1, 0.2, 0.3, 0.4],
+                    },
+                },
+                {
+                    "name": "skip_question",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"answer": 0},
+                },
+                {
+                    "name": "eliminate_half",
+                    "used": True,
+                    "question_index_used": 0,
+                    "payload": {"remaining_choices": ["Brasilia"]},
+                },
             ],
         }
 
@@ -591,7 +650,12 @@ def test_create_powerup(api, monkeypatch):
         expected_response = {
             "success": True,
             "powerups": [
-                {"name": "foobar", "used": False, "question_index_used": None},
+                {
+                    "name": "foobar",
+                    "used": False,
+                    "question_index_used": None,
+                    "payload": None,
+                },
             ],
         }
 
